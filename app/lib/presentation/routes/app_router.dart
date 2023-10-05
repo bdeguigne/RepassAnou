@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:runpasseo/presentation/home_screen.dart';
-import 'package:runpasseo/presentation/login_screen.dart';
+import 'package:runpasseo/presentation/auth/login_screen.dart';
+import 'package:runpasseo/presentation/auth/signup_screen.dart';
 
 part 'app_router.gr.dart';
 
@@ -10,5 +11,6 @@ class AppRouter extends _$AppRouter {
   List<AutoRoute> get routes => [
         AutoRoute(page: HomeRoute.page, initial: true),
         AutoRoute(page: LoginRoute.page),
+        AutoRoute(page: SignupRoute.page),
       ];
 }
