@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:repasse_anou/application/auth_notifier.dart';
 import 'package:repasse_anou/core/top_level_providers.dart';
 import 'package:repasse_anou/presentation/design_system/snackbars.dart';
 import 'package:repasse_anou/presentation/design_system/theme.dart';
@@ -13,9 +14,12 @@ void main() async {
     url: dotenv.get('SUPABASE_URL'),
     anonKey: dotenv.get('SUPABASE_KEY'),
   );
+  final ProviderContainer container = ProviderContainer();
+  container.read<AuthNotifier>(authNotifierProvider.notifier).listen();
   runApp(
-    const ProviderScope(
-      child: MainApp(),
+    UncontrolledProviderScope(
+      container: container,
+      child: const MainApp(),
     ),
   );
 }

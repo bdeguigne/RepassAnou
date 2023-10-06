@@ -8,6 +8,12 @@ class NavigationController {
 
   final AppRouter router;
 
+  void goToLandingPage() {
+    router.replaceAll([
+      const LandingRoute(),
+    ]);
+  }
+
   void goToHomePage() {
     router.replaceAll([
       const HomeRoute(),
