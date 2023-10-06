@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:runpasseo/core/top_level_providers.dart';
-import 'package:runpasseo/presentation/routes/app_router.dart';
+import 'package:repasse_anou/core/top_level_providers.dart';
+import 'package:repasse_anou/presentation/routes/app_router.dart';
 
 class NavigationController {
   NavigationController({required this.router});

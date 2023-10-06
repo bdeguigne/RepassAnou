@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:runpasseo/application/messenger_controller.dart';
-import 'package:runpasseo/application/navigation_controller.dart';
+import 'package:repasse_anou/application/messenger_controller.dart';
+import 'package:repasse_anou/application/navigation_controller.dart';
 
 class LoginScreenViewModelState {
   LoginScreenViewModelState({

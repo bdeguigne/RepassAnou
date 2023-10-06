@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:runpasseo/presentation/home_screen.dart';
-import 'package:runpasseo/presentation/auth/login_screen.dart';
-import 'package:runpasseo/presentation/auth/signup_screen.dart';
+import 'package:repasse_anou/presentation/home_screen.dart';
+import 'package:repasse_anou/presentation/auth/login_screen.dart';
+import 'package:repasse_anou/presentation/auth/signup_screen.dart';
 
 part 'app_router.gr.dart';
 

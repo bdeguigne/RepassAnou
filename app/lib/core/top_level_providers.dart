@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:runpasseo/presentation/routes/app_router.dart';
+import 'package:repasse_anou/presentation/routes/app_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as s;
 
 final Provider<AppRouter> routerProvider = Provider(

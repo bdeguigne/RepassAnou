@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:runpasseo/core/top_level_providers.dart';
-import 'package:runpasseo/presentation/design_system/snackbars.dart';
+import 'package:repasse_anou/core/top_level_providers.dart';
+import 'package:repasse_anou/presentation/design_system/snackbars.dart';
 
 class MessengerController {
   MessengerController(this._scaffoldMessengerState) : super();

@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:runpasseo/application/navigation_controller.dart';
-import 'package:runpasseo/presentation/auth/login_screen_view_model.dart';
-import 'package:runpasseo/presentation/routes/app_router.dart';
+import 'package:repasse_anou/application/navigation_controller.dart';
+import 'package:repasse_anou/presentation/auth/login_screen_view_model.dart';
+import 'package:repasse_anou/presentation/routes/app_router.dart';
 
 @RoutePage()
 class HomeScreen extends ConsumerWidget {
