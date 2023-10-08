@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:repasse_anou/application/navigation_controller.dart';
+import 'package:repasse_anou/controllers/navigation_controller.dart';
 import 'package:repasse_anou/presentation/auth/login_screen_view_model.dart';
 import 'package:repasse_anou/presentation/routes/app_router.dart';
 
@@ -41,11 +41,10 @@ class LandingScreen extends ConsumerWidget {
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 16),
-            if (loginState.loggedIn)
-              Text(
-                'Logged in as ${loginState.userName}',
-                style: const TextStyle(fontSize: 16),
-              ),
+            // Text(
+            //   'Logged in as ${loginState.userName}',
+            //   style: const TextStyle(fontSize: 16),
+            // ),
             ElevatedButton(
               onPressed: () {
                 loginState.loggedIn

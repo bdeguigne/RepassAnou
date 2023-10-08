@@ -1,12 +1,14 @@
+import 'dart:async';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:repasse_anou/application/navigation_controller.dart';
+import 'package:repasse_anou/controllers/navigation_controller.dart';
 import 'package:repasse_anou/core/models/auth/auth.dart';
 import 'package:repasse_anou/core/top_level_providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:logger/logger.dart';
 
-class AuthNotifier extends StateNotifier<Auth> {
-  AuthNotifier(
+class AuthController extends StateNotifier<Auth> {
+  AuthController(
     this.navigationController,
     this.supabase,
     this.logger,
@@ -16,9 +18,11 @@ class AuthNotifier extends StateNotifier<Auth> {
   final Logger logger;
   final SupabaseClient supabase;
 
+  StreamSubscription<AuthState>? _authStateChanges;
+
   void listen() {
     handleSession(supabase.auth.currentSession);
-    supabase.auth.onAuthStateChange.listen((event) {
+    _authStateChanges = supabase.auth.onAuthStateChange.listen((event) {
       handleSession(event.session);
     });
   }
@@ -84,12 +88,18 @@ class AuthNotifier extends StateNotifier<Auth> {
         break;
     }
   }
+
+  @override
+  void dispose() {
+    _authStateChanges?.cancel();
+    super.dispose();
+  }
 }
 
-final StateNotifierProvider<AuthNotifier, Auth> authNotifierProvider =
-    StateNotifierProvider<AuthNotifier, Auth>(
-        (StateNotifierProviderRef<AuthNotifier, Auth> ref) {
-  return AuthNotifier(
+final StateNotifierProvider<AuthController, Auth> authControllerProvider =
+    StateNotifierProvider<AuthController, Auth>(
+        (StateNotifierProviderRef<AuthController, Auth> ref) {
+  return AuthController(
     ref.read(navigationControllerProvider),
     ref.read(supabaseClientProvider),
     ref.read(loggerProvider),

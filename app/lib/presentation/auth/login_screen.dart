@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:repasse_anou/core/input_validator.dart';
 import 'package:repasse_anou/presentation/auth/login_screen_view_model.dart';
 
 @RoutePage()
@@ -19,30 +20,39 @@ class LoginScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Login'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Username',
-                border: OutlineInputBorder(),
+      body: Form(
+        key: model.formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.emailAddress,
+                autocorrect: false,
+                onChanged: (value) => model.updateEmail(value),
+                validator: (value) => InputValidator.email(modelState.email),
               ),
-              onChanged: (value) => model.updateUserName(value),
-            ),
-            const SizedBox(height: 16),
-            if (modelState.userName != '')
-              Text(
-                'Username: ${modelState.userName}',
-                style: const TextStyle(fontSize: 16),
+              const SizedBox(height: 16),
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'Mot de passe'),
+                obscureText: true,
+                validator: (value) =>
+                    InputValidator.password(modelState.password),
+                onChanged: (value) => model.updatePassword(value),
               ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () => model.login(),
-              child: const Text('Login'),
-            ),
-          ],
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => model.login(),
+                child: const Text('Login'),
+              ),
+            ],
+          ),
         ),
       ),
     );
