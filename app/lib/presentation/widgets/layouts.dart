@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:repasse_anou/presentation/design_system/theme.dart';
+import 'package:repasse_anou/presentation/widgets/shimmer.dart';
+import 'package:repasse_anou/presentation/widgets/shimmer_loading.dart';
 
 class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   const AppAppBar({
@@ -134,6 +136,8 @@ class AppLayout extends StatelessWidget {
     this.leading,
     this.isLoading = false,
     this.customAppBar,
+    this.fabContent,
+    this.onFabPressed,
   });
 
   final String? title;
@@ -142,6 +146,8 @@ class AppLayout extends StatelessWidget {
   final VoidCallback? onNavigateBack;
   final Widget? leading;
   final bool isLoading;
+  final Widget? fabContent;
+  final VoidCallback? onFabPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -153,23 +159,32 @@ class AppLayout extends StatelessWidget {
                   title: title,
                 )
               : null),
+      floatingActionButton: onFabPressed != null && fabContent != null
+          ? FloatingActionButton(
+              onPressed: onFabPressed,
+              child: fabContent,
+            )
+          : null,
       body: SafeArea(
-        child: Stack(
-          children: [
-            IgnorePointer(
-              ignoring: isLoading,
-              child: child,
-            ),
-            if (isLoading) ...[
-              Container(
-                color: Colors.black.withOpacity(0.5), // Fond transparent noir
-                child: const Center(
-                  child:
-                      CircularProgressIndicator(), // Indicateur de progression
-                ),
+        child: Shimmer(
+          linearGradient: shimmerGradient,
+          child: Stack(
+            children: [
+              IgnorePointer(
+                ignoring: isLoading,
+                child: child,
               ),
+              if (isLoading) ...[
+                Container(
+                  color: Colors.black.withOpacity(0.5), // Fond transparent noir
+                  child: const Center(
+                    child:
+                        CircularProgressIndicator(), // Indicateur de progression
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
