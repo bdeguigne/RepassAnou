@@ -19,18 +19,21 @@ mixin _$AuthFailure {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String message) error,
+    required TResult Function() cannotCreateUserData,
     required TResult Function() unexpected,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String message)? error,
+    TResult? Function()? cannotCreateUserData,
     TResult? Function()? unexpected,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String message)? error,
+    TResult Function()? cannotCreateUserData,
     TResult Function()? unexpected,
     required TResult orElse(),
   }) =>
@@ -38,18 +41,21 @@ mixin _$AuthFailure {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ErrorMessage value) error,
+    required TResult Function(CannotCreateUserData value) cannotCreateUserData,
     required TResult Function(Unexpected value) unexpected,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(ErrorMessage value)? error,
+    TResult? Function(CannotCreateUserData value)? cannotCreateUserData,
     TResult? Function(Unexpected value)? unexpected,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ErrorMessage value)? error,
+    TResult Function(CannotCreateUserData value)? cannotCreateUserData,
     TResult Function(Unexpected value)? unexpected,
     required TResult orElse(),
   }) =>
@@ -139,6 +145,7 @@ class _$ErrorMessageImpl implements ErrorMessage {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String message) error,
+    required TResult Function() cannotCreateUserData,
     required TResult Function() unexpected,
   }) {
     return error(message);
@@ -148,6 +155,7 @@ class _$ErrorMessageImpl implements ErrorMessage {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String message)? error,
+    TResult? Function()? cannotCreateUserData,
     TResult? Function()? unexpected,
   }) {
     return error?.call(message);
@@ -157,6 +165,7 @@ class _$ErrorMessageImpl implements ErrorMessage {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String message)? error,
+    TResult Function()? cannotCreateUserData,
     TResult Function()? unexpected,
     required TResult orElse(),
   }) {
@@ -170,6 +179,7 @@ class _$ErrorMessageImpl implements ErrorMessage {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ErrorMessage value) error,
+    required TResult Function(CannotCreateUserData value) cannotCreateUserData,
     required TResult Function(Unexpected value) unexpected,
   }) {
     return error(this);
@@ -179,6 +189,7 @@ class _$ErrorMessageImpl implements ErrorMessage {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(ErrorMessage value)? error,
+    TResult? Function(CannotCreateUserData value)? cannotCreateUserData,
     TResult? Function(Unexpected value)? unexpected,
   }) {
     return error?.call(this);
@@ -188,6 +199,7 @@ class _$ErrorMessageImpl implements ErrorMessage {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ErrorMessage value)? error,
+    TResult Function(CannotCreateUserData value)? cannotCreateUserData,
     TResult Function(Unexpected value)? unexpected,
     required TResult orElse(),
   }) {
@@ -205,6 +217,115 @@ abstract class ErrorMessage implements AuthFailure {
   @JsonKey(ignore: true)
   _$$ErrorMessageImplCopyWith<_$ErrorMessageImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CannotCreateUserDataImplCopyWith<$Res> {
+  factory _$$CannotCreateUserDataImplCopyWith(_$CannotCreateUserDataImpl value,
+          $Res Function(_$CannotCreateUserDataImpl) then) =
+      __$$CannotCreateUserDataImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$CannotCreateUserDataImplCopyWithImpl<$Res>
+    extends _$AuthFailureCopyWithImpl<$Res, _$CannotCreateUserDataImpl>
+    implements _$$CannotCreateUserDataImplCopyWith<$Res> {
+  __$$CannotCreateUserDataImplCopyWithImpl(_$CannotCreateUserDataImpl _value,
+      $Res Function(_$CannotCreateUserDataImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$CannotCreateUserDataImpl implements CannotCreateUserData {
+  const _$CannotCreateUserDataImpl();
+
+  @override
+  String toString() {
+    return 'AuthFailure.cannotCreateUserData()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CannotCreateUserDataImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message) error,
+    required TResult Function() cannotCreateUserData,
+    required TResult Function() unexpected,
+  }) {
+    return cannotCreateUserData();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message)? error,
+    TResult? Function()? cannotCreateUserData,
+    TResult? Function()? unexpected,
+  }) {
+    return cannotCreateUserData?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message)? error,
+    TResult Function()? cannotCreateUserData,
+    TResult Function()? unexpected,
+    required TResult orElse(),
+  }) {
+    if (cannotCreateUserData != null) {
+      return cannotCreateUserData();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ErrorMessage value) error,
+    required TResult Function(CannotCreateUserData value) cannotCreateUserData,
+    required TResult Function(Unexpected value) unexpected,
+  }) {
+    return cannotCreateUserData(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ErrorMessage value)? error,
+    TResult? Function(CannotCreateUserData value)? cannotCreateUserData,
+    TResult? Function(Unexpected value)? unexpected,
+  }) {
+    return cannotCreateUserData?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ErrorMessage value)? error,
+    TResult Function(CannotCreateUserData value)? cannotCreateUserData,
+    TResult Function(Unexpected value)? unexpected,
+    required TResult orElse(),
+  }) {
+    if (cannotCreateUserData != null) {
+      return cannotCreateUserData(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CannotCreateUserData implements AuthFailure {
+  const factory CannotCreateUserData() = _$CannotCreateUserDataImpl;
 }
 
 /// @nodoc
@@ -246,6 +367,7 @@ class _$UnexpectedImpl implements Unexpected {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String message) error,
+    required TResult Function() cannotCreateUserData,
     required TResult Function() unexpected,
   }) {
     return unexpected();
@@ -255,6 +377,7 @@ class _$UnexpectedImpl implements Unexpected {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String message)? error,
+    TResult? Function()? cannotCreateUserData,
     TResult? Function()? unexpected,
   }) {
     return unexpected?.call();
@@ -264,6 +387,7 @@ class _$UnexpectedImpl implements Unexpected {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String message)? error,
+    TResult Function()? cannotCreateUserData,
     TResult Function()? unexpected,
     required TResult orElse(),
   }) {
@@ -277,6 +401,7 @@ class _$UnexpectedImpl implements Unexpected {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ErrorMessage value) error,
+    required TResult Function(CannotCreateUserData value) cannotCreateUserData,
     required TResult Function(Unexpected value) unexpected,
   }) {
     return unexpected(this);
@@ -286,6 +411,7 @@ class _$UnexpectedImpl implements Unexpected {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(ErrorMessage value)? error,
+    TResult? Function(CannotCreateUserData value)? cannotCreateUserData,
     TResult? Function(Unexpected value)? unexpected,
   }) {
     return unexpected?.call(this);
@@ -295,6 +421,7 @@ class _$UnexpectedImpl implements Unexpected {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ErrorMessage value)? error,
+    TResult Function(CannotCreateUserData value)? cannotCreateUserData,
     TResult Function(Unexpected value)? unexpected,
     required TResult orElse(),
   }) {

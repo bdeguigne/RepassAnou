@@ -1,5 +1,5 @@
-import 'package:repasse_anou/core/failures/value_failures.dart';
-import 'package:repasse_anou/core/value_objects.dart';
+import 'package:repasse_anou/shared/failures/value_failures.dart';
+import 'package:repasse_anou/shared/value_objects.dart';
 
 class InputValidator {
   static String? email(EmailAddress email) => email.value.fold(

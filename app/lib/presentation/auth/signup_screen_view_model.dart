@@ -6,8 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:repasse_anou/controllers/messenger_controller.dart';
 import 'package:repasse_anou/controllers/navigation_controller.dart';
-import 'package:repasse_anou/core/failures/auth_failure.dart';
-import 'package:repasse_anou/core/value_objects.dart';
+import 'package:repasse_anou/shared/failures/auth_failure.dart';
+import 'package:repasse_anou/shared/value_objects.dart';
 import 'package:repasse_anou/data/auth_service.dart';
 
 class SignupScreenViewModelState {
@@ -93,7 +93,7 @@ class SignupScreenViewModel extends StateNotifier<SignupScreenViewModelState> {
       updateIsLoading(true);
 
       final signUpRequest = await _authService.signUpWithEmailAndPassword(
-          state.email, state.password);
+          state.email, state.password, state.firstName, state.lastName);
 
       signUpRequest.fold(
         (failure) => _messengerController.showErrorSnackbar(failure.message),

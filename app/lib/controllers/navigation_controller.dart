@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:repasse_anou/core/top_level_providers.dart';
+import 'package:repasse_anou/shared/top_level_providers.dart';
 import 'package:repasse_anou/presentation/routes/app_router.dart';
 
 class NavigationController {

@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/controllers/messenger_controller.dart';
-import 'package:repasse_anou/core/failures/auth_failure.dart';
-import 'package:repasse_anou/core/models/user/user.dart';
+import 'package:repasse_anou/shared/failures/auth_failure.dart';
+import 'package:repasse_anou/shared/models/user/user.dart';
 import 'package:repasse_anou/data/auth_service.dart';
 
 class UserController extends StateNotifier<User?> {

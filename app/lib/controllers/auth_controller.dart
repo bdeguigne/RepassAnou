@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/controllers/navigation_controller.dart';
-import 'package:repasse_anou/core/models/auth/auth.dart';
-import 'package:repasse_anou/core/top_level_providers.dart';
+import 'package:repasse_anou/shared/models/auth/auth.dart';
+import 'package:repasse_anou/shared/top_level_providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:logger/logger.dart';
 
