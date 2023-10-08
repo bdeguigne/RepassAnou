@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:repasse_anou/presentation/widgets/layouts.dart';
 import 'package:repasse_anou/shared/input_validator.dart';
 import 'package:repasse_anou/presentation/auth/login_screen_view_model.dart';
 
@@ -16,11 +17,9 @@ class LoginScreen extends ConsumerWidget {
     final LoginScreenViewModelState modelState =
         ref.watch(loginScreenViewModelProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
-      body: Form(
+    return AppLayout(
+      title: 'Login',
+      child: Form(
         key: model.formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Padding(

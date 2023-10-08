@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/controllers/navigation_controller.dart';
 import 'package:repasse_anou/presentation/auth/login_screen_view_model.dart';
 import 'package:repasse_anou/presentation/routes/app_router.dart';
+import 'package:repasse_anou/presentation/widgets/layouts.dart';
 
 @RoutePage()
 class LandingScreen extends ConsumerWidget {
@@ -19,11 +20,9 @@ class LandingScreen extends ConsumerWidget {
     final LoginScreenViewModel loginModel =
         ref.read(loginScreenViewModelProvider.notifier);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Welcome to My App 🚀'),
-      ),
-      body: Padding(
+    return AppLayout(
+      title: 'Welcome to My App 🚀',
+      child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
