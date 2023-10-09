@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:repasse_anou/presentation/design_system/quantity_button.dart';
+import 'package:repasse_anou/presentation/design_system/shimmer_loading.dart';
 import 'package:repasse_anou/presentation/design_system/theme.dart';
-import 'package:repasse_anou/presentation/widgets/quantity_button.dart';
-import 'package:repasse_anou/presentation/widgets/shimmer_loading.dart';
 
 class ArticleCard extends StatefulWidget {
   const ArticleCard({

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/controllers/navigation_controller.dart';
 import 'package:repasse_anou/presentation/auth/login_screen_view_model.dart';
+import 'package:repasse_anou/presentation/design_system/layouts.dart';
 import 'package:repasse_anou/presentation/routes/app_router.dart';
-import 'package:repasse_anou/presentation/widgets/layouts.dart';
 
 @RoutePage()
 class LandingScreen extends ConsumerWidget {

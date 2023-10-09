@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:repasse_anou/presentation/design_system/ink_well.dart';
 import 'package:repasse_anou/presentation/design_system/theme.dart';
-import 'package:repasse_anou/presentation/widgets/ink_well.dart';
 
 class QuantityButton extends StatefulWidget {
   const QuantityButton({

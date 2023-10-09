@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:repasse_anou/presentation/widgets/layouts.dart';
+import 'package:repasse_anou/presentation/design_system/layouts.dart';
 
 @RoutePage()
 class SplashScreen extends StatelessWidget {

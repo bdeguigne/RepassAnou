@@ -2,9 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/controllers/command_item_controller.dart';
+import 'package:repasse_anou/presentation/design_system/article_card.dart';
+import 'package:repasse_anou/presentation/design_system/layouts.dart';
 import 'package:repasse_anou/presentation/home_screen_view_model.dart';
-import 'package:repasse_anou/presentation/widgets/article_card.dart';
-import 'package:repasse_anou/presentation/widgets/layouts.dart';
 import 'package:repasse_anou/shared/models/command_item/command_item.dart';
 
 @RoutePage()
@@ -22,8 +22,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      model.fetchCommandItems();
+      List<CommandItem> commandItems = ref.read(commandItemControllerProvider);
+
+      if (commandItems.isEmpty) {
+        model.fetchCommandItems();
+      } else {
+        model.updateIsLoading(false);
+      }
     });
   }
 

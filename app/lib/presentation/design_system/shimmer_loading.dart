@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:repasse_anou/presentation/widgets/shimmer.dart';
+import 'package:repasse_anou/presentation/design_system/shimmer.dart';
 
 const shimmerGradient = LinearGradient(
   colors: [

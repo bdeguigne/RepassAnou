@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 
 const Color success = Color(0xFF00C851);
@@ -6,6 +7,9 @@ const Color black = Color(0xFF000000);
 const Color grey = Color(0xFF666666);
 const Color greyInput = Color(0xFF9CA4AB);
 const Color greyButton = Color(0xFFEEEEEE);
+const Color navBarBackroundColor = Color(0xFEF6F6F6);
+const Color navBarSelectedItemColor = Color(0xFE1D232E);
+const Color navBarUnselectedItemColor = Color(0xFEDADADA);
 const Color blue = Color(0x00007fff);
 
 const bodyLarge = TextStyle(
@@ -51,12 +55,12 @@ final ThemeData appTheme = ThemeData(
   platform: TargetPlatform.iOS,
   useMaterial3: true,
   fontFamily: 'Poppins',
-  // pageTransitionsTheme: const PageTransitionsTheme(
-  //   builders: {
-  //     TargetPlatform.android: ZoomPageTransitionsBuilder(),
-  //     TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
-  //   },
-  // ),
+  pageTransitionsTheme: const PageTransitionsTheme(
+    builders: {
+      TargetPlatform.android: FadeThroughPageTransitionsBuilder(),
+      TargetPlatform.iOS: OpenUpwardsPageTransitionsBuilder(),
+    },
+  ),
   textTheme: const TextTheme(
     bodyLarge: bodyLarge,
     bodyMedium: bodyMedium,
@@ -71,6 +75,12 @@ final ThemeData appTheme = ThemeData(
     displayLarge: displayLarge,
     displayMedium: displayMedium,
   ),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: navBarBackroundColor,
+      selectedItemColor: navBarSelectedItemColor,
+      unselectedIconTheme: IconThemeData(
+        color: navBarUnselectedItemColor,
+      )),
 );
 
 extension FlumiTextExtension on Text {

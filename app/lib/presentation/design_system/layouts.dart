@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:repasse_anou/presentation/design_system/shimmer.dart';
+import 'package:repasse_anou/presentation/design_system/shimmer_loading.dart';
 
 import 'package:repasse_anou/presentation/design_system/theme.dart';
-import 'package:repasse_anou/presentation/widgets/shimmer.dart';
-import 'package:repasse_anou/presentation/widgets/shimmer_loading.dart';
 
 class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   const AppAppBar({
