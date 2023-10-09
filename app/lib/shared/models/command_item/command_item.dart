@@ -10,6 +10,7 @@ class CommandItem with _$CommandItem {
     required String title,
     required String description,
     required double price,
+    @JsonKey(name: 'image_url') required String imageUrl,
   }) = _CommandItem;
 
   factory CommandItem.fromJson(Map<String, dynamic> json) =>

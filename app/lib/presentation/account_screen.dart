@@ -1,14 +1,28 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:repasse_anou/controllers/user_controller.dart';
+import 'package:repasse_anou/presentation/design_system/theme.dart';
 
 @RoutePage()
-class AccountScreen extends StatelessWidget {
+class AccountScreen extends ConsumerWidget {
   const AccountScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Account'),
+  Widget build(BuildContext context, WidgetRef ref) {
+    UserController userController = ref.read(userControllerProvider.notifier);
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(
+          child: const Text('Account').headlineMedium,
+        ),
+        ElevatedButton(
+          onPressed: () => userController.signOut(),
+          child: const Text('Se déconnecter'),
+        ),
+      ],
     );
   }
 }

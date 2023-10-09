@@ -20,6 +20,7 @@ dependencies:
   logger: ^2.0.2+1
   dartz: ^0.10.1
   animations: ^2.0.8
+  cached_network_image: ^3.3.0
 
 dev_dependencies:
   flutter_test:

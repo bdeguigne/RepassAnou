@@ -57,8 +57,10 @@ final ThemeData appTheme = ThemeData(
   fontFamily: 'Poppins',
   pageTransitionsTheme: const PageTransitionsTheme(
     builders: {
-      TargetPlatform.android: FadeThroughPageTransitionsBuilder(),
-      TargetPlatform.iOS: OpenUpwardsPageTransitionsBuilder(),
+      TargetPlatform.android: SharedAxisPageTransitionsBuilder(
+          transitionType: SharedAxisTransitionType.horizontal),
+      TargetPlatform.iOS: SharedAxisPageTransitionsBuilder(
+          transitionType: SharedAxisTransitionType.horizontal),
     },
   ),
   textTheme: const TextTheme(

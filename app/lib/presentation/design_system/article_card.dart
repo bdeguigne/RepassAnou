@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:repasse_anou/presentation/design_system/quantity_button.dart';
 import 'package:repasse_anou/presentation/design_system/shimmer_loading.dart';
@@ -11,6 +12,7 @@ class ArticleCard extends StatefulWidget {
     this.isLoading = true,
     super.key,
     this.onQuantityChanged,
+    this.imageUrl = '',
   });
 
   final String? title;
@@ -18,6 +20,7 @@ class ArticleCard extends StatefulWidget {
   final String? price;
   final void Function(int quantity)? onQuantityChanged;
   final bool isLoading;
+  final String imageUrl;
 
   @override
   _ArticleCardState createState() => _ArticleCardState();
@@ -127,10 +130,22 @@ class _ArticleCardState extends State<ArticleCard>
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      'assets/images/article-placeholder.png',
-                      fit: BoxFit.cover,
-                    ),
+                    child: widget.imageUrl != ''
+                        ? CachedNetworkImage(
+                            imageUrl: widget.imageUrl,
+                            fit: BoxFit.cover,
+                            errorWidget: (context, url, error) => Image.asset(
+                                'assets/images/article-placeholder.png'),
+                            placeholder: (context, url) => ShimmerLoading(
+                              isLoading: true,
+                              child: Container(
+                                width: 80,
+                                height: 80,
+                                color: Colors.black,
+                              ),
+                            ),
+                          )
+                        : null,
                   ),
                 ),
                 const SizedBox(width: 12),

@@ -24,6 +24,8 @@ mixin _$CommandItem {
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
+  @JsonKey(name: 'image_url')
+  String get imageUrl => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,7 +39,12 @@ abstract class $CommandItemCopyWith<$Res> {
           CommandItem value, $Res Function(CommandItem) then) =
       _$CommandItemCopyWithImpl<$Res, CommandItem>;
   @useResult
-  $Res call({int id, String title, String description, double price});
+  $Res call(
+      {int id,
+      String title,
+      String description,
+      double price,
+      @JsonKey(name: 'image_url') String imageUrl});
 }
 
 /// @nodoc
@@ -57,6 +64,7 @@ class _$CommandItemCopyWithImpl<$Res, $Val extends CommandItem>
     Object? title = null,
     Object? description = null,
     Object? price = null,
+    Object? imageUrl = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -75,6 +83,10 @@ class _$CommandItemCopyWithImpl<$Res, $Val extends CommandItem>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as double,
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -87,7 +99,12 @@ abstract class _$$CommandItemImplCopyWith<$Res>
       __$$CommandItemImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String title, String description, double price});
+  $Res call(
+      {int id,
+      String title,
+      String description,
+      double price,
+      @JsonKey(name: 'image_url') String imageUrl});
 }
 
 /// @nodoc
@@ -105,6 +122,7 @@ class __$$CommandItemImplCopyWithImpl<$Res>
     Object? title = null,
     Object? description = null,
     Object? price = null,
+    Object? imageUrl = null,
   }) {
     return _then(_$CommandItemImpl(
       id: null == id
@@ -123,6 +141,10 @@ class __$$CommandItemImplCopyWithImpl<$Res>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as double,
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -134,7 +156,8 @@ class _$CommandItemImpl implements _CommandItem {
       {required this.id,
       required this.title,
       required this.description,
-      required this.price});
+      required this.price,
+      @JsonKey(name: 'image_url') required this.imageUrl});
 
   factory _$CommandItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$CommandItemImplFromJson(json);
@@ -147,10 +170,13 @@ class _$CommandItemImpl implements _CommandItem {
   final String description;
   @override
   final double price;
+  @override
+  @JsonKey(name: 'image_url')
+  final String imageUrl;
 
   @override
   String toString() {
-    return 'CommandItem(id: $id, title: $title, description: $description, price: $price)';
+    return 'CommandItem(id: $id, title: $title, description: $description, price: $price, imageUrl: $imageUrl)';
   }
 
   @override
@@ -162,12 +188,15 @@ class _$CommandItemImpl implements _CommandItem {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.price, price) || other.price == price));
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, description, price);
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, description, price, imageUrl);
 
   @JsonKey(ignore: true)
   @override
@@ -185,10 +214,12 @@ class _$CommandItemImpl implements _CommandItem {
 
 abstract class _CommandItem implements CommandItem {
   const factory _CommandItem(
-      {required final int id,
-      required final String title,
-      required final String description,
-      required final double price}) = _$CommandItemImpl;
+          {required final int id,
+          required final String title,
+          required final String description,
+          required final double price,
+          @JsonKey(name: 'image_url') required final String imageUrl}) =
+      _$CommandItemImpl;
 
   factory _CommandItem.fromJson(Map<String, dynamic> json) =
       _$CommandItemImpl.fromJson;
@@ -201,6 +232,9 @@ abstract class _CommandItem implements CommandItem {
   String get description;
   @override
   double get price;
+  @override
+  @JsonKey(name: 'image_url')
+  String get imageUrl;
   @override
   @JsonKey(ignore: true)
   _$$CommandItemImplCopyWith<_$CommandItemImpl> get copyWith =>

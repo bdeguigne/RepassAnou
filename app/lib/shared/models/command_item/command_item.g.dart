@@ -12,6 +12,7 @@ _$CommandItemImpl _$$CommandItemImplFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       description: json['description'] as String,
       price: (json['price'] as num).toDouble(),
+      imageUrl: json['image_url'] as String,
     );
 
 Map<String, dynamic> _$$CommandItemImplToJson(_$CommandItemImpl instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$$CommandItemImplToJson(_$CommandItemImpl instance) =>
       'title': instance.title,
       'description': instance.description,
       'price': instance.price,
+      'image_url': instance.imageUrl,
     };

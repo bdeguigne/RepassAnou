@@ -64,6 +64,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         description: commandItem.description,
                         price: commandItem.price.toString(),
                         isLoading: modelState.isLoading,
+                        imageUrl: commandItem.imageUrl,
                       ),
                     );
                   }).toList()),
