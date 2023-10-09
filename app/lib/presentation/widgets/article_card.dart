@@ -5,17 +5,17 @@ import 'package:repasse_anou/presentation/widgets/shimmer_loading.dart';
 
 class ArticleCard extends StatefulWidget {
   const ArticleCard({
-    required this.title,
-    required this.description,
-    required this.price,
+    this.title,
+    this.description,
+    this.price,
     this.isLoading = true,
     super.key,
     this.onQuantityChanged,
   });
 
-  final String title;
-  final String description;
-  final String price;
+  final String? title;
+  final String? description;
+  final String? price;
   final void Function(int quantity)? onQuantityChanged;
   final bool isLoading;
 
@@ -138,8 +138,8 @@ class _ArticleCardState extends State<ArticleCard>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(widget.title).headlineSmall,
-                      Text(widget.description).labelMedium,
+                      Text(widget.title ?? '').headlineSmall,
+                      Text(widget.description ?? '').labelMedium,
                       const Spacer(),
                       Text('${widget.price}€').headlineMedium,
                     ],

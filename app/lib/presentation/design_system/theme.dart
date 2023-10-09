@@ -51,6 +51,12 @@ final ThemeData appTheme = ThemeData(
   platform: TargetPlatform.iOS,
   useMaterial3: true,
   fontFamily: 'Poppins',
+  // pageTransitionsTheme: const PageTransitionsTheme(
+  //   builders: {
+  //     TargetPlatform.android: ZoomPageTransitionsBuilder(),
+  //     TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
+  //   },
+  // ),
   textTheme: const TextTheme(
     bodyLarge: bodyLarge,
     bodyMedium: bodyMedium,
