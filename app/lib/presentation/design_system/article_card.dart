@@ -17,7 +17,7 @@ class ArticleCard extends StatefulWidget {
 
   final String? title;
   final String? description;
-  final String? price;
+  final double? price;
   final void Function(int quantity)? onQuantityChanged;
   final bool isLoading;
   final String imageUrl;
@@ -156,7 +156,9 @@ class _ArticleCardState extends State<ArticleCard>
                       Text(widget.title ?? '').headlineSmall,
                       Text(widget.description ?? '').labelMedium,
                       const Spacer(),
-                      Text('${widget.price}€').headlineMedium,
+                      if (widget.price != null)
+                        Text('${widget.price?.toStringAsFixed(2)}€')
+                            .headlineMedium,
                     ],
                   ),
                 ),

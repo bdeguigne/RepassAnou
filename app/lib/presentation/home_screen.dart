@@ -60,10 +60,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: ArticleCard(
+                        isLoading: modelState.isLoading,
                         title: commandItem.title,
                         description: commandItem.description,
-                        price: commandItem.price.toString(),
-                        isLoading: modelState.isLoading,
+                        price: commandItem.price,
                         imageUrl: commandItem.imageUrl,
                       ),
                     );

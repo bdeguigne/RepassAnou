@@ -11,10 +11,11 @@ const Color navBarBackroundColor = Color(0xFEF6F6F6);
 const Color navBarSelectedItemColor = Color(0xFE1D232E);
 const Color navBarUnselectedItemColor = Color(0xFEDADADA);
 const Color blue = Color(0x00007fff);
+const Color hintText = Color(0xff6E7591);
 
 const bodyLarge = TextStyle(
-  fontSize: 12,
-  fontWeight: FontWeight.w700,
+  fontSize: 14,
+  fontWeight: FontWeight.w600,
   color: black,
   fontFamily: 'Nunito',
 );
@@ -43,8 +44,8 @@ const labelMedium = TextStyle(
   fontFamily: 'Nunito',
 );
 const labelLarge = TextStyle(fontSize: 13.0, fontWeight: FontWeight.w400);
-const headlineLarge = TextStyle(fontSize: 16, fontWeight: FontWeight.w600);
-const headlineMedium = TextStyle(fontSize: 14, fontWeight: FontWeight.w700);
+const headlineLarge = TextStyle(fontSize: 16, fontWeight: FontWeight.w700);
+const headlineMedium = TextStyle(fontSize: 14, fontWeight: FontWeight.w600);
 const headlineSmall = TextStyle(fontSize: 14, fontWeight: FontWeight.w600);
 const displaySmall = TextStyle(fontSize: 11, fontWeight: FontWeight.w300);
 const displayLarge = TextStyle(fontSize: 14, fontWeight: FontWeight.w600);
@@ -77,12 +78,20 @@ final ThemeData appTheme = ThemeData(
     displayLarge: displayLarge,
     displayMedium: displayMedium,
   ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Colors.black,
+      foregroundColor: Colors.white,
+      textStyle: headlineLarge,
+    ),
+  ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: navBarBackroundColor,
-      selectedItemColor: navBarSelectedItemColor,
-      unselectedIconTheme: IconThemeData(
-        color: navBarUnselectedItemColor,
-      )),
+    backgroundColor: navBarBackroundColor,
+    selectedItemColor: navBarSelectedItemColor,
+    unselectedIconTheme: IconThemeData(
+      color: navBarUnselectedItemColor,
+    ),
+  ),
 );
 
 extension FlumiTextExtension on Text {
@@ -164,6 +173,15 @@ extension FlumiTextExtension on Text {
       textScaleFactor: 1,
       textAlign: textAlign,
       style: appTheme.textTheme.headlineLarge,
+    );
+  }
+
+  Text get headlineLargeWhite {
+    return Text(
+      data!,
+      textScaleFactor: 1,
+      textAlign: textAlign,
+      style: appTheme.textTheme.headlineLarge?.copyWith(color: Colors.white),
     );
   }
 
