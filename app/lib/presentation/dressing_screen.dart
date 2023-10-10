@@ -1,28 +1,46 @@
-import 'package:animations/animations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:repasse_anou/controllers/user_controller.dart';
 import 'package:repasse_anou/presentation/add_dressing_modal.dart';
 import 'package:repasse_anou/presentation/design_system/app_bottom_sheet.dart';
 import 'package:repasse_anou/presentation/design_system/ink_well.dart';
 import 'package:repasse_anou/presentation/design_system/theme.dart';
+import 'package:repasse_anou/presentation/dressing_screen_view_model.dart';
 
 @RoutePage()
-class DressingScreen extends StatefulWidget {
+class DressingScreen extends ConsumerStatefulWidget {
   const DressingScreen({super.key});
 
   @override
-  State<DressingScreen> createState() => _DressingScreenState();
+  ConsumerState<DressingScreen> createState() => _DressingScreenState();
 }
 
-class _DressingScreenState extends State<DressingScreen> {
+class _DressingScreenState extends ConsumerState<DressingScreen> {
+  late DressingScreenViewModel model =
+      ref.read(dressingScreenViewModelProvider.notifier);
+
   @override
   void initState() {
     super.initState();
+    final hasReadDressingMessage =
+        ref.read(userControllerProvider)?.hasReadDressingMessage;
+    if (hasReadDressingMessage == false) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showModalBottomSheet<void>(
+          context: context,
+          builder: (context) => buildDressingMessageBottomSheet(),
+        );
+      });
+    }
+  }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      showModalBottomSheet<void>(
-        context: context,
-        builder: (context) => AppBottomSheet(
+  Widget buildDressingMessageBottomSheet() {
+    return Consumer(
+      builder: (context, ref, child) {
+        bool notShowMessage =
+            ref.watch(dressingScreenViewModelProvider).notShowMessage;
+        return AppBottomSheet(
           title: 'Votre dressing',
           body: Column(
             children: [
@@ -38,8 +56,12 @@ class _DressingScreenState extends State<DressingScreen> {
                 child: Row(
                   children: [
                     Checkbox(
-                      value: false,
-                      onChanged: (value) {},
+                      value: notShowMessage,
+                      onChanged: (value) {
+                        if (value != null) {
+                          model.updateNotShowMessage(value);
+                        }
+                      },
                     ),
                     const Text(
                       'Ne plus afficher ce message',
@@ -55,7 +77,10 @@ class _DressingScreenState extends State<DressingScreen> {
                   height: 56,
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () {
+                      model.hasReadDressingMessage();
+                      Navigator.of(context).pop();
+                    },
                     child: const Text(
                       "J'ai compris",
                     ).headlineLargeWhite,
@@ -64,9 +89,9 @@ class _DressingScreenState extends State<DressingScreen> {
               ),
             ],
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 
   List<Widget> buildEmptyDressing() {
@@ -146,12 +171,6 @@ class _DressingScreenState extends State<DressingScreen> {
                       return const AddDressingModal();
                     },
                   );
-                  // showModal<void>(
-                  //   context: context,
-                  //   builder: (context) {
-                  //     return const AddDressingModal();
-                  //   },
-                  // );
                 },
               ),
             ],

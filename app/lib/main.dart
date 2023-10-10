@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:repasse_anou/controllers/auth_controller.dart';
+import 'package:repasse_anou/controllers/auth_notifier_controller.dart';
 import 'package:repasse_anou/shared/top_level_providers.dart';
 import 'package:repasse_anou/presentation/design_system/snackbars.dart';
 import 'package:repasse_anou/presentation/design_system/theme.dart';
@@ -15,7 +15,9 @@ void main() async {
     anonKey: dotenv.get('SUPABASE_KEY'),
   );
   final ProviderContainer container = ProviderContainer();
-  container.read<AuthController>(authControllerProvider.notifier).listen();
+  container
+      .read<AuthNotifierController>(authNotifierControllerProvider.notifier)
+      .listen(container);
   runApp(
     UncontrolledProviderScope(
       container: container,

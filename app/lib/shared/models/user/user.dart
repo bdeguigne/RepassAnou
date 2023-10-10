@@ -8,9 +8,12 @@ part 'user.g.dart';
 class User with _$User {
   const factory User({
     required String id,
-    EmailAddress? email,
+    @EmailAddressConverter() EmailAddress? email,
     String? firstName,
     String? lastName,
+    @JsonKey(name: 'has_read_dressing_message')
+    @Default(false)
+    bool hasReadDressingMessage,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

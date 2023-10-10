@@ -20,6 +20,8 @@ mixin _$AuthFailure {
   TResult when<TResult extends Object?>({
     required TResult Function(String message) error,
     required TResult Function() cannotCreateUserData,
+    required TResult Function() notConnected,
+    required TResult Function() notFound,
     required TResult Function() unexpected,
   }) =>
       throw _privateConstructorUsedError;
@@ -27,6 +29,8 @@ mixin _$AuthFailure {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String message)? error,
     TResult? Function()? cannotCreateUserData,
+    TResult? Function()? notConnected,
+    TResult? Function()? notFound,
     TResult? Function()? unexpected,
   }) =>
       throw _privateConstructorUsedError;
@@ -34,6 +38,8 @@ mixin _$AuthFailure {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String message)? error,
     TResult Function()? cannotCreateUserData,
+    TResult Function()? notConnected,
+    TResult Function()? notFound,
     TResult Function()? unexpected,
     required TResult orElse(),
   }) =>
@@ -42,6 +48,8 @@ mixin _$AuthFailure {
   TResult map<TResult extends Object?>({
     required TResult Function(ErrorMessage value) error,
     required TResult Function(CannotCreateUserData value) cannotCreateUserData,
+    required TResult Function(NotConnected value) notConnected,
+    required TResult Function(NotFound value) notFound,
     required TResult Function(Unexpected value) unexpected,
   }) =>
       throw _privateConstructorUsedError;
@@ -49,6 +57,8 @@ mixin _$AuthFailure {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(ErrorMessage value)? error,
     TResult? Function(CannotCreateUserData value)? cannotCreateUserData,
+    TResult? Function(NotConnected value)? notConnected,
+    TResult? Function(NotFound value)? notFound,
     TResult? Function(Unexpected value)? unexpected,
   }) =>
       throw _privateConstructorUsedError;
@@ -56,6 +66,8 @@ mixin _$AuthFailure {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ErrorMessage value)? error,
     TResult Function(CannotCreateUserData value)? cannotCreateUserData,
+    TResult Function(NotConnected value)? notConnected,
+    TResult Function(NotFound value)? notFound,
     TResult Function(Unexpected value)? unexpected,
     required TResult orElse(),
   }) =>
@@ -146,6 +158,8 @@ class _$ErrorMessageImpl implements ErrorMessage {
   TResult when<TResult extends Object?>({
     required TResult Function(String message) error,
     required TResult Function() cannotCreateUserData,
+    required TResult Function() notConnected,
+    required TResult Function() notFound,
     required TResult Function() unexpected,
   }) {
     return error(message);
@@ -156,6 +170,8 @@ class _$ErrorMessageImpl implements ErrorMessage {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String message)? error,
     TResult? Function()? cannotCreateUserData,
+    TResult? Function()? notConnected,
+    TResult? Function()? notFound,
     TResult? Function()? unexpected,
   }) {
     return error?.call(message);
@@ -166,6 +182,8 @@ class _$ErrorMessageImpl implements ErrorMessage {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String message)? error,
     TResult Function()? cannotCreateUserData,
+    TResult Function()? notConnected,
+    TResult Function()? notFound,
     TResult Function()? unexpected,
     required TResult orElse(),
   }) {
@@ -180,6 +198,8 @@ class _$ErrorMessageImpl implements ErrorMessage {
   TResult map<TResult extends Object?>({
     required TResult Function(ErrorMessage value) error,
     required TResult Function(CannotCreateUserData value) cannotCreateUserData,
+    required TResult Function(NotConnected value) notConnected,
+    required TResult Function(NotFound value) notFound,
     required TResult Function(Unexpected value) unexpected,
   }) {
     return error(this);
@@ -190,6 +210,8 @@ class _$ErrorMessageImpl implements ErrorMessage {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(ErrorMessage value)? error,
     TResult? Function(CannotCreateUserData value)? cannotCreateUserData,
+    TResult? Function(NotConnected value)? notConnected,
+    TResult? Function(NotFound value)? notFound,
     TResult? Function(Unexpected value)? unexpected,
   }) {
     return error?.call(this);
@@ -200,6 +222,8 @@ class _$ErrorMessageImpl implements ErrorMessage {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ErrorMessage value)? error,
     TResult Function(CannotCreateUserData value)? cannotCreateUserData,
+    TResult Function(NotConnected value)? notConnected,
+    TResult Function(NotFound value)? notFound,
     TResult Function(Unexpected value)? unexpected,
     required TResult orElse(),
   }) {
@@ -260,6 +284,8 @@ class _$CannotCreateUserDataImpl implements CannotCreateUserData {
   TResult when<TResult extends Object?>({
     required TResult Function(String message) error,
     required TResult Function() cannotCreateUserData,
+    required TResult Function() notConnected,
+    required TResult Function() notFound,
     required TResult Function() unexpected,
   }) {
     return cannotCreateUserData();
@@ -270,6 +296,8 @@ class _$CannotCreateUserDataImpl implements CannotCreateUserData {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String message)? error,
     TResult? Function()? cannotCreateUserData,
+    TResult? Function()? notConnected,
+    TResult? Function()? notFound,
     TResult? Function()? unexpected,
   }) {
     return cannotCreateUserData?.call();
@@ -280,6 +308,8 @@ class _$CannotCreateUserDataImpl implements CannotCreateUserData {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String message)? error,
     TResult Function()? cannotCreateUserData,
+    TResult Function()? notConnected,
+    TResult Function()? notFound,
     TResult Function()? unexpected,
     required TResult orElse(),
   }) {
@@ -294,6 +324,8 @@ class _$CannotCreateUserDataImpl implements CannotCreateUserData {
   TResult map<TResult extends Object?>({
     required TResult Function(ErrorMessage value) error,
     required TResult Function(CannotCreateUserData value) cannotCreateUserData,
+    required TResult Function(NotConnected value) notConnected,
+    required TResult Function(NotFound value) notFound,
     required TResult Function(Unexpected value) unexpected,
   }) {
     return cannotCreateUserData(this);
@@ -304,6 +336,8 @@ class _$CannotCreateUserDataImpl implements CannotCreateUserData {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(ErrorMessage value)? error,
     TResult? Function(CannotCreateUserData value)? cannotCreateUserData,
+    TResult? Function(NotConnected value)? notConnected,
+    TResult? Function(NotFound value)? notFound,
     TResult? Function(Unexpected value)? unexpected,
   }) {
     return cannotCreateUserData?.call(this);
@@ -314,6 +348,8 @@ class _$CannotCreateUserDataImpl implements CannotCreateUserData {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ErrorMessage value)? error,
     TResult Function(CannotCreateUserData value)? cannotCreateUserData,
+    TResult Function(NotConnected value)? notConnected,
+    TResult Function(NotFound value)? notFound,
     TResult Function(Unexpected value)? unexpected,
     required TResult orElse(),
   }) {
@@ -326,6 +362,246 @@ class _$CannotCreateUserDataImpl implements CannotCreateUserData {
 
 abstract class CannotCreateUserData implements AuthFailure {
   const factory CannotCreateUserData() = _$CannotCreateUserDataImpl;
+}
+
+/// @nodoc
+abstract class _$$NotConnectedImplCopyWith<$Res> {
+  factory _$$NotConnectedImplCopyWith(
+          _$NotConnectedImpl value, $Res Function(_$NotConnectedImpl) then) =
+      __$$NotConnectedImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$NotConnectedImplCopyWithImpl<$Res>
+    extends _$AuthFailureCopyWithImpl<$Res, _$NotConnectedImpl>
+    implements _$$NotConnectedImplCopyWith<$Res> {
+  __$$NotConnectedImplCopyWithImpl(
+      _$NotConnectedImpl _value, $Res Function(_$NotConnectedImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$NotConnectedImpl implements NotConnected {
+  const _$NotConnectedImpl();
+
+  @override
+  String toString() {
+    return 'AuthFailure.notConnected()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$NotConnectedImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message) error,
+    required TResult Function() cannotCreateUserData,
+    required TResult Function() notConnected,
+    required TResult Function() notFound,
+    required TResult Function() unexpected,
+  }) {
+    return notConnected();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message)? error,
+    TResult? Function()? cannotCreateUserData,
+    TResult? Function()? notConnected,
+    TResult? Function()? notFound,
+    TResult? Function()? unexpected,
+  }) {
+    return notConnected?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message)? error,
+    TResult Function()? cannotCreateUserData,
+    TResult Function()? notConnected,
+    TResult Function()? notFound,
+    TResult Function()? unexpected,
+    required TResult orElse(),
+  }) {
+    if (notConnected != null) {
+      return notConnected();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ErrorMessage value) error,
+    required TResult Function(CannotCreateUserData value) cannotCreateUserData,
+    required TResult Function(NotConnected value) notConnected,
+    required TResult Function(NotFound value) notFound,
+    required TResult Function(Unexpected value) unexpected,
+  }) {
+    return notConnected(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ErrorMessage value)? error,
+    TResult? Function(CannotCreateUserData value)? cannotCreateUserData,
+    TResult? Function(NotConnected value)? notConnected,
+    TResult? Function(NotFound value)? notFound,
+    TResult? Function(Unexpected value)? unexpected,
+  }) {
+    return notConnected?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ErrorMessage value)? error,
+    TResult Function(CannotCreateUserData value)? cannotCreateUserData,
+    TResult Function(NotConnected value)? notConnected,
+    TResult Function(NotFound value)? notFound,
+    TResult Function(Unexpected value)? unexpected,
+    required TResult orElse(),
+  }) {
+    if (notConnected != null) {
+      return notConnected(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class NotConnected implements AuthFailure {
+  const factory NotConnected() = _$NotConnectedImpl;
+}
+
+/// @nodoc
+abstract class _$$NotFoundImplCopyWith<$Res> {
+  factory _$$NotFoundImplCopyWith(
+          _$NotFoundImpl value, $Res Function(_$NotFoundImpl) then) =
+      __$$NotFoundImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$NotFoundImplCopyWithImpl<$Res>
+    extends _$AuthFailureCopyWithImpl<$Res, _$NotFoundImpl>
+    implements _$$NotFoundImplCopyWith<$Res> {
+  __$$NotFoundImplCopyWithImpl(
+      _$NotFoundImpl _value, $Res Function(_$NotFoundImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$NotFoundImpl implements NotFound {
+  const _$NotFoundImpl();
+
+  @override
+  String toString() {
+    return 'AuthFailure.notFound()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$NotFoundImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message) error,
+    required TResult Function() cannotCreateUserData,
+    required TResult Function() notConnected,
+    required TResult Function() notFound,
+    required TResult Function() unexpected,
+  }) {
+    return notFound();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message)? error,
+    TResult? Function()? cannotCreateUserData,
+    TResult? Function()? notConnected,
+    TResult? Function()? notFound,
+    TResult? Function()? unexpected,
+  }) {
+    return notFound?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message)? error,
+    TResult Function()? cannotCreateUserData,
+    TResult Function()? notConnected,
+    TResult Function()? notFound,
+    TResult Function()? unexpected,
+    required TResult orElse(),
+  }) {
+    if (notFound != null) {
+      return notFound();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ErrorMessage value) error,
+    required TResult Function(CannotCreateUserData value) cannotCreateUserData,
+    required TResult Function(NotConnected value) notConnected,
+    required TResult Function(NotFound value) notFound,
+    required TResult Function(Unexpected value) unexpected,
+  }) {
+    return notFound(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ErrorMessage value)? error,
+    TResult? Function(CannotCreateUserData value)? cannotCreateUserData,
+    TResult? Function(NotConnected value)? notConnected,
+    TResult? Function(NotFound value)? notFound,
+    TResult? Function(Unexpected value)? unexpected,
+  }) {
+    return notFound?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ErrorMessage value)? error,
+    TResult Function(CannotCreateUserData value)? cannotCreateUserData,
+    TResult Function(NotConnected value)? notConnected,
+    TResult Function(NotFound value)? notFound,
+    TResult Function(Unexpected value)? unexpected,
+    required TResult orElse(),
+  }) {
+    if (notFound != null) {
+      return notFound(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class NotFound implements AuthFailure {
+  const factory NotFound() = _$NotFoundImpl;
 }
 
 /// @nodoc
@@ -368,6 +644,8 @@ class _$UnexpectedImpl implements Unexpected {
   TResult when<TResult extends Object?>({
     required TResult Function(String message) error,
     required TResult Function() cannotCreateUserData,
+    required TResult Function() notConnected,
+    required TResult Function() notFound,
     required TResult Function() unexpected,
   }) {
     return unexpected();
@@ -378,6 +656,8 @@ class _$UnexpectedImpl implements Unexpected {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String message)? error,
     TResult? Function()? cannotCreateUserData,
+    TResult? Function()? notConnected,
+    TResult? Function()? notFound,
     TResult? Function()? unexpected,
   }) {
     return unexpected?.call();
@@ -388,6 +668,8 @@ class _$UnexpectedImpl implements Unexpected {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String message)? error,
     TResult Function()? cannotCreateUserData,
+    TResult Function()? notConnected,
+    TResult Function()? notFound,
     TResult Function()? unexpected,
     required TResult orElse(),
   }) {
@@ -402,6 +684,8 @@ class _$UnexpectedImpl implements Unexpected {
   TResult map<TResult extends Object?>({
     required TResult Function(ErrorMessage value) error,
     required TResult Function(CannotCreateUserData value) cannotCreateUserData,
+    required TResult Function(NotConnected value) notConnected,
+    required TResult Function(NotFound value) notFound,
     required TResult Function(Unexpected value) unexpected,
   }) {
     return unexpected(this);
@@ -412,6 +696,8 @@ class _$UnexpectedImpl implements Unexpected {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(ErrorMessage value)? error,
     TResult? Function(CannotCreateUserData value)? cannotCreateUserData,
+    TResult? Function(NotConnected value)? notConnected,
+    TResult? Function(NotFound value)? notFound,
     TResult? Function(Unexpected value)? unexpected,
   }) {
     return unexpected?.call(this);
@@ -422,6 +708,8 @@ class _$UnexpectedImpl implements Unexpected {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ErrorMessage value)? error,
     TResult Function(CannotCreateUserData value)? cannotCreateUserData,
+    TResult Function(NotConnected value)? notConnected,
+    TResult Function(NotFound value)? notFound,
     TResult Function(Unexpected value)? unexpected,
     required TResult orElse(),
   }) {

@@ -12,6 +12,7 @@ const Color navBarSelectedItemColor = Color(0xFE1D232E);
 const Color navBarUnselectedItemColor = Color(0xFEDADADA);
 const Color blue = Color(0x00007fff);
 const Color hintText = Color(0xff6E7591);
+const Color checkBoxBackgroundColor = Color(0xffD9D9D9);
 
 const bodyLarge = TextStyle(
   fontSize: 14,
@@ -21,7 +22,7 @@ const bodyLarge = TextStyle(
 );
 const bodyMedium = TextStyle(
   fontSize: 12,
-  fontWeight: FontWeight.w500,
+  fontWeight: FontWeight.w400,
   color: black,
   fontFamily: 'Nunito',
 );
@@ -77,6 +78,13 @@ final ThemeData appTheme = ThemeData(
     displaySmall: displaySmall,
     displayLarge: displayLarge,
     displayMedium: displayMedium,
+  ),
+  checkboxTheme: CheckboxThemeData(
+    fillColor: MaterialStateProperty.all(checkBoxBackgroundColor),
+    checkColor: MaterialStateProperty.all(Colors.black),
+    side: const BorderSide(
+      color: checkBoxBackgroundColor,
+    ),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(

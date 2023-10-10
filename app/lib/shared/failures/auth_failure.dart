@@ -6,6 +6,8 @@ part 'auth_failure.freezed.dart';
 class AuthFailure with _$AuthFailure {
   const factory AuthFailure.error(String message) = ErrorMessage;
   const factory AuthFailure.cannotCreateUserData() = CannotCreateUserData;
+  const factory AuthFailure.notConnected() = NotConnected;
+  const factory AuthFailure.notFound() = NotFound;
   const factory AuthFailure.unexpected() = Unexpected;
 }
 
@@ -15,6 +17,8 @@ extension AuthFailureExtension on AuthFailure {
       error: (message) => message,
       cannotCreateUserData: () => "Impossible d'ajouter l'utilisateur",
       unexpected: () => 'Une erreur inattendue est survenue',
+      notConnected: () => 'Vous n\'êtes pas connecté',
+      notFound: () => 'Utilisateur non trouvé',
     );
   }
 }

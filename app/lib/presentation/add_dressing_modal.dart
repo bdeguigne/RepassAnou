@@ -11,83 +11,91 @@ class AddDressingModal extends StatelessWidget {
     return Stack(
       children: [
         Dialog(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
+          // shape: const RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.all(
+          //     Radius.circular(10),
+          //   ),
+          // ),
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
             ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(
-                  height: 65,
-                ),
-                const LabelContent(
-                  title: 'Intitulé',
-                  child: AppTextField(
-                    hint: 'C’est quoi son p’tit nom ? (ex. T-shirt noir)',
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(
+                    height: 65,
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const LabelContent(
-                  title: 'Catégorie',
-                  child: AppTextField(
-                    hint: 'T-shirt, jupe, short...',
+                  const LabelContent(
+                    title: 'Intitulé',
+                    child: AppTextField(
+                      hint: 'C’est quoi son p’tit nom ? (ex. T-shirt noir)',
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const LabelContent(
-                  title: 'Matière',
-                  child: AppTextField(
-                    hint: 'Coton, soie, laine...',
+                  const SizedBox(
+                    height: 10,
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const LabelContent(
-                  title: 'Couleur',
-                  child: AppTextField(
-                    hint: 'Noir, blanc ou couleur',
+                  const LabelContent(
+                    title: 'Catégorie',
+                    child: AppTextField(
+                      hint: 'T-shirt, jupe, short...',
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const LabelContent(
-                  title: 'Appartient à',
-                  child: AppTextField(
-                    hint: 'Chacun son dressing, pas de jaloux ! ',
+                  const SizedBox(
+                    height: 10,
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const LabelContent(
-                  title: 'Notes',
-                  child: AppTextField(
-                    hint:
-                        'Une remarque spécifique à ajouter ? Du style : ⚠️ Déteint un max ! ⚠️',
+                  const LabelContent(
+                    title: 'Matière',
+                    child: AppTextField(
+                      hint: 'Coton, soie, laine...',
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Terminer').headlineLargeWhite,
+                  const SizedBox(
+                    height: 10,
                   ),
-                ),
-              ],
+                  const LabelContent(
+                    title: 'Couleur',
+                    child: AppTextField(
+                      hint: 'Noir, blanc ou couleur',
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const LabelContent(
+                    title: 'Appartient à',
+                    child: AppTextField(
+                      hint: 'Chacun son dressing, pas de jaloux ! ',
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const LabelContent(
+                    title: 'Notes',
+                    child: AppTextField(
+                      hint:
+                          'Une remarque spécifique à ajouter ? Du style : ⚠️ Déteint un max ! ⚠️',
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: const Text('Terminer').headlineLargeWhite,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -71,3 +71,13 @@ class Password extends ValueObject<String> {
 
   factory Password.empty() => Password('');
 }
+
+class EmailAddressConverter implements JsonConverter<EmailAddress, String> {
+  const EmailAddressConverter();
+
+  @override
+  EmailAddress fromJson(String json) => EmailAddress(json);
+
+  @override
+  String toJson(EmailAddress object) => object.value.getOrElse(() => '');
+}

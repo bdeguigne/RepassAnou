@@ -1,107 +1,80 @@
-import 'dart:async';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:repasse_anou/controllers/navigation_controller.dart';
-import 'package:repasse_anou/shared/models/auth/auth.dart';
-import 'package:repasse_anou/shared/top_level_providers.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:logger/logger.dart';
+import 'package:repasse_anou/controllers/messenger_controller.dart';
+import 'package:repasse_anou/controllers/navigation_controller.dart';
+import 'package:repasse_anou/data/auth_service.dart';
+import 'package:repasse_anou/data/user_service.dart';
+import 'package:repasse_anou/shared/failures/auth_failure.dart';
+import 'package:repasse_anou/shared/models/user/user.dart';
+import 'package:repasse_anou/shared/top_level_providers.dart';
+import 'package:repasse_anou/shared/value_objects.dart';
 
-class AuthController extends StateNotifier<Auth> {
+class AuthController {
   AuthController(
-    this.navigationController,
-    this.supabase,
-    this.logger,
-  ) : super(const Auth.unauthenticated());
+    this._authService,
+    this._messengerController,
+    this._logger,
+    this._userService,
+    this._navigationController,
+  );
 
-  final NavigationController navigationController;
-  final Logger logger;
-  final SupabaseClient supabase;
+  final AuthService _authService;
+  final MessengerController _messengerController;
+  final Logger _logger;
+  final UserService _userService;
+  final NavigationController _navigationController;
 
-  StreamSubscription<AuthState>? _authStateChanges;
+  Future<void> signUpWithEmailAndPassword(EmailAddress email, Password password,
+      String firstName, String lastName) async {
+    final signUpRequest = await _authService.signUpWithEmailAndPassword(
+        email, password, firstName, lastName);
 
-  void listen() {
-    handleSession(supabase.auth.currentSession);
-    _authStateChanges = supabase.auth.onAuthStateChange.listen((event) {
-      handleSession(event.session);
+    signUpRequest.fold((failure) {
+      _logger.e(failure.message);
+      _messengerController.showErrorSnackbar(
+          'Une erreur est survenue lors de la création de votre compte');
+      _navigationController.goToLandingPage();
+    }, (id) async {
+      if (id != null) {
+        final user = User(
+          id: id,
+          email: email,
+          firstName: firstName,
+          lastName: lastName,
+        );
+        final req = await _userService.addUser(user);
+
+        return req.fold(
+          (failure) {
+            _logger.e(failure.message);
+            _messengerController.showErrorSnackbar(
+                'Une erreur est survenue lors de la création de votre compte');
+            _navigationController.goToLandingPage();
+          },
+          (r) {
+            _messengerController
+                .showSuccesssSnackbar('Compte créé avec succès');
+            _navigationController.goBack();
+
+            // TODO Verifier si besoin d'update le user dans userController
+          },
+        );
+      } else {
+        _logger.e("Impossible de récupérer l'id de l'utilisateur");
+        _messengerController.showErrorSnackbar(
+            'Impossible de récupérer les données d\'authentification');
+        _navigationController.goToLandingPage();
+      }
     });
-  }
-
-  void handleSession(Session? session) {
-    if (session == null) {
-      state = const Auth.unauthenticated();
-    } else {
-      state = const Auth.authenticated();
-    }
-    redirect();
-  }
-
-  void redirect() async {
-    switch (state.maybeWhen(
-        authenticated: () => 'authenticated',
-        orElse: () => 'unauthenticated')) {
-      case 'authenticated':
-        logger.i("L'utilisateur est connecté");
-        navigationController.goToHomePage();
-        // final Either<AuthFailure, User> userRequest =
-        //     await authService.getAppUser();
-        // userRequest.fold(
-        //   (AuthFailure failure) {
-        //     logger.e(
-        //         "Impossible de récupérer les infos de l'utilisateur connecté : ${failure.message}");
-        //     // messengerController.showErrorSnackbar(failure.message);
-        //     navigationController.goToLandingPage();
-        //   },
-        //   (User user) async {
-        //     logger.i("Récupération des données de l'utilisateur : $user");
-        //     _userController.updateUser(user);
-
-        //     if (user.activity == null) {
-        //       final Either<ProfileFailure, User> setActivityRequest =
-        //           await _profileService.setActivityToUser(
-        //         const Activity(type: ActivityType.transaction),
-        //       );
-
-        //       setActivityRequest.fold(
-        //         (ProfileFailure failure) {},
-        //         (User user) {
-        //           _userController.updateUser(user);
-        //           navigationController.goToProfileInfosPage();
-        //         },
-        //       );
-        //       // navigationController.goToActivityPage();
-        //     } else if (user.profileCompleted == true &&
-        //         user.numberVerified == true &&
-        //         navigationController.currentRouteName() == LoadingRoute.name) {
-        //       navigationController.goToHomePage();
-        //     } else if (user.profileCompleted == false) {
-        //       navigationController.goToProfileInfosPage();
-        //     } else if (user.numberVerified == false) {
-        //       navigationController.goToAddPhoneNumberPage();
-        //     }
-        //   },
-        // );
-        break;
-      case 'unauthenticated':
-        logger.i("L'utilisateur est déconnecté");
-        navigationController.goToLandingPage();
-        break;
-    }
-  }
-
-  @override
-  void dispose() {
-    _authStateChanges?.cancel();
-    super.dispose();
   }
 }
 
-final StateNotifierProvider<AuthController, Auth> authControllerProvider =
-    StateNotifierProvider<AuthController, Auth>(
-        (StateNotifierProviderRef<AuthController, Auth> ref) {
-  return AuthController(
-    ref.read(navigationControllerProvider),
-    ref.read(supabaseClientProvider),
+final authControllerProvider = Provider<AuthController>(
+  (ref) => AuthController(
+    ref.read(authServiceProvider),
+    ref.read(messengerControllerProvider),
     ref.read(loggerProvider),
-  );
-});
+    ref.read(userServiceProvider),
+    ref.read(navigationControllerProvider),
+  ),
+);

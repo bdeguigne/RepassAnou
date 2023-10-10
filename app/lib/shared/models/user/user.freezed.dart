@@ -21,9 +21,12 @@ User _$UserFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$User {
   String get id => throw _privateConstructorUsedError;
+  @EmailAddressConverter()
   EmailAddress? get email => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
   String? get lastName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'has_read_dressing_message')
+  bool get hasReadDressingMessage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +39,11 @@ abstract class $UserCopyWith<$Res> {
       _$UserCopyWithImpl<$Res, User>;
   @useResult
   $Res call(
-      {String id, EmailAddress? email, String? firstName, String? lastName});
+      {String id,
+      @EmailAddressConverter() EmailAddress? email,
+      String? firstName,
+      String? lastName,
+      @JsonKey(name: 'has_read_dressing_message') bool hasReadDressingMessage});
 }
 
 /// @nodoc
@@ -56,6 +63,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? email = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
+    Object? hasReadDressingMessage = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -74,6 +82,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String?,
+      hasReadDressingMessage: null == hasReadDressingMessage
+          ? _value.hasReadDressingMessage
+          : hasReadDressingMessage // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -86,7 +98,11 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String id, EmailAddress? email, String? firstName, String? lastName});
+      {String id,
+      @EmailAddressConverter() EmailAddress? email,
+      String? firstName,
+      String? lastName,
+      @JsonKey(name: 'has_read_dressing_message') bool hasReadDressingMessage});
 }
 
 /// @nodoc
@@ -103,6 +119,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? email = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
+    Object? hasReadDressingMessage = null,
   }) {
     return _then(_$UserImpl(
       id: null == id
@@ -121,6 +138,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String?,
+      hasReadDressingMessage: null == hasReadDressingMessage
+          ? _value.hasReadDressingMessage
+          : hasReadDressingMessage // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -129,7 +150,12 @@ class __$$UserImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserImpl implements _User {
   const _$UserImpl(
-      {required this.id, this.email, this.firstName, this.lastName});
+      {required this.id,
+      @EmailAddressConverter() this.email,
+      this.firstName,
+      this.lastName,
+      @JsonKey(name: 'has_read_dressing_message')
+      this.hasReadDressingMessage = false});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -137,15 +163,19 @@ class _$UserImpl implements _User {
   @override
   final String id;
   @override
+  @EmailAddressConverter()
   final EmailAddress? email;
   @override
   final String? firstName;
   @override
   final String? lastName;
+  @override
+  @JsonKey(name: 'has_read_dressing_message')
+  final bool hasReadDressingMessage;
 
   @override
   String toString() {
-    return 'User(id: $id, email: $email, firstName: $firstName, lastName: $lastName)';
+    return 'User(id: $id, email: $email, firstName: $firstName, lastName: $lastName, hasReadDressingMessage: $hasReadDressingMessage)';
   }
 
   @override
@@ -158,12 +188,15 @@ class _$UserImpl implements _User {
             (identical(other.firstName, firstName) ||
                 other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
-                other.lastName == lastName));
+                other.lastName == lastName) &&
+            (identical(other.hasReadDressingMessage, hasReadDressingMessage) ||
+                other.hasReadDressingMessage == hasReadDressingMessage));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, email, firstName, lastName);
+  int get hashCode => Object.hash(
+      runtimeType, id, email, firstName, lastName, hasReadDressingMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -182,20 +215,26 @@ class _$UserImpl implements _User {
 abstract class _User implements User {
   const factory _User(
       {required final String id,
-      final EmailAddress? email,
+      @EmailAddressConverter() final EmailAddress? email,
       final String? firstName,
-      final String? lastName}) = _$UserImpl;
+      final String? lastName,
+      @JsonKey(name: 'has_read_dressing_message')
+      final bool hasReadDressingMessage}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
   @override
   String get id;
   @override
+  @EmailAddressConverter()
   EmailAddress? get email;
   @override
   String? get firstName;
   @override
   String? get lastName;
+  @override
+  @JsonKey(name: 'has_read_dressing_message')
+  bool get hasReadDressingMessage;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

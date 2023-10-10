@@ -3,12 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import 'package:repasse_anou/controllers/messenger_controller.dart';
-import 'package:repasse_anou/controllers/navigation_controller.dart';
-import 'package:repasse_anou/shared/failures/auth_failure.dart';
+import 'package:repasse_anou/controllers/auth_controller.dart';
 import 'package:repasse_anou/shared/value_objects.dart';
-import 'package:repasse_anou/data/auth_service.dart';
 
 class SignupScreenViewModelState {
   SignupScreenViewModelState({
@@ -46,16 +42,13 @@ class SignupScreenViewModelState {
 }
 
 class SignupScreenViewModel extends StateNotifier<SignupScreenViewModelState> {
-  SignupScreenViewModel(
-      this._navigationController, this._messengerController, this._authService)
+  SignupScreenViewModel(this._authController)
       : super(SignupScreenViewModelState(
           email: EmailAddress.empty(),
           password: Password.empty(),
         ));
 
-  final NavigationController _navigationController;
-  final MessengerController _messengerController;
-  final AuthService _authService;
+  final AuthController _authController;
 
   final formKey = GlobalKey<FormState>();
 
@@ -92,21 +85,10 @@ class SignupScreenViewModel extends StateNotifier<SignupScreenViewModelState> {
 
       updateIsLoading(true);
 
-      final signUpRequest = await _authService.signUpWithEmailAndPassword(
+      await _authController.signUpWithEmailAndPassword(
           state.email, state.password, state.firstName, state.lastName);
 
-      signUpRequest.fold(
-        (failure) => _messengerController.showErrorSnackbar(failure.message),
-        (r) {
-          _messengerController.showSuccesssSnackbar('Compte créé avec succès');
-
-          _navigationController.goBack();
-        },
-      );
       updateIsLoading(false);
-
-      //     _formKey.currentState?.save();
-      //     // TODO: Implement sign up logic
     }
   }
 }
@@ -115,8 +97,6 @@ final StateNotifierProvider<SignupScreenViewModel, SignupScreenViewModelState>
     signupScreenViewModelProvider =
     StateNotifierProvider<SignupScreenViewModel, SignupScreenViewModelState>(
   (ref) => SignupScreenViewModel(
-    ref.read(navigationControllerProvider),
-    ref.read(messengerControllerProvider),
-    ref.read(authServiceProvider),
+    ref.read(authControllerProvider),
   ),
 );
