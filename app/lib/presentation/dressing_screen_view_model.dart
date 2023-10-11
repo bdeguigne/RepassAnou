@@ -18,7 +18,9 @@ class DressingScreenState {
 }
 
 class DressingScreenViewModel extends StateNotifier<DressingScreenState> {
-  DressingScreenViewModel(this._userService) : super(DressingScreenState());
+  DressingScreenViewModel(
+    this._userService,
+  ) : super(DressingScreenState());
 
   final UserService _userService;
 

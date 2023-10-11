@@ -29,7 +29,7 @@ class AuthNotifierController extends StateNotifier<Auth> {
   StreamSubscription<s.AuthState>? _authStateChanges;
 
   void listen(ProviderContainer ref) {
-    // handleSession(supabase.auth.currentSession, ref);
+    handleSession(supabase.auth.currentSession, ref);
     _authStateChanges = supabase.auth.onAuthStateChange.listen((event) {
       handleSession(event.session, ref);
     });

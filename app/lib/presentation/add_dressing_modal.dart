@@ -1,13 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:repasse_anou/controllers/dressing/dressing_categories_controller.dart';
+import 'package:repasse_anou/controllers/dressing/dressing_colors_controller.dart';
+import 'package:repasse_anou/controllers/dressing/dressing_materials_controller.dart';
 import 'package:repasse_anou/presentation/design_system/app_text_field.dart';
 import 'package:repasse_anou/presentation/design_system/label_content.dart';
 import 'package:repasse_anou/presentation/design_system/theme.dart';
+import 'package:repasse_anou/shared/models/dressing_category/dressing_category.dart';
+import 'package:repasse_anou/shared/models/dressing_color/dressing_color.dart';
+import 'package:repasse_anou/shared/models/dressing_material/dressing_material.dart';
 
-class AddDressingModal extends StatelessWidget {
+class AddDressingModal extends ConsumerWidget {
   const AddDressingModal({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final List<DressingCategory>? dressingCategories =
+        ref.watch(dressingCategoriesControllerProvider);
+    final List<DressingColor>? dressingColors =
+        ref.watch(dressingColorsControllerProvider);
+    final List<DressingMaterial>? dressingMaterials =
+        ref.watch(dressingMaterialsControllerProvider);
+
+    print("COLORS : $dressingColors");
+    print("MATERIALS : $dressingMaterials");
+    print("CATEGORIES : $dressingCategories");
+
     return Center(
       child: Stack(
         children: [
