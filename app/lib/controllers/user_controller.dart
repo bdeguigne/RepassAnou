@@ -10,6 +10,8 @@ class UserController extends StateNotifier<User?> {
   final AuthService _authService;
   final MessengerController _messengerController;
 
+  User? get loggedUser => state;
+
   void updateUser(User user) {
     state = user;
   }

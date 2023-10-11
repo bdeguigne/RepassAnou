@@ -12,13 +12,11 @@ class UserService {
   UserService(
     this.supabase,
     this.logger,
-    this.loggedUser,
     this.userController,
   );
 
   final s.SupabaseClient supabase;
   final Logger logger;
-  final User? loggedUser;
   final UserController userController;
 
   Future<Either<Failure, User>> getUserById(String id) async {
@@ -58,11 +56,12 @@ class UserService {
 
   Future<Either<Failure, Unit>> setDressingMessageReadForUser() async {
     try {
-      if (loggedUser == null) {
+      if (userController.loggedUser == null) {
         return left(const Failure('Impossible de récupérer l\'utilisateur'));
       }
 
-      final updatedUser = loggedUser!.copyWith(hasReadDressingMessage: true);
+      final updatedUser =
+          userController.loggedUser!.copyWith(hasReadDressingMessage: true);
 
       await supabase.usersTable
           .update(updatedUser.toJson())
@@ -84,7 +83,6 @@ final Provider<UserService> userServiceProvider = Provider<UserService>((ref) {
   return UserService(
     ref.read(supabaseClientProvider),
     ref.read(loggerProvider),
-    ref.watch(userControllerProvider),
     ref.read(userControllerProvider.notifier),
   );
 });
