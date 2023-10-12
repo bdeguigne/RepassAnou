@@ -22,7 +22,6 @@ class CommandItemController extends StateNotifier<List<CommandItem>> {
     commandItemsRequest.fold(
       (l) => _messengerController.showErrorSnackbar(l.message),
       (commandItems) {
-        print(commandItems);
         updateCommandItems(commandItems);
       },
     );

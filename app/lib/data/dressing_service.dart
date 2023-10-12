@@ -1,18 +1,25 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logger/logger.dart';
+import 'package:repasse_anou/controllers/user_controller.dart';
 import 'package:repasse_anou/shared/failures/failure.dart';
 import 'package:repasse_anou/shared/models/dressing_category/dressing_category.dart';
 import 'package:repasse_anou/shared/models/dressing_color/dressing_color.dart';
 import 'package:repasse_anou/shared/models/dressing_material/dressing_material.dart';
+import 'package:repasse_anou/shared/models/user_dressing/user_dressing.dart';
 import 'package:repasse_anou/shared/supabase_extension.dart';
 import 'package:repasse_anou/shared/top_level_providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as s;
 
 class DressingService {
-  DressingService(this.supabase, this.logger);
+  DressingService(
+    this.supabase,
+    this.logger,
+    this.userController,
+  );
   final s.SupabaseClient supabase;
   final Logger logger;
+  final UserController userController;
 
   Future<Either<Failure, List<DressingCategory>>>
       getDressingCategories() async {
@@ -59,6 +66,62 @@ class DressingService {
           'Une erreur est survenue lors de la récupération des matières de vêtements'));
     }
   }
+
+  Future<Either<Failure, List<UserDressing>>> getUsersDressings() async {
+    try {
+      if (userController.loggedUser == null) {
+        return left(const Failure('Impossible de récupérer l\'utilisateur'));
+      }
+
+      final response = await supabase.usersDressingsTable
+          .select<s.PostgrestList>(
+              'id, users(*), title, dressing_categories(*), dressing_materials(*), dressing_colors(*), belongs_to, notes')
+          .eq('user_id', userController.loggedUser!.id);
+
+      final userDressings =
+          response.map((data) => UserDressing.fromJson(data)).toList();
+      return right(userDressings);
+    } catch (e) {
+      logger.e(e);
+      return left(const Failure(
+          'Une erreur est survenue lors de la récupération du vêtement'));
+    }
+  }
+
+  Future<Either<Failure, Unit>> saveDressingItem(
+    String title,
+    DressingCategory category,
+    DressingMaterial material,
+    DressingColor color,
+    String? belongsTo,
+    String? notes,
+  ) async {
+    try {
+      if (userController.loggedUser == null) {
+        return left(const Failure('Impossible de récupérer l\'utilisateur'));
+      }
+
+      final userDressingDto = UserDressing(
+        user: userController.loggedUser!,
+        title: title,
+        dressingCategory: category,
+        dressingMaterial: material,
+        dressingColor: color,
+        belongsTo: belongsTo,
+        notes: notes,
+      ).toDto();
+
+      await supabase.usersDressingsTable.insert(userDressingDto.toJson());
+
+      return right(unit);
+    } catch (e) {
+      logger.e(e);
+      return left(
+        const Failure(
+            'Une erreur est survenue lors de la sauvegarde du vêtement'),
+      );
+    }
+  }
 }
 
 final Provider<DressingService> dressingServiceProvider =
@@ -66,5 +129,6 @@ final Provider<DressingService> dressingServiceProvider =
   return DressingService(
     ref.read(supabaseClientProvider),
     ref.read(loggerProvider),
+    ref.read(userControllerProvider.notifier),
   );
 });

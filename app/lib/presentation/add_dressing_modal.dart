@@ -3,9 +3,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/controllers/dressing/dressing_categories_controller.dart';
 import 'package:repasse_anou/controllers/dressing/dressing_colors_controller.dart';
 import 'package:repasse_anou/controllers/dressing/dressing_materials_controller.dart';
+import 'package:repasse_anou/presentation/add_dressing_modal_view_model.dart';
 import 'package:repasse_anou/presentation/design_system/app_text_field.dart';
+import 'package:repasse_anou/presentation/design_system/drop_down.dart';
 import 'package:repasse_anou/presentation/design_system/label_content.dart';
 import 'package:repasse_anou/presentation/design_system/theme.dart';
+import 'package:repasse_anou/shared/input_validator.dart';
 import 'package:repasse_anou/shared/models/dressing_category/dressing_category.dart';
 import 'package:repasse_anou/shared/models/dressing_color/dressing_color.dart';
 import 'package:repasse_anou/shared/models/dressing_material/dressing_material.dart';
@@ -15,6 +18,9 @@ class AddDressingModal extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final AddDressingModalViewModel model =
+        ref.read(addDressingModalViewModelProvider.notifier);
+
     final List<DressingCategory>? dressingCategories =
         ref.watch(dressingCategoriesControllerProvider);
     final List<DressingColor>? dressingColors =
@@ -22,99 +28,146 @@ class AddDressingModal extends ConsumerWidget {
     final List<DressingMaterial>? dressingMaterials =
         ref.watch(dressingMaterialsControllerProvider);
 
-    print("COLORS : $dressingColors");
-    print("MATERIALS : $dressingMaterials");
-    print("CATEGORIES : $dressingCategories");
-
     return Center(
       child: Stack(
         children: [
           Dialog(
             alignment: Alignment.center,
-            // shape: const RoundedRectangleBorder(
-            //   borderRadius: BorderRadius.all(
-            //     Radius.circular(10),
-            //   ),
-            // ),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+            ),
             child: Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * 0.70,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(
                   Radius.circular(10),
                 ),
               ),
-              child: Padding(
+              child: SingleChildScrollView(
                 padding: const EdgeInsets.all(20),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(
-                      height: 65,
-                    ),
-                    const LabelContent(
-                      title: 'Intitulé',
-                      child: AppTextField(
-                        hint: 'C’est quoi son p’tit nom ? (ex. T-shirt noir)',
+                child: Form(
+                  key: model.formKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(
+                        height: 65,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const LabelContent(
-                      title: 'Catégorie',
-                      child: AppTextField(
-                        hint: 'T-shirt, jupe, short...',
+                      LabelContent(
+                        title: 'Intitulé',
+                        child: AppTextField(
+                          hint: 'C’est quoi son p’tit nom ? (ex. T-shirt noir)',
+                          validator: InputValidator.notEmpty,
+                          onChanged: (value) => model.setTitle(value),
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const LabelContent(
-                      title: 'Matière',
-                      child: AppTextField(
-                        hint: 'Coton, soie, laine...',
+                      const SizedBox(
+                        height: 10,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const LabelContent(
-                      title: 'Couleur',
-                      child: AppTextField(
-                        hint: 'Noir, blanc ou couleur',
+                      LabelContent(
+                        title: 'Catégorie',
+                        child: DropDown<DressingCategory?>(
+                          onChanged: (value) =>
+                              model.setSelectedCategory(value),
+                          validator: (value) => value == null
+                              ? 'Veuillez sélectionner une catégorie'
+                              : null,
+                          hint: 'T-shirt, jupe, short...',
+                          items: dressingCategories
+                              ?.map(
+                                (category) =>
+                                    DropdownMenuItem<DressingCategory?>(
+                                  value: category,
+                                  child: Text(category.label).bodyMedium,
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const LabelContent(
-                      title: 'Appartient à',
-                      child: AppTextField(
-                        hint: 'Chacun son dressing, pas de jaloux ! ',
+                      const SizedBox(
+                        height: 10,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const LabelContent(
-                      title: 'Notes',
-                      child: AppTextField(
-                        hint:
-                            'Une remarque spécifique à ajouter ? Du style : ⚠️ Déteint un max ! ⚠️',
+                      LabelContent(
+                        title: 'Matière',
+                        child: DropDown<DressingMaterial?>(
+                          validator: (value) => value == null
+                              ? 'Veuillez sélectionner une matière'
+                              : null,
+                          onChanged: (value) =>
+                              model.setSelectedMaterial(value),
+                          hint: 'Coton, soie, laine...',
+                          items: dressingMaterials
+                              ?.map(
+                                (category) =>
+                                    DropdownMenuItem<DressingMaterial?>(
+                                  value: category,
+                                  child: Text(category.label).bodyMedium,
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 56,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('Terminer').headlineLargeWhite,
+                      const SizedBox(
+                        height: 10,
                       ),
-                    ),
-                  ],
+                      LabelContent(
+                        title: 'Couleur',
+                        child: DropDown<DressingColor?>(
+                          onChanged: (value) => model.setSelectedColor(value),
+                          validator: (value) => value == null
+                              ? 'Veuillez sélectionner une couleur'
+                              : null,
+                          hint: 'Noir, blanc ou couleur',
+                          items: dressingColors
+                              ?.map(
+                                (category) => DropdownMenuItem<DressingColor?>(
+                                  value: category,
+                                  child: Text(category.label).bodyMedium,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const LabelContent(
+                        title: 'Appartient à',
+                        child: AppTextField(
+                          hint: 'Chacun son dressing, pas de jaloux ! ',
+                          // validator: InputValidator.notEmpty,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      LabelContent(
+                        title: 'Notes',
+                        child: AppTextField(
+                          hint:
+                              'Une remarque spécifique à ajouter ? Du style : ⚠️ Déteint un max ! ⚠️',
+                          onChanged: (value) => model.setNotes(value),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 56,
+                        child: ElevatedButton(
+                          onPressed: () => model.saveDressingItem(),
+                          child: const Text('Terminer').headlineLargeWhite,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

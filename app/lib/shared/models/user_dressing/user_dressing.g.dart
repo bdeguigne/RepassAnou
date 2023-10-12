@@ -8,24 +8,26 @@ part of 'user_dressing.dart';
 
 _$UserDressingImpl _$$UserDressingImplFromJson(Map<String, dynamic> json) =>
     _$UserDressingImpl(
-      id: json['id'] as int,
-      user: User.fromJson(json['user'] as Map<String, dynamic>),
+      id: json['id'] as String?,
+      user: User.fromJson(json['users'] as Map<String, dynamic>),
       title: json['title'] as String,
       dressingCategory: DressingCategory.fromJson(
-          json['dressingCategory'] as Map<String, dynamic>),
+          json['dressing_categories'] as Map<String, dynamic>),
       dressingMaterial: DressingMaterial.fromJson(
-          json['dressingMaterial'] as Map<String, dynamic>),
-      belongsTo: json['belongsTo'] as String,
-      notes: json['notes'] as String,
+          json['dressing_materials'] as Map<String, dynamic>),
+      dressingColor: DressingColor.fromJson(
+          json['dressing_colors'] as Map<String, dynamic>),
+      belongsTo: json['belongs_to'] as String?,
+      notes: json['notes'] as String?,
     );
 
 Map<String, dynamic> _$$UserDressingImplToJson(_$UserDressingImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'user': instance.user,
+      'users': instance.user,
       'title': instance.title,
-      'dressingCategory': instance.dressingCategory,
-      'dressingMaterial': instance.dressingMaterial,
-      'belongsTo': instance.belongsTo,
+      'dressing_categories': instance.dressingCategory,
+      'dressing_materials': instance.dressingMaterial,
+      'dressing_colors': instance.dressingColor,
+      'belongs_to': instance.belongsTo,
       'notes': instance.notes,
     };

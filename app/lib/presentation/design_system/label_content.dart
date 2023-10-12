@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:repasse_anou/presentation/design_system/theme.dart';
 
@@ -17,7 +18,10 @@ class LabelContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(title).bodyMedium,
+        Text(
+          title,
+          style: bodyMedium.copyWith(color: blackVariant),
+        ),
         const SizedBox(height: 5),
         child,
       ],

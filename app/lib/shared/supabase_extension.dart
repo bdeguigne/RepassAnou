@@ -7,4 +7,5 @@ extension SupabaseExtensions<T> on s.SupabaseClient {
   s.SupabaseQueryBuilder get dressingColorsTable => from('dressing_colors');
   s.SupabaseQueryBuilder get dressingMaterialsTable =>
       from('dressing_materials');
+  s.SupabaseQueryBuilder get usersDressingsTable => from('users_dressings');
 }

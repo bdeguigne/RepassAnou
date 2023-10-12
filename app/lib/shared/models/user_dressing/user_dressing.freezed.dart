@@ -20,13 +20,20 @@ UserDressing _$UserDressingFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserDressing {
-  int get id => throw _privateConstructorUsedError;
+  @JsonKey(includeToJson: false)
+  String? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'users')
   User get user => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  @JsonKey(name: 'dressing_categories')
   DressingCategory get dressingCategory => throw _privateConstructorUsedError;
+  @JsonKey(name: 'dressing_materials')
   DressingMaterial get dressingMaterial => throw _privateConstructorUsedError;
-  String get belongsTo => throw _privateConstructorUsedError;
-  String get notes => throw _privateConstructorUsedError;
+  @JsonKey(name: 'dressing_colors')
+  DressingColor get dressingColor => throw _privateConstructorUsedError;
+  @JsonKey(name: 'belongs_to')
+  String? get belongsTo => throw _privateConstructorUsedError;
+  String? get notes => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,17 +48,19 @@ abstract class $UserDressingCopyWith<$Res> {
       _$UserDressingCopyWithImpl<$Res, UserDressing>;
   @useResult
   $Res call(
-      {int id,
-      User user,
+      {@JsonKey(includeToJson: false) String? id,
+      @JsonKey(name: 'users') User user,
       String title,
-      DressingCategory dressingCategory,
-      DressingMaterial dressingMaterial,
-      String belongsTo,
-      String notes});
+      @JsonKey(name: 'dressing_categories') DressingCategory dressingCategory,
+      @JsonKey(name: 'dressing_materials') DressingMaterial dressingMaterial,
+      @JsonKey(name: 'dressing_colors') DressingColor dressingColor,
+      @JsonKey(name: 'belongs_to') String? belongsTo,
+      String? notes});
 
   $UserCopyWith<$Res> get user;
   $DressingCategoryCopyWith<$Res> get dressingCategory;
   $DressingMaterialCopyWith<$Res> get dressingMaterial;
+  $DressingColorCopyWith<$Res> get dressingColor;
 }
 
 /// @nodoc
@@ -67,19 +76,20 @@ class _$UserDressingCopyWithImpl<$Res, $Val extends UserDressing>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? user = null,
     Object? title = null,
     Object? dressingCategory = null,
     Object? dressingMaterial = null,
-    Object? belongsTo = null,
-    Object? notes = null,
+    Object? dressingColor = null,
+    Object? belongsTo = freezed,
+    Object? notes = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String?,
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -96,14 +106,18 @@ class _$UserDressingCopyWithImpl<$Res, $Val extends UserDressing>
           ? _value.dressingMaterial
           : dressingMaterial // ignore: cast_nullable_to_non_nullable
               as DressingMaterial,
-      belongsTo: null == belongsTo
+      dressingColor: null == dressingColor
+          ? _value.dressingColor
+          : dressingColor // ignore: cast_nullable_to_non_nullable
+              as DressingColor,
+      belongsTo: freezed == belongsTo
           ? _value.belongsTo
           : belongsTo // ignore: cast_nullable_to_non_nullable
-              as String,
-      notes: null == notes
+              as String?,
+      notes: freezed == notes
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 
@@ -130,6 +144,14 @@ class _$UserDressingCopyWithImpl<$Res, $Val extends UserDressing>
       return _then(_value.copyWith(dressingMaterial: value) as $Val);
     });
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $DressingColorCopyWith<$Res> get dressingColor {
+    return $DressingColorCopyWith<$Res>(_value.dressingColor, (value) {
+      return _then(_value.copyWith(dressingColor: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -141,13 +163,14 @@ abstract class _$$UserDressingImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int id,
-      User user,
+      {@JsonKey(includeToJson: false) String? id,
+      @JsonKey(name: 'users') User user,
       String title,
-      DressingCategory dressingCategory,
-      DressingMaterial dressingMaterial,
-      String belongsTo,
-      String notes});
+      @JsonKey(name: 'dressing_categories') DressingCategory dressingCategory,
+      @JsonKey(name: 'dressing_materials') DressingMaterial dressingMaterial,
+      @JsonKey(name: 'dressing_colors') DressingColor dressingColor,
+      @JsonKey(name: 'belongs_to') String? belongsTo,
+      String? notes});
 
   @override
   $UserCopyWith<$Res> get user;
@@ -155,6 +178,8 @@ abstract class _$$UserDressingImplCopyWith<$Res>
   $DressingCategoryCopyWith<$Res> get dressingCategory;
   @override
   $DressingMaterialCopyWith<$Res> get dressingMaterial;
+  @override
+  $DressingColorCopyWith<$Res> get dressingColor;
 }
 
 /// @nodoc
@@ -168,19 +193,20 @@ class __$$UserDressingImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? user = null,
     Object? title = null,
     Object? dressingCategory = null,
     Object? dressingMaterial = null,
-    Object? belongsTo = null,
-    Object? notes = null,
+    Object? dressingColor = null,
+    Object? belongsTo = freezed,
+    Object? notes = freezed,
   }) {
     return _then(_$UserDressingImpl(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String?,
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -197,51 +223,65 @@ class __$$UserDressingImplCopyWithImpl<$Res>
           ? _value.dressingMaterial
           : dressingMaterial // ignore: cast_nullable_to_non_nullable
               as DressingMaterial,
-      belongsTo: null == belongsTo
+      dressingColor: null == dressingColor
+          ? _value.dressingColor
+          : dressingColor // ignore: cast_nullable_to_non_nullable
+              as DressingColor,
+      belongsTo: freezed == belongsTo
           ? _value.belongsTo
           : belongsTo // ignore: cast_nullable_to_non_nullable
-              as String,
-      notes: null == notes
+              as String?,
+      notes: freezed == notes
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$UserDressingImpl implements _UserDressing {
+class _$UserDressingImpl extends _UserDressing {
   _$UserDressingImpl(
-      {required this.id,
-      required this.user,
+      {@JsonKey(includeToJson: false) this.id,
+      @JsonKey(name: 'users') required this.user,
       required this.title,
-      required this.dressingCategory,
-      required this.dressingMaterial,
-      required this.belongsTo,
-      required this.notes});
+      @JsonKey(name: 'dressing_categories') required this.dressingCategory,
+      @JsonKey(name: 'dressing_materials') required this.dressingMaterial,
+      @JsonKey(name: 'dressing_colors') required this.dressingColor,
+      @JsonKey(name: 'belongs_to') this.belongsTo,
+      this.notes})
+      : super._();
 
   factory _$UserDressingImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserDressingImplFromJson(json);
 
   @override
-  final int id;
+  @JsonKey(includeToJson: false)
+  final String? id;
   @override
+  @JsonKey(name: 'users')
   final User user;
   @override
   final String title;
   @override
+  @JsonKey(name: 'dressing_categories')
   final DressingCategory dressingCategory;
   @override
+  @JsonKey(name: 'dressing_materials')
   final DressingMaterial dressingMaterial;
   @override
-  final String belongsTo;
+  @JsonKey(name: 'dressing_colors')
+  final DressingColor dressingColor;
   @override
-  final String notes;
+  @JsonKey(name: 'belongs_to')
+  final String? belongsTo;
+  @override
+  final String? notes;
 
   @override
   String toString() {
-    return 'UserDressing(id: $id, user: $user, title: $title, dressingCategory: $dressingCategory, dressingMaterial: $dressingMaterial, belongsTo: $belongsTo, notes: $notes)';
+    return 'UserDressing(id: $id, user: $user, title: $title, dressingCategory: $dressingCategory, dressingMaterial: $dressingMaterial, dressingColor: $dressingColor, belongsTo: $belongsTo, notes: $notes)';
   }
 
   @override
@@ -256,6 +296,8 @@ class _$UserDressingImpl implements _UserDressing {
                 other.dressingCategory == dressingCategory) &&
             (identical(other.dressingMaterial, dressingMaterial) ||
                 other.dressingMaterial == dressingMaterial) &&
+            (identical(other.dressingColor, dressingColor) ||
+                other.dressingColor == dressingColor) &&
             (identical(other.belongsTo, belongsTo) ||
                 other.belongsTo == belongsTo) &&
             (identical(other.notes, notes) || other.notes == notes));
@@ -264,7 +306,7 @@ class _$UserDressingImpl implements _UserDressing {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, user, title,
-      dressingCategory, dressingMaterial, belongsTo, notes);
+      dressingCategory, dressingMaterial, dressingColor, belongsTo, notes);
 
   @JsonKey(ignore: true)
   @override
@@ -280,33 +322,46 @@ class _$UserDressingImpl implements _UserDressing {
   }
 }
 
-abstract class _UserDressing implements UserDressing {
+abstract class _UserDressing extends UserDressing {
   factory _UserDressing(
-      {required final int id,
-      required final User user,
+      {@JsonKey(includeToJson: false) final String? id,
+      @JsonKey(name: 'users') required final User user,
       required final String title,
+      @JsonKey(name: 'dressing_categories')
       required final DressingCategory dressingCategory,
+      @JsonKey(name: 'dressing_materials')
       required final DressingMaterial dressingMaterial,
-      required final String belongsTo,
-      required final String notes}) = _$UserDressingImpl;
+      @JsonKey(name: 'dressing_colors')
+      required final DressingColor dressingColor,
+      @JsonKey(name: 'belongs_to') final String? belongsTo,
+      final String? notes}) = _$UserDressingImpl;
+  _UserDressing._() : super._();
 
   factory _UserDressing.fromJson(Map<String, dynamic> json) =
       _$UserDressingImpl.fromJson;
 
   @override
-  int get id;
+  @JsonKey(includeToJson: false)
+  String? get id;
   @override
+  @JsonKey(name: 'users')
   User get user;
   @override
   String get title;
   @override
+  @JsonKey(name: 'dressing_categories')
   DressingCategory get dressingCategory;
   @override
+  @JsonKey(name: 'dressing_materials')
   DressingMaterial get dressingMaterial;
   @override
-  String get belongsTo;
+  @JsonKey(name: 'dressing_colors')
+  DressingColor get dressingColor;
   @override
-  String get notes;
+  @JsonKey(name: 'belongs_to')
+  String? get belongsTo;
+  @override
+  String? get notes;
   @override
   @JsonKey(ignore: true)
   _$$UserDressingImplCopyWith<_$UserDressingImpl> get copyWith =>

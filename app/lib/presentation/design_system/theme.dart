@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 const Color success = Color(0xFF00C851);
 const Color error = Color(0xFFff4444);
 const Color black = Color(0xFF000000);
+const Color blackVariant = Color(0xFF0D101C);
+const Color lightBlack = Color(0xFF191D31);
 const Color grey = Color(0xFF666666);
 const Color greyInput = Color(0xFF9CA4AB);
 const Color greyButton = Color(0xFFEEEEEE);
@@ -13,6 +15,7 @@ const Color navBarUnselectedItemColor = Color(0xFEDADADA);
 const Color blue = Color(0x00007fff);
 const Color hintText = Color(0xff6E7591);
 const Color checkBoxBackgroundColor = Color(0xffD9D9D9);
+const Color customBodyColor = Color(0xff0D101C);
 
 const bodyLarge = TextStyle(
   fontSize: 14,
@@ -52,6 +55,16 @@ const displaySmall = TextStyle(fontSize: 11, fontWeight: FontWeight.w300);
 const displayLarge = TextStyle(fontSize: 14, fontWeight: FontWeight.w600);
 const displayMedium = TextStyle(fontSize: 14, fontWeight: FontWeight.w500);
 const titleMedium = TextStyle(color: Colors.white);
+
+const appOutlineInputBorder = OutlineInputBorder(
+  borderRadius: BorderRadius.all(
+    Radius.circular(20),
+  ),
+  borderSide: BorderSide(
+    color: Color(0xffDCE1EF), // Couleur de bordure
+    width: 1, // Largeur de bordure
+  ),
+);
 
 final ThemeData appTheme = ThemeData(
   platform: TargetPlatform.iOS,
@@ -98,6 +111,29 @@ final ThemeData appTheme = ThemeData(
     selectedItemColor: navBarSelectedItemColor,
     unselectedIconTheme: IconThemeData(
       color: navBarUnselectedItemColor,
+    ),
+  ),
+  dropdownMenuTheme: const DropdownMenuThemeData(
+    textStyle: bodyMedium,
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: greyInput,
+          width: 1,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: greyInput,
+          width: 1,
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: greyInput,
+          width: 1,
+        ),
+      ),
     ),
   ),
 );
@@ -172,6 +208,15 @@ extension FlumiTextExtension on Text {
       textScaleFactor: 1,
       textAlign: textAlign,
       style: appTheme.textTheme.headlineMedium,
+    );
+  }
+
+  Text get headlineMediumLightBlack {
+    return Text(
+      data!,
+      textScaleFactor: 1,
+      textAlign: textAlign,
+      style: appTheme.textTheme.headlineMedium?.copyWith(color: lightBlack),
     );
   }
 

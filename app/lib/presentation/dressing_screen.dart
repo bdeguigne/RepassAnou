@@ -23,16 +23,18 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
   @override
   void initState() {
     super.initState();
+
     final hasReadDressingMessage =
         ref.read(userControllerProvider)?.hasReadDressingMessage;
-    if (hasReadDressingMessage == false) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      model.getUsersDressings();
+      if (hasReadDressingMessage == false) {
         showModalBottomSheet<void>(
           context: context,
           builder: (context) => buildDressingMessageBottomSheet(),
         );
-      });
-    }
+      }
+    });
   }
 
   Widget buildDressingMessageBottomSheet() {
@@ -101,14 +103,17 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
       const SizedBox(
         height: 16,
       ),
-      const Text('Votre dressing est vide pour le moment').headlineMedium,
+      const Text(
+        'Votre dressing est vide pour le moment',
+      ).headlineMediumLightBlack,
       const SizedBox(
         height: 10,
       ),
-      const Text(
+      Text(
         'Ajoutez-y vos vêtements pour les voir\napparaître ici',
         textAlign: TextAlign.center,
-      ).labelMedium,
+        style: labelMedium.copyWith(color: const Color(0xffA7A9B7)),
+      ),
       const Spacer(),
     ];
   }
