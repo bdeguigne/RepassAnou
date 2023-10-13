@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:repasse_anou/controllers/auth_notifier_controller.dart';
-import 'package:repasse_anou/shared/top_level_providers.dart';
-import 'package:repasse_anou/presentation/design_system/snackbars.dart';
-import 'package:repasse_anou/presentation/design_system/theme.dart';
-import 'package:repasse_anou/presentation/routes/app_router.dart';
+import 'package:repasse_anou/features/auth/application/auth_notifier_controller.dart';
+import 'package:repasse_anou/routing/app_router.dart';
+import 'package:repasse_anou/utils/top_level_providers.dart';
+import 'package:repasse_anou/design_system/snackbars.dart';
+import 'package:repasse_anou/design_system/theme.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
