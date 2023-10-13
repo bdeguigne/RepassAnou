@@ -11,8 +11,8 @@ import 'package:repasse_anou/utils/supabase_extension.dart';
 import 'package:repasse_anou/utils/top_level_providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as s;
 
-class DressingService {
-  DressingService(
+class DressingRepository {
+  DressingRepository(
     this.supabase,
     this.logger,
     this.userController,
@@ -88,7 +88,7 @@ class DressingService {
     }
   }
 
-  Future<Either<Failure, Unit>> saveDressingItem(
+  Future<Either<Failure, void>> saveDressingItem(
     String title,
     DressingCategory category,
     DressingMaterial material,
@@ -124,9 +124,9 @@ class DressingService {
   }
 }
 
-final Provider<DressingService> dressingServiceProvider =
-    Provider<DressingService>((ref) {
-  return DressingService(
+final Provider<DressingRepository> dressingRepositoryProvider =
+    Provider<DressingRepository>((ref) {
+  return DressingRepository(
     ref.read(supabaseClientProvider),
     ref.read(loggerProvider),
     ref.read(userControllerProvider.notifier),

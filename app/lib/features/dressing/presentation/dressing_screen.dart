@@ -173,7 +173,7 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
                   showDialog<void>(
                     context: context,
                     builder: (context) {
-                      return const AddDressingModal();
+                      return AddDressingModal();
                     },
                   );
                 },

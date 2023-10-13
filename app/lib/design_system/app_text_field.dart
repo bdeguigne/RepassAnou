@@ -7,17 +7,20 @@ class AppTextField extends StatelessWidget {
     this.hint,
     this.onChanged,
     this.validator,
+    this.controller,
   });
 
   final String? hint;
   final void Function(String value)? onChanged;
   final String? Function(String?)? validator;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       // height: 40,
       child: TextFormField(
+        controller: controller,
         cursorHeight: 16,
         onChanged: onChanged,
         validator: validator,

@@ -2,7 +2,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:repasse_anou/utils/messenger_controller.dart';
-import 'package:repasse_anou/features/dressing/data/dressing_service.dart';
+import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
 import 'package:repasse_anou/features/auth/data/user_service.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
 
@@ -38,7 +38,7 @@ class DressingScreenViewModel extends StateNotifier<DressingScreenState> {
   ) : super(DressingScreenState());
 
   final UserService _userService;
-  final DressingService _dressingService;
+  final DressingRepository _dressingService;
   final MessengerController _messengerController;
 
   void updateNotShowMessage(bool notShowMessage) {
@@ -66,7 +66,7 @@ class DressingScreenViewModel extends StateNotifier<DressingScreenState> {
     dressings.fold(
       (failure) => _messengerController.showErrorSnackbar(failure.message),
       (dressings) {
-        print("GET DRESSINGS $dressings");
+        print('GET DRESSINGS $dressings');
         updateDressingItems(dressings);
       },
     );
@@ -79,7 +79,7 @@ final dressingScreenViewModelProvider =
     StateNotifierProvider<DressingScreenViewModel, DressingScreenState>(
   (ref) => DressingScreenViewModel(
     ref.read(userServiceProvider),
-    ref.read(dressingServiceProvider),
+    ref.read(dressingRepositoryProvider),
     ref.read(messengerControllerProvider),
   ),
 );

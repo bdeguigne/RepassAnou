@@ -1,19 +1,19 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/utils/messenger_controller.dart';
-import 'package:repasse_anou/features/dressing/data/dressing_service.dart';
+import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
 
 class DressingColorsController extends StateNotifier<List<DressingColor>?> {
-  DressingColorsController(this.dressingService, this.messengerController)
+  DressingColorsController(this.dressingRepository, this.messengerController)
       : super(null) {
     getDressingColors();
   }
 
-  final DressingService dressingService;
+  final DressingRepository dressingRepository;
   final MessengerController messengerController;
 
   Future<void> getDressingColors() async {
-    final colors = await dressingService.getDressingColors();
+    final colors = await dressingRepository.getDressingColors();
     colors.fold(
       (failure) => messengerController.showErrorSnackbar(failure.message),
       (dressingColors) => state = dressingColors,
@@ -24,7 +24,7 @@ class DressingColorsController extends StateNotifier<List<DressingColor>?> {
 final dressingColorsControllerProvider =
     StateNotifierProvider<DressingColorsController, List<DressingColor>?>(
   (ref) => DressingColorsController(
-    ref.watch(dressingServiceProvider),
+    ref.watch(dressingRepositoryProvider),
     ref.watch(messengerControllerProvider),
   ),
 );
