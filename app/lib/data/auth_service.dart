@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:repasse_anou/shared/failures/auth_failure.dart';
 import 'package:repasse_anou/shared/models/user/user.dart';
-import 'package:repasse_anou/shared/supabase_extension.dart';
+import 'package:repasse_anou/shared/utils/supabase_extension.dart';
 import 'package:repasse_anou/shared/top_level_providers.dart';
 import 'package:repasse_anou/shared/value_objects.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as s;

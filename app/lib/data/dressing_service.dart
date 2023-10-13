@@ -7,7 +7,7 @@ import 'package:repasse_anou/shared/models/dressing_category/dressing_category.d
 import 'package:repasse_anou/shared/models/dressing_color/dressing_color.dart';
 import 'package:repasse_anou/shared/models/dressing_material/dressing_material.dart';
 import 'package:repasse_anou/shared/models/user_dressing/user_dressing.dart';
-import 'package:repasse_anou/shared/supabase_extension.dart';
+import 'package:repasse_anou/shared/utils/supabase_extension.dart';
 import 'package:repasse_anou/shared/top_level_providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as s;
 

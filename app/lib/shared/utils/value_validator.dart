@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
-
-import 'failures/value_failures.dart';
+import 'package:repasse_anou/shared/failures/value_failures.dart';
 
 class ValueValidator {
   static Either<ValueFailure<String>, String> validateEmail(String input) {

@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:repasse_anou/shared/failures/value_failures.dart';
-import 'package:repasse_anou/shared/value_validator.dart';
+import 'package:repasse_anou/shared/utils/value_validator.dart';
 
 @immutable
 abstract class ValueObject<T> {

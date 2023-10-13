@@ -8,7 +8,7 @@ import 'package:repasse_anou/presentation/design_system/app_text_field.dart';
 import 'package:repasse_anou/presentation/design_system/drop_down.dart';
 import 'package:repasse_anou/presentation/design_system/label_content.dart';
 import 'package:repasse_anou/presentation/design_system/theme.dart';
-import 'package:repasse_anou/shared/input_validator.dart';
+import 'package:repasse_anou/shared/utils/input_validator.dart';
 import 'package:repasse_anou/shared/models/dressing_category/dressing_category.dart';
 import 'package:repasse_anou/shared/models/dressing_color/dressing_color.dart';
 import 'package:repasse_anou/shared/models/dressing_material/dressing_material.dart';

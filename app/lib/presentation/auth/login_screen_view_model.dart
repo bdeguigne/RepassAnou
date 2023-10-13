@@ -5,8 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/controllers/messenger_controller.dart';
 import 'package:repasse_anou/controllers/navigation_controller.dart';
 import 'package:repasse_anou/shared/failures/auth_failure.dart';
-import 'package:repasse_anou/shared/value_objects.dart';
 import 'package:repasse_anou/data/auth_service.dart';
+import 'package:repasse_anou/shared/value_objects.dart';
 
 class LoginScreenViewModelState {
   LoginScreenViewModelState({

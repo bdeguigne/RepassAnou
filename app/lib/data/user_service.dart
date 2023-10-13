@@ -4,7 +4,7 @@ import 'package:logger/logger.dart';
 import 'package:repasse_anou/controllers/user_controller.dart';
 import 'package:repasse_anou/shared/failures/failure.dart';
 import 'package:repasse_anou/shared/models/user/user.dart';
-import 'package:repasse_anou/shared/supabase_extension.dart';
+import 'package:repasse_anou/shared/utils/supabase_extension.dart';
 import 'package:repasse_anou/shared/top_level_providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as s;
 
