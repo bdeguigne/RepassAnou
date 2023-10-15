@@ -1,105 +1,115 @@
-import 'package:dartz/dartz.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'dart:io';
+
 import 'package:logger/logger.dart';
+import 'package:repasse_anou/exception/exception_message.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_category.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_material.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
-import 'package:repasse_anou/failures/failure.dart';
+import 'package:repasse_anou/features/photo/data/image_storage_repository.dart';
+import 'package:repasse_anou/utils/extensions.dart';
 import 'package:repasse_anou/utils/supabase_extension.dart';
 import 'package:repasse_anou/utils/top_level_providers.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as s;
+
+part 'dressing_repository.g.dart';
 
 class DressingRepository {
   DressingRepository(
     this.supabase,
     this.logger,
     this.userController,
+    this.imageStorageRepository,
   );
   final s.SupabaseClient supabase;
   final Logger logger;
   final UserController userController;
+  final ImageStorageRepository imageStorageRepository;
 
-  Future<Either<Failure, List<DressingCategory>>>
-      getDressingCategories() async {
+  Future<List<DressingCategory>> getDressingCategories() async {
     try {
       final response =
           await supabase.dressingCategoriesTable.select<s.PostgrestList>();
       final List<DressingCategory> dressingCategories = response
           .map((Map<String, dynamic> json) => DressingCategory.fromJson(json))
           .toList();
-      return right(dressingCategories);
+
+      return dressingCategories;
     } catch (e) {
       logger.e(e);
-      return left(const Failure(
-          'Une erreur est survenue lors de la récupération des catégories de vêtements'));
+      throw const ExceptionMessage(
+          'Une erreur est survenue lors de la récupération des catégories de vêtements');
     }
   }
 
-  Future<Either<Failure, List<DressingColor>>> getDressingColors() async {
+  Future<List<DressingColor>> getDressingColors() async {
     try {
       final response =
           await supabase.dressingColorsTable.select<s.PostgrestList>();
       final List<DressingColor> dressingColors = response
           .map((Map<String, dynamic> json) => DressingColor.fromJson(json))
           .toList();
-      return right(dressingColors);
+      return dressingColors;
     } catch (e) {
       logger.e(e);
-      return left(const Failure(
-          'Une erreur est survenue lors de la récupération des couleurs de vêtements'));
+      throw const ExceptionMessage(
+          'Une erreur est survenue lors de la récupération des couleurs de vêtements');
     }
   }
 
-  Future<Either<Failure, List<DressingMaterial>>> getDressingMaterials() async {
+  Future<List<DressingMaterial>> getDressingMaterials() async {
     try {
       final response =
           await supabase.dressingMaterialsTable.select<s.PostgrestList>();
       final List<DressingMaterial> dressingMaterials = response
           .map((Map<String, dynamic> json) => DressingMaterial.fromJson(json))
           .toList();
-      return right(dressingMaterials);
+      return dressingMaterials;
     } catch (e) {
       logger.e(e);
-      return left(const Failure(
-          'Une erreur est survenue lors de la récupération des matières de vêtements'));
+      throw const ExceptionMessage(
+          'Une erreur est survenue lors de la récupération des matières de vêtements');
     }
   }
 
-  Future<Either<Failure, List<UserDressing>>> getUsersDressings() async {
+  Future<List<UserDressing>> getUsersDressings() async {
     try {
       if (userController.loggedUser == null) {
-        return left(const Failure('Impossible de récupérer l\'utilisateur'));
+        throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
       }
 
       final response = await supabase.usersDressingsTable
           .select<s.PostgrestList>(
-              'id, users(*), title, dressing_categories(*), dressing_materials(*), dressing_colors(*), belongs_to, notes')
+              'id, users(*), title, dressing_categories(*), dressing_materials(*), dressing_colors(*), belongs_to, notes, image_path')
           .eq('user_id', userController.loggedUser!.id);
 
       final userDressings =
           response.map((data) => UserDressing.fromJson(data)).toList();
-      return right(userDressings);
+      return userDressings;
     } catch (e) {
       logger.e(e);
-      return left(const Failure(
-          'Une erreur est survenue lors de la récupération du vêtement'));
+      throw const ExceptionMessage(
+          'Une erreur est survenue lors de la récupération du vêtement');
     }
   }
 
-  Future<Either<Failure, void>> saveDressingItem(
+  Future<void> saveDressingItem(
     String title,
     DressingCategory category,
     DressingMaterial material,
     DressingColor color,
     String? belongsTo,
     String? notes,
+    File image,
   ) async {
     try {
       if (userController.loggedUser == null) {
-        return left(const Failure('Impossible de récupérer l\'utilisateur'));
+        throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
       }
+
+      final path = await imageStorageRepository.uploadImage(image);
 
       final userDressingDto = UserDressing(
         user: userController.loggedUser!,
@@ -109,19 +119,42 @@ class DressingRepository {
         dressingColor: color,
         belongsTo: belongsTo,
         notes: notes,
+        imagePath: path,
       ).toDto();
 
       await supabase.usersDressingsTable.insert(userDressingDto.toJson());
-
-      return right(unit);
     } catch (e) {
       logger.e(e);
-      return left(
-        const Failure(
-            'Une erreur est survenue lors de la sauvegarde du vêtement'),
-      );
+      throw const ExceptionMessage(
+          'Une erreur est survenue lors de la sauvegarde du vêtement');
     }
   }
+}
+
+@riverpod
+Future<List<DressingCategory>> dressingCategories(
+    DressingCategoriesRef ref) async {
+  final dressingRepository = ref.watch(dressingRepositoryProvider);
+  return ref.notifyOnError(dressingRepository.getDressingCategories);
+}
+
+@riverpod
+Future<List<DressingColor>> dressingColors(DressingColorsRef ref) async {
+  final dressingRepository = ref.watch(dressingRepositoryProvider);
+  return ref.notifyOnError(dressingRepository.getDressingColors);
+}
+
+@riverpod
+Future<List<DressingMaterial>> dressingMaterials(
+    DressingMaterialsRef ref) async {
+  final dressingRepository = ref.watch(dressingRepositoryProvider);
+  return ref.notifyOnError(dressingRepository.getDressingMaterials);
+}
+
+@Riverpod(keepAlive: true)
+Future<List<UserDressing>> usersDressings(UsersDressingsRef ref) async {
+  final dressingRepository = ref.watch(dressingRepositoryProvider);
+  return ref.notifyOnError(dressingRepository.getUsersDressings);
 }
 
 final Provider<DressingRepository> dressingRepositoryProvider =
@@ -130,5 +163,6 @@ final Provider<DressingRepository> dressingRepositoryProvider =
     ref.read(supabaseClientProvider),
     ref.read(loggerProvider),
     ref.read(userControllerProvider.notifier),
+    ref.read(imageStorageRepositoryProvider),
   );
 });

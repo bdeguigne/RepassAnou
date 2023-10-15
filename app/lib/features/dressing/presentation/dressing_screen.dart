@@ -1,12 +1,17 @@
+import 'dart:typed_data';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
+import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
+import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
 import 'package:repasse_anou/features/dressing/presentation/add_dressing_modal.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_screen_view_model.dart';
 import 'package:repasse_anou/design_system/app_bottom_sheet.dart';
 import 'package:repasse_anou/design_system/ink_well.dart';
 import 'package:repasse_anou/design_system/theme.dart';
+import 'package:repasse_anou/features/photo/data/image_storage_repository.dart';
 
 @RoutePage()
 class DressingScreen extends ConsumerStatefulWidget {
@@ -27,7 +32,6 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
     final hasReadDressingMessage =
         ref.read(userControllerProvider)?.hasReadDressingMessage;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      model.getUsersDressings();
       if (hasReadDressingMessage == false) {
         showModalBottomSheet<void>(
           context: context,
@@ -144,8 +148,61 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
     );
   }
 
+  Widget buildDressingItems(AsyncValue<List<UserDressing>> usersDressings) {
+    return usersDressings.when<Widget>(
+      data: (data) {
+        if (data.isEmpty) {
+          return Column(
+            children: buildEmptyDressing(),
+          );
+        }
+
+        return Flexible(
+          child: ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              final dressing = data[index];
+
+              final AsyncValue<Uint8List> image =
+                  ref.watch(ReadImageProvider(dressing.imagePath));
+
+              return image.when(
+                data: (imageData) => ListTile(
+                  title: Text(dressing.title),
+                  subtitle: Text(dressing.dressingCategory.label),
+                  leading: Image.memory(imageData),
+                  trailing: const Icon(Icons.more_vert),
+                ),
+                loading: () => ListTile(
+                  title: Text(dressing.title),
+                  subtitle: Text(dressing.dressingCategory.label),
+                  leading: const CircularProgressIndicator(),
+                  trailing: const Icon(Icons.more_vert),
+                ),
+                error: (error, stackTrace) => ListTile(
+                  title: Text(dressing.title),
+                  subtitle: Text(dressing.dressingCategory.label),
+                  leading: const Text('Erreur'),
+                  trailing: const Icon(Icons.more_vert),
+                ),
+              );
+            },
+          ),
+        );
+      },
+      error: (error, stackTrace) => const Center(
+        child:
+            Text('Une erreur est survenue lors de la récupération du dressing'),
+      ),
+      loading: () => const Center(child: CircularProgressIndicator()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final AsyncValue<List<UserDressing>> usersDressings =
+        ref.watch(usersDressingsProvider);
+
     return SafeArea(
         child: Column(
       children: [
@@ -181,7 +238,7 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
             ],
           ),
         ),
-        ...buildEmptyDressing(),
+        buildDressingItems(usersDressings),
       ],
     ));
   }

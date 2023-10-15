@@ -9,3 +9,8 @@ extension SupabaseExtensions<T> on s.SupabaseClient {
       from('dressing_materials');
   s.SupabaseQueryBuilder get usersDressingsTable => from('users_dressings');
 }
+
+extension SupabaseStorageExtensions<T> on s.SupabaseStorageClient {
+  s.StorageFileApi get commandItemsImagesBucket => from('command_items_images');
+  s.StorageFileApi get dressingImagesBucket => from('dressing_images');
+}

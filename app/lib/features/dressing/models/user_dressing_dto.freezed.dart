@@ -34,6 +34,8 @@ mixin _$UserDressingDto {
   @JsonKey(name: 'belongs_to')
   String? get belongsTo => throw _privateConstructorUsedError;
   String? get notes => throw _privateConstructorUsedError;
+  @JsonKey(name: 'image_path')
+  String get imagePath => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -55,7 +57,8 @@ abstract class $UserDressingDtoCopyWith<$Res> {
       @JsonKey(name: 'dressing_material_id') int dressingMaterialId,
       @JsonKey(name: 'dressing_color_id') int dressingColorId,
       @JsonKey(name: 'belongs_to') String? belongsTo,
-      String? notes});
+      String? notes,
+      @JsonKey(name: 'image_path') String imagePath});
 }
 
 /// @nodoc
@@ -79,6 +82,7 @@ class _$UserDressingDtoCopyWithImpl<$Res, $Val extends UserDressingDto>
     Object? dressingColorId = null,
     Object? belongsTo = freezed,
     Object? notes = freezed,
+    Object? imagePath = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -113,6 +117,10 @@ class _$UserDressingDtoCopyWithImpl<$Res, $Val extends UserDressingDto>
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String?,
+      imagePath: null == imagePath
+          ? _value.imagePath
+          : imagePath // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -133,7 +141,8 @@ abstract class _$$UserDressingDtoImplCopyWith<$Res>
       @JsonKey(name: 'dressing_material_id') int dressingMaterialId,
       @JsonKey(name: 'dressing_color_id') int dressingColorId,
       @JsonKey(name: 'belongs_to') String? belongsTo,
-      String? notes});
+      String? notes,
+      @JsonKey(name: 'image_path') String imagePath});
 }
 
 /// @nodoc
@@ -155,6 +164,7 @@ class __$$UserDressingDtoImplCopyWithImpl<$Res>
     Object? dressingColorId = null,
     Object? belongsTo = freezed,
     Object? notes = freezed,
+    Object? imagePath = null,
   }) {
     return _then(_$UserDressingDtoImpl(
       id: freezed == id
@@ -189,6 +199,10 @@ class __$$UserDressingDtoImplCopyWithImpl<$Res>
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String?,
+      imagePath: null == imagePath
+          ? _value.imagePath
+          : imagePath // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -204,7 +218,8 @@ class _$UserDressingDtoImpl implements _UserDressingDto {
       @JsonKey(name: 'dressing_material_id') required this.dressingMaterialId,
       @JsonKey(name: 'dressing_color_id') required this.dressingColorId,
       @JsonKey(name: 'belongs_to') this.belongsTo,
-      this.notes});
+      this.notes,
+      @JsonKey(name: 'image_path') required this.imagePath});
 
   factory _$UserDressingDtoImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserDressingDtoImplFromJson(json);
@@ -231,10 +246,13 @@ class _$UserDressingDtoImpl implements _UserDressingDto {
   final String? belongsTo;
   @override
   final String? notes;
+  @override
+  @JsonKey(name: 'image_path')
+  final String imagePath;
 
   @override
   String toString() {
-    return 'UserDressingDto(id: $id, userId: $userId, title: $title, dressingCategoryId: $dressingCategoryId, dressingMaterialId: $dressingMaterialId, dressingColorId: $dressingColorId, belongsTo: $belongsTo, notes: $notes)';
+    return 'UserDressingDto(id: $id, userId: $userId, title: $title, dressingCategoryId: $dressingCategoryId, dressingMaterialId: $dressingMaterialId, dressingColorId: $dressingColorId, belongsTo: $belongsTo, notes: $notes, imagePath: $imagePath)';
   }
 
   @override
@@ -253,7 +271,9 @@ class _$UserDressingDtoImpl implements _UserDressingDto {
                 other.dressingColorId == dressingColorId) &&
             (identical(other.belongsTo, belongsTo) ||
                 other.belongsTo == belongsTo) &&
-            (identical(other.notes, notes) || other.notes == notes));
+            (identical(other.notes, notes) || other.notes == notes) &&
+            (identical(other.imagePath, imagePath) ||
+                other.imagePath == imagePath));
   }
 
   @JsonKey(ignore: true)
@@ -267,7 +287,8 @@ class _$UserDressingDtoImpl implements _UserDressingDto {
       dressingMaterialId,
       dressingColorId,
       belongsTo,
-      notes);
+      notes,
+      imagePath);
 
   @JsonKey(ignore: true)
   @override
@@ -295,7 +316,9 @@ abstract class _UserDressingDto implements UserDressingDto {
       required final int dressingMaterialId,
       @JsonKey(name: 'dressing_color_id') required final int dressingColorId,
       @JsonKey(name: 'belongs_to') final String? belongsTo,
-      final String? notes}) = _$UserDressingDtoImpl;
+      final String? notes,
+      @JsonKey(name: 'image_path')
+      required final String imagePath}) = _$UserDressingDtoImpl;
 
   factory _UserDressingDto.fromJson(Map<String, dynamic> json) =
       _$UserDressingDtoImpl.fromJson;
@@ -322,6 +345,9 @@ abstract class _UserDressingDto implements UserDressingDto {
   String? get belongsTo;
   @override
   String? get notes;
+  @override
+  @JsonKey(name: 'image_path')
+  String get imagePath;
   @override
   @JsonKey(ignore: true)
   _$$UserDressingDtoImplCopyWith<_$UserDressingDtoImpl> get copyWith =>

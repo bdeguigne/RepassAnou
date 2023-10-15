@@ -78,11 +78,6 @@ class SignupScreenViewModel extends StateNotifier<SignupScreenViewModelState> {
 
   void submitForm() async {
     if (formKey.currentState?.validate() != null) {
-      print('Form is valid');
-      print('${state.email}');
-      print('${state.firstName}');
-      print('${state.lastName}');
-
       updateIsLoading(true);
 
       await _authController.signUpWithEmailAndPassword(

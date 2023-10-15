@@ -34,6 +34,8 @@ mixin _$UserDressing {
   @JsonKey(name: 'belongs_to')
   String? get belongsTo => throw _privateConstructorUsedError;
   String? get notes => throw _privateConstructorUsedError;
+  @JsonKey(name: 'image_path')
+  String get imagePath => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -55,7 +57,8 @@ abstract class $UserDressingCopyWith<$Res> {
       @JsonKey(name: 'dressing_materials') DressingMaterial dressingMaterial,
       @JsonKey(name: 'dressing_colors') DressingColor dressingColor,
       @JsonKey(name: 'belongs_to') String? belongsTo,
-      String? notes});
+      String? notes,
+      @JsonKey(name: 'image_path') String imagePath});
 
   $UserCopyWith<$Res> get user;
   $DressingCategoryCopyWith<$Res> get dressingCategory;
@@ -84,6 +87,7 @@ class _$UserDressingCopyWithImpl<$Res, $Val extends UserDressing>
     Object? dressingColor = null,
     Object? belongsTo = freezed,
     Object? notes = freezed,
+    Object? imagePath = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -118,6 +122,10 @@ class _$UserDressingCopyWithImpl<$Res, $Val extends UserDressing>
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String?,
+      imagePath: null == imagePath
+          ? _value.imagePath
+          : imagePath // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 
@@ -170,7 +178,8 @@ abstract class _$$UserDressingImplCopyWith<$Res>
       @JsonKey(name: 'dressing_materials') DressingMaterial dressingMaterial,
       @JsonKey(name: 'dressing_colors') DressingColor dressingColor,
       @JsonKey(name: 'belongs_to') String? belongsTo,
-      String? notes});
+      String? notes,
+      @JsonKey(name: 'image_path') String imagePath});
 
   @override
   $UserCopyWith<$Res> get user;
@@ -201,6 +210,7 @@ class __$$UserDressingImplCopyWithImpl<$Res>
     Object? dressingColor = null,
     Object? belongsTo = freezed,
     Object? notes = freezed,
+    Object? imagePath = null,
   }) {
     return _then(_$UserDressingImpl(
       id: freezed == id
@@ -235,6 +245,10 @@ class __$$UserDressingImplCopyWithImpl<$Res>
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String?,
+      imagePath: null == imagePath
+          ? _value.imagePath
+          : imagePath // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -250,7 +264,8 @@ class _$UserDressingImpl extends _UserDressing {
       @JsonKey(name: 'dressing_materials') required this.dressingMaterial,
       @JsonKey(name: 'dressing_colors') required this.dressingColor,
       @JsonKey(name: 'belongs_to') this.belongsTo,
-      this.notes})
+      this.notes,
+      @JsonKey(name: 'image_path') required this.imagePath})
       : super._();
 
   factory _$UserDressingImpl.fromJson(Map<String, dynamic> json) =>
@@ -278,10 +293,13 @@ class _$UserDressingImpl extends _UserDressing {
   final String? belongsTo;
   @override
   final String? notes;
+  @override
+  @JsonKey(name: 'image_path')
+  final String imagePath;
 
   @override
   String toString() {
-    return 'UserDressing(id: $id, user: $user, title: $title, dressingCategory: $dressingCategory, dressingMaterial: $dressingMaterial, dressingColor: $dressingColor, belongsTo: $belongsTo, notes: $notes)';
+    return 'UserDressing(id: $id, user: $user, title: $title, dressingCategory: $dressingCategory, dressingMaterial: $dressingMaterial, dressingColor: $dressingColor, belongsTo: $belongsTo, notes: $notes, imagePath: $imagePath)';
   }
 
   @override
@@ -300,13 +318,24 @@ class _$UserDressingImpl extends _UserDressing {
                 other.dressingColor == dressingColor) &&
             (identical(other.belongsTo, belongsTo) ||
                 other.belongsTo == belongsTo) &&
-            (identical(other.notes, notes) || other.notes == notes));
+            (identical(other.notes, notes) || other.notes == notes) &&
+            (identical(other.imagePath, imagePath) ||
+                other.imagePath == imagePath));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, user, title,
-      dressingCategory, dressingMaterial, dressingColor, belongsTo, notes);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      user,
+      title,
+      dressingCategory,
+      dressingMaterial,
+      dressingColor,
+      belongsTo,
+      notes,
+      imagePath);
 
   @JsonKey(ignore: true)
   @override
@@ -324,17 +353,19 @@ class _$UserDressingImpl extends _UserDressing {
 
 abstract class _UserDressing extends UserDressing {
   factory _UserDressing(
-      {@JsonKey(includeToJson: false) final String? id,
-      @JsonKey(name: 'users') required final User user,
-      required final String title,
-      @JsonKey(name: 'dressing_categories')
-      required final DressingCategory dressingCategory,
-      @JsonKey(name: 'dressing_materials')
-      required final DressingMaterial dressingMaterial,
-      @JsonKey(name: 'dressing_colors')
-      required final DressingColor dressingColor,
-      @JsonKey(name: 'belongs_to') final String? belongsTo,
-      final String? notes}) = _$UserDressingImpl;
+          {@JsonKey(includeToJson: false) final String? id,
+          @JsonKey(name: 'users') required final User user,
+          required final String title,
+          @JsonKey(name: 'dressing_categories')
+          required final DressingCategory dressingCategory,
+          @JsonKey(name: 'dressing_materials')
+          required final DressingMaterial dressingMaterial,
+          @JsonKey(name: 'dressing_colors')
+          required final DressingColor dressingColor,
+          @JsonKey(name: 'belongs_to') final String? belongsTo,
+          final String? notes,
+          @JsonKey(name: 'image_path') required final String imagePath}) =
+      _$UserDressingImpl;
   _UserDressing._() : super._();
 
   factory _UserDressing.fromJson(Map<String, dynamic> json) =
@@ -362,6 +393,9 @@ abstract class _UserDressing extends UserDressing {
   String? get belongsTo;
   @override
   String? get notes;
+  @override
+  @JsonKey(name: 'image_path')
+  String get imagePath;
   @override
   @JsonKey(ignore: true)
   _$$UserDressingImplCopyWith<_$UserDressingImpl> get copyWith =>

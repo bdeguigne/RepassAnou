@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Nous n'utilisons pas la fonctionnalité du micro</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Permets à l'application d'utiliser l'appareil photo afin d'éditer la photo de profil et de dressing</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Permets à l'application de sélectionner une photo depuis la galerie pour le dressing et le profil</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
