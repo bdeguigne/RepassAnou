@@ -47,7 +47,12 @@ const labelMedium = TextStyle(
   color: grey,
   fontFamily: 'Nunito',
 );
-const labelLarge = TextStyle(fontSize: 13.0, fontWeight: FontWeight.w400);
+const labelLarge = TextStyle(
+  fontSize: 14.0,
+  fontWeight: FontWeight.w400,
+  color: grey,
+  fontFamily: 'Nunito',
+);
 const headlineLarge = TextStyle(fontSize: 16, fontWeight: FontWeight.w700);
 const headlineMedium = TextStyle(fontSize: 14, fontWeight: FontWeight.w600);
 const headlineSmall = TextStyle(fontSize: 14, fontWeight: FontWeight.w600);

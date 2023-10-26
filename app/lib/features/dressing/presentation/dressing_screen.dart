@@ -3,6 +3,8 @@ import 'dart:typed_data';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:repasse_anou/design_system/dressing_card.dart';
+import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
 import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
@@ -24,6 +26,8 @@ class DressingScreen extends ConsumerStatefulWidget {
 class _DressingScreenState extends ConsumerState<DressingScreen> {
   late DressingScreenViewModel model =
       ref.read(dressingScreenViewModelProvider.notifier);
+
+  final List<UserDressing> selectedDressing = [];
 
   @override
   void initState() {
@@ -160,30 +164,44 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
         return Flexible(
           child: ListView.builder(
             itemCount: data.length,
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             itemBuilder: (context, index) {
               final dressing = data[index];
+              final bool isLastItem = data.length - 1 != index;
+              final padding = EdgeInsets.only(right: isLastItem ? 20 : 0);
 
               final AsyncValue<Uint8List> image =
                   ref.watch(ReadImageProvider(dressing.imagePath));
 
               return image.when(
-                data: (imageData) => ListTile(
-                  title: Text(dressing.title),
-                  subtitle: Text(dressing.dressingCategory.label),
-                  leading: Image.memory(imageData),
-                  trailing: const Icon(Icons.more_vert),
+                data: (imageData) => Padding(
+                  padding: padding,
+                  child: DressingCard(
+                    title: dressing.title,
+                    image: imageData,
+                    selected: selectedDressing.contains(dressing),
+                    onSelected: (bool? value) {
+                      setState(() {
+                        value == true
+                            ? selectedDressing.add(dressing)
+                            : selectedDressing.remove(dressing);
+                      });
+                    },
+                    onLongPress: () {
+                      // TODO: edit dressing
+                      print('ON LONG PRESS ${dressing.id}');
+                    },
+                  ),
                 ),
-                loading: () => ListTile(
-                  title: Text(dressing.title),
-                  subtitle: Text(dressing.dressingCategory.label),
-                  leading: const CircularProgressIndicator(),
-                  trailing: const Icon(Icons.more_vert),
+                loading: () => Padding(
+                  padding: padding,
+                  child: const DressingCard(
+                    isLoading: true,
+                  ),
                 ),
-                error: (error, stackTrace) => ListTile(
-                  title: Text(dressing.title),
-                  subtitle: Text(dressing.dressingCategory.label),
-                  leading: const Text('Erreur'),
-                  trailing: const Icon(Icons.more_vert),
+                error: (error, stackTrace) => const DressingCard(
+                  isLoading: true,
                 ),
               );
             },
@@ -194,7 +212,18 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
         child:
             Text('Une erreur est survenue lors de la récupération du dressing'),
       ),
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => Flexible(
+        child: ListView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            children: List.generate(
+              3,
+              (index) => const Padding(
+                padding: EdgeInsets.only(right: 20),
+                child: DressingCard(isLoading: true),
+              ),
+            )),
+      ),
     );
   }
 
@@ -203,8 +232,9 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
     final AsyncValue<List<UserDressing>> usersDressings =
         ref.watch(usersDressingsProvider);
 
-    return SafeArea(
+    return AppLayout(
         child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.all(20),
@@ -237,6 +267,25 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
               ),
             ],
           ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Dressing de').headlineMedium,
+              Text(
+                'Voir tout',
+                style: labelLarge.copyWith(color: const Color(0xFF9B9B9B)),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 12,
         ),
         buildDressingItems(usersDressings),
       ],

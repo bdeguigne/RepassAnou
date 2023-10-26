@@ -106,11 +106,17 @@ class AddDressingModal extends HookConsumerWidget {
                         ? 'Veuillez sélectionner une catégorie'
                         : null,
                     hint: 'T-shirt, jupe, short...',
+                    value: selectedCategory.value?.label,
                     items: dressingCategories.value!
                         .map(
                           (category) => DropdownMenuItem<DressingCategory?>(
                             value: category,
-                            child: Text(category.label).bodyMedium,
+                            child: Text(
+                              category.label,
+                              style: bodyMedium.copyWith(
+                                color: const Color(0xff6E7590),
+                              ),
+                            ),
                           ),
                         )
                         .toList()),
@@ -124,13 +130,19 @@ class AddDressingModal extends HookConsumerWidget {
                   validator: (value) => value == null
                       ? 'Veuillez sélectionner une matière'
                       : null,
+                  value: selectedMaterial.value?.label,
                   onChanged: (value) => selectedMaterial.value = value,
                   hint: 'Coton, soie, laine...',
                   items: dressingMaterials.value!
                       .map(
                         (category) => DropdownMenuItem<DressingMaterial?>(
                           value: category,
-                          child: Text(category.label).bodyMedium,
+                          child: Text(
+                            category.label,
+                            style: bodyMedium.copyWith(
+                              color: const Color(0xff6E7590),
+                            ),
+                          ),
                         ),
                       )
                       .toList(),
@@ -146,12 +158,18 @@ class AddDressingModal extends HookConsumerWidget {
                   validator: (value) => value == null
                       ? 'Veuillez sélectionner une couleur'
                       : null,
+                  value: selectedColor.value?.label,
                   hint: 'Noir, blanc ou couleur',
                   items: dressingColors.value!
                       .map(
                         (category) => DropdownMenuItem<DressingColor?>(
                           value: category,
-                          child: Text(category.label).bodyMedium,
+                          child: Text(
+                            category.label,
+                            style: bodyMedium.copyWith(
+                              color: const Color(0xff6E7590),
+                            ),
+                          ),
                         ),
                       )
                       .toList(),
