@@ -83,6 +83,7 @@ final ThemeData appTheme = ThemeData(
           transitionType: SharedAxisTransitionType.horizontal),
     },
   ),
+  splashColor: Colors.white24,
   textTheme: const TextTheme(
     bodyLarge: bodyLarge,
     bodyMedium: bodyMedium,
@@ -98,11 +99,8 @@ final ThemeData appTheme = ThemeData(
     displayMedium: displayMedium,
   ),
   checkboxTheme: CheckboxThemeData(
-    fillColor: MaterialStateProperty.all(checkBoxBackgroundColor),
-    checkColor: MaterialStateProperty.all(Colors.black),
-    side: const BorderSide(
-      color: checkBoxBackgroundColor,
-    ),
+    fillColor: MaterialStateProperty.all(Colors.black),
+    checkColor: MaterialStateProperty.all(Colors.white),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(

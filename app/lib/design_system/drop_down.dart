@@ -3,6 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 
+class AppDropdownMenuItem<T> {
+  const AppDropdownMenuItem({
+    required this.value,
+    required this.label,
+  });
+
+  final T value;
+  final String label;
+}
+
 class DropDown<T> extends HookWidget {
   const DropDown({
     required this.onChanged,
@@ -14,14 +24,14 @@ class DropDown<T> extends HookWidget {
   });
 
   final void Function(T?)? onChanged;
-  final List<DropdownMenuItem<T>>? items;
+  final List<AppDropdownMenuItem<T>>? items;
   final String? hint;
   final String? Function(T?)? validator;
-  final String? value;
+  final T? value;
 
   @override
   Widget build(BuildContext context) {
-    final selectedValue = useState<T?>(null);
+    final selectedValue = useState<T?>(value);
     final isMenuOpen = useState<bool>(false);
 
     Widget buildDropdown(bool isOpen) {
@@ -66,14 +76,26 @@ class DropDown<T> extends HookWidget {
           selectedValue.value = value;
           onChanged?.call(value);
         },
-        items: items,
+        items: items
+            ?.map(
+              (category) => DropdownMenuItem<T>(
+                value: category.value,
+                child: Text(
+                  category.label,
+                  style: bodyMedium.copyWith(
+                    color: const Color(0xff6E7590),
+                  ),
+                ),
+              ),
+            )
+            .toList(),
         selectedItemBuilder: items != null
             ? (context) => items!.map((item) {
                   return value != null
                       ? Padding(
                           padding:
                               const EdgeInsets.only(top: 12.0, bottom: 8.0),
-                          child: Text(value!).bodyLarge,
+                          child: Text(item.label).bodyLarge,
                         )
                       : Container();
                 }).toList()

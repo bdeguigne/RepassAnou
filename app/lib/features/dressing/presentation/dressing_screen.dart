@@ -8,7 +8,7 @@ import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
 import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
-import 'package:repasse_anou/features/dressing/presentation/add_dressing_modal.dart';
+import 'package:repasse_anou/features/dressing/presentation/dressing_modal.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_screen_view_model.dart';
 import 'package:repasse_anou/design_system/app_bottom_sheet.dart';
 import 'package:repasse_anou/design_system/ink_well.dart';
@@ -189,8 +189,14 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
                       });
                     },
                     onLongPress: () {
-                      // TODO: edit dressing
-                      print('ON LONG PRESS ${dressing.id}');
+                      showDialog<void>(
+                        context: context,
+                        builder: (context) {
+                          return DressingModal(
+                            userDressing: dressing,
+                          );
+                        },
+                      );
                     },
                   ),
                 ),
@@ -260,7 +266,7 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
                   showDialog<void>(
                     context: context,
                     builder: (context) {
-                      return AddDressingModal();
+                      return DressingModal();
                     },
                   );
                 },

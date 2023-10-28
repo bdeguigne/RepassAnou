@@ -13,14 +13,17 @@ import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_category.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_material.dart';
+import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
 import 'package:repasse_anou/features/photo/presentation/rounded_photo_picker.dart';
 import 'package:repasse_anou/utils/input_validator.dart';
 import 'package:repasse_anou/utils/messenger_controller.dart';
 
-class AddDressingModal extends HookConsumerWidget {
-  AddDressingModal({super.key});
+class DressingModal extends HookConsumerWidget {
+  DressingModal({super.key, this.userDressing});
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final UserDressing? userDressing;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,12 +36,15 @@ class AddDressingModal extends HookConsumerWidget {
     final AsyncValue<void> addDressingState =
         ref.watch(addDressingModalControllerProvider);
 
-    final titleController = useTextEditingController();
-    final belongsToController = useTextEditingController();
-    final notesController = useTextEditingController();
-    final selectedCategory = useState<DressingCategory?>(null);
-    final selectedMaterial = useState<DressingMaterial?>(null);
-    final selectedColor = useState<DressingColor?>(null);
+    final titleController = useTextEditingController(text: userDressing?.title);
+    final belongsToController =
+        useTextEditingController(text: userDressing?.belongsTo);
+    final notesController = useTextEditingController(text: userDressing?.notes);
+    final selectedCategory =
+        useState<DressingCategory?>(userDressing?.dressingCategory);
+    final selectedMaterial =
+        useState<DressingMaterial?>(userDressing?.dressingMaterial);
+    final selectedColor = useState<DressingColor?>(userDressing?.dressingColor);
     final imageTaken = useState<XFile?>(null);
 
     Future<void> saveDressingAndCloseModal() async {
@@ -101,25 +107,21 @@ class AddDressingModal extends HookConsumerWidget {
               LabelContent(
                 title: 'Catégorie',
                 child: DropDown<DressingCategory?>(
-                    onChanged: (value) => selectedCategory.value = value,
-                    validator: (value) => value == null
-                        ? 'Veuillez sélectionner une catégorie'
-                        : null,
-                    hint: 'T-shirt, jupe, short...',
-                    value: selectedCategory.value?.label,
-                    items: dressingCategories.value!
-                        .map(
-                          (category) => DropdownMenuItem<DressingCategory?>(
-                            value: category,
-                            child: Text(
-                              category.label,
-                              style: bodyMedium.copyWith(
-                                color: const Color(0xff6E7590),
-                              ),
-                            ),
-                          ),
-                        )
-                        .toList()),
+                  onChanged: (value) => selectedCategory.value = value,
+                  validator: (value) => value == null
+                      ? 'Veuillez sélectionner une catégorie'
+                      : null,
+                  hint: 'T-shirt, jupe, short...',
+                  value: selectedCategory.value,
+                  items: dressingCategories.value!
+                      .map(
+                        (category) => AppDropdownMenuItem<DressingCategory?>(
+                          value: category,
+                          label: category.label,
+                        ),
+                      )
+                      .toList(),
+                ),
               ),
               const SizedBox(
                 height: 10,
@@ -130,19 +132,14 @@ class AddDressingModal extends HookConsumerWidget {
                   validator: (value) => value == null
                       ? 'Veuillez sélectionner une matière'
                       : null,
-                  value: selectedMaterial.value?.label,
+                  value: selectedMaterial.value,
                   onChanged: (value) => selectedMaterial.value = value,
                   hint: 'Coton, soie, laine...',
                   items: dressingMaterials.value!
                       .map(
-                        (category) => DropdownMenuItem<DressingMaterial?>(
+                        (category) => AppDropdownMenuItem<DressingMaterial?>(
                           value: category,
-                          child: Text(
-                            category.label,
-                            style: bodyMedium.copyWith(
-                              color: const Color(0xff6E7590),
-                            ),
-                          ),
+                          label: category.label,
                         ),
                       )
                       .toList(),
@@ -158,18 +155,13 @@ class AddDressingModal extends HookConsumerWidget {
                   validator: (value) => value == null
                       ? 'Veuillez sélectionner une couleur'
                       : null,
-                  value: selectedColor.value?.label,
+                  value: selectedColor.value,
                   hint: 'Noir, blanc ou couleur',
                   items: dressingColors.value!
                       .map(
-                        (category) => DropdownMenuItem<DressingColor?>(
+                        (category) => AppDropdownMenuItem<DressingColor?>(
                           value: category,
-                          child: Text(
-                            category.label,
-                            style: bodyMedium.copyWith(
-                              color: const Color(0xff6E7590),
-                            ),
-                          ),
+                          label: category.label,
                         ),
                       )
                       .toList(),

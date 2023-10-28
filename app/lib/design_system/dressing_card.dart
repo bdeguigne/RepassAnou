@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:repasse_anou/design_system/app_checkbox.dart';
 import 'package:repasse_anou/design_system/ink_well.dart';
 import 'package:repasse_anou/design_system/shimmer_loading.dart';
 import 'package:repasse_anou/design_system/theme.dart';
@@ -108,7 +109,7 @@ class DressingCard extends HookWidget {
                   ),
                   Align(
                     alignment: Alignment.bottomRight,
-                    child: Checkbox(
+                    child: AppCheckbox(
                       value: onSelected != null ? selected : false,
                       onChanged: onSelected,
                     ),
