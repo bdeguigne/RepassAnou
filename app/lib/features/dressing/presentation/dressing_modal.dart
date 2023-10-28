@@ -25,6 +25,8 @@ class DressingModal extends HookConsumerWidget {
 
   final UserDressing? userDressing;
 
+  bool get isEditing => userDressing != null;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<List<DressingCategory>> dressingCategories =
@@ -58,6 +60,27 @@ class DressingModal extends HookConsumerWidget {
             belongsToController.text,
             notesController.text,
             File(imageTaken.value!.path),
+          );
+
+      if (success == true && context.mounted) {
+        // ignore: unused_result
+        ref.refresh(usersDressingsProvider);
+        Navigator.pop(context);
+      }
+    }
+
+    Future<void> editDressingAndCloseModal() async {
+      final success = await ref
+          .read(addDressingModalControllerProvider.notifier)
+          .editDressingItem(
+            titleController.text,
+            selectedCategory.value!,
+            selectedMaterial.value!,
+            selectedColor.value!,
+            belongsToController.text,
+            notesController.text,
+            // File(imageTaken.value!.path),
+            userDressing!,
           );
 
       if (success == true && context.mounted) {
@@ -208,10 +231,13 @@ class DressingModal extends HookConsumerWidget {
                     }
                     if (_formKey.currentState!.validate() &&
                         imageTaken.value != null) {
-                      saveDressingAndCloseModal();
+                      isEditing
+                          ? editDressingAndCloseModal()
+                          : saveDressingAndCloseModal();
                     }
                   },
-                  child: const Text('Terminer').headlineLargeWhite,
+                  child: Text(isEditing ? 'Modifier' : 'Terminer')
+                      .headlineLargeWhite,
                 ),
               ),
             ],

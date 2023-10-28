@@ -129,6 +129,45 @@ class DressingRepository {
           'Une erreur est survenue lors de la sauvegarde du vêtement');
     }
   }
+
+  Future<void> editDressingItem(
+    String title,
+    DressingCategory category,
+    DressingMaterial material,
+    DressingColor color,
+    String? belongsTo,
+    String? notes,
+    // File image,
+    UserDressing userDressing,
+  ) async {
+    try {
+      if (userController.loggedUser == null) {
+        throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
+      }
+
+      // final path = await imageStorageRepository.uploadImage(image);
+
+      final userDressingDto = userDressing
+          .copyWith(
+            title: title,
+            dressingCategory: category,
+            dressingMaterial: material,
+            dressingColor: color,
+            belongsTo: belongsTo,
+            notes: notes,
+            // imagePath: path,
+          )
+          .toDto();
+
+      await supabase.usersDressingsTable
+          .update(userDressingDto.toJson())
+          .eq('id', userDressing.id);
+    } catch (e) {
+      logger.e(e);
+      throw const ExceptionMessage(
+          'Une erreur est survenue lors de la sauvegarde du vêtement');
+    }
+  }
 }
 
 @riverpod
