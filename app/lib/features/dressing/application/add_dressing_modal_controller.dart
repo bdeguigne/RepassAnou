@@ -22,6 +22,7 @@ class AddDressingModalController extends _$AddDressingModalController {
     String belongsTo,
     String notes,
     File image,
+    bool isFavorite,
   ) async {
     final DressingRepository dressingRepository =
         ref.read(dressingRepositoryProvider);
@@ -29,7 +30,7 @@ class AddDressingModalController extends _$AddDressingModalController {
 
     state = await ref.guardAndNotifyOnError(
       () => dressingRepository.saveDressingItem(title, selectedCategory,
-          selectedMaterial, selectedColor, belongsTo, notes, image),
+          selectedMaterial, selectedColor, belongsTo, notes, image, isFavorite),
       successMessage: 'Vêtement enregistré avec succès',
     );
 
@@ -62,6 +63,22 @@ class AddDressingModalController extends _$AddDressingModalController {
         dressingItem,
       ),
       successMessage: 'Vêtement modifié avec succès',
+    );
+
+    return state.hasError == false;
+  }
+
+  Future<bool> editFavoriteDressingItem(
+      bool isFavorite, UserDressing dressingItem) async {
+    final DressingRepository dressingRepository =
+        ref.read(dressingRepositoryProvider);
+    state = const AsyncLoading();
+
+    state = await ref.guardAndNotifyOnError(
+      () =>
+          dressingRepository.editFavoriteDressingItem(isFavorite, dressingItem),
+      successMessage:
+          'Vêtement ${isFavorite == true ? "ajouté" : "supprimé"} des favoris',
     );
 
     return state.hasError == false;

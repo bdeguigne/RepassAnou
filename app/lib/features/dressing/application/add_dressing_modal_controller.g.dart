@@ -7,7 +7,7 @@ part of 'add_dressing_modal_controller.dart';
 // **************************************************************************
 
 String _$addDressingModalControllerHash() =>
-    r'0c94af0e82dc49e8de5c56bbe46c3899ec830f23';
+    r'e96074622f8ca24f1ae59259f3c596fb21c2f002';
 
 /// See also [AddDressingModalController].
 @ProviderFor(AddDressingModalController)

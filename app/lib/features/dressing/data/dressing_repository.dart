@@ -82,7 +82,7 @@ class DressingRepository {
 
       final response = await supabase.usersDressingsTable
           .select<s.PostgrestList>(
-              'id, users(*), title, dressing_categories(*), dressing_materials(*), dressing_colors(*), belongs_to, notes, image_path')
+              'id, users(*), title, dressing_categories(*), dressing_materials(*), dressing_colors(*), belongs_to, notes, image_path, is_favorite')
           .eq('user_id', userController.loggedUser!.id);
 
       final userDressings =
@@ -103,6 +103,7 @@ class DressingRepository {
     String? belongsTo,
     String? notes,
     File image,
+    bool isFavorite,
   ) async {
     try {
       if (userController.loggedUser == null) {
@@ -120,6 +121,7 @@ class DressingRepository {
         belongsTo: belongsTo,
         notes: notes,
         imagePath: path,
+        isFavorite: isFavorite,
       ).toDto();
 
       await supabase.usersDressingsTable.insert(userDressingDto.toJson());
@@ -161,6 +163,27 @@ class DressingRepository {
 
       await supabase.usersDressingsTable
           .update(userDressingDto.toJson())
+          .eq('id', userDressing.id);
+    } catch (e) {
+      logger.e(e);
+      throw const ExceptionMessage(
+          'Une erreur est survenue lors de la sauvegarde du vêtement');
+    }
+  }
+
+  Future<void> editFavoriteDressingItem(
+    bool isFavorite,
+    UserDressing userDressing,
+  ) async {
+    try {
+      if (userController.loggedUser == null) {
+        throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
+      }
+
+      final userDressingDto = userDressing.copyWith(isFavorite: isFavorite);
+
+      await supabase.usersDressingsTable
+          .update(userDressingDto.toDto().toJson())
           .eq('id', userDressing.id);
     } catch (e) {
       logger.e(e);

@@ -165,11 +165,11 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
           child: ListView.builder(
             itemCount: data.length,
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             itemBuilder: (context, index) {
               final dressing = data[index];
               final bool isLastItem = data.length - 1 != index;
-              final padding = EdgeInsets.only(right: isLastItem ? 20 : 0);
+              final padding = EdgeInsets.only(right: isLastItem ? 4 : 0);
 
               final AsyncValue<Uint8List> image =
                   ref.watch(ReadImageProvider(dressing.imagePath));
@@ -181,6 +181,7 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
                     title: dressing.title,
                     image: imageData,
                     selected: selectedDressing.contains(dressing),
+                    isFavorite: dressing.isFavorite,
                     onSelected: (bool? value) {
                       setState(() {
                         value == true
@@ -221,11 +222,11 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
       loading: () => Flexible(
         child: ListView(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             children: List.generate(
               3,
               (index) => const Padding(
-                padding: EdgeInsets.only(right: 20),
+                padding: EdgeInsets.only(right: 4),
                 child: DressingCard(isLoading: true),
               ),
             )),
@@ -290,9 +291,9 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
             ],
           ),
         ),
-        const SizedBox(
-          height: 12,
-        ),
+        // const SizedBox(
+        //   height: 12,
+        // ),
         buildDressingItems(usersDressings),
       ],
     ));

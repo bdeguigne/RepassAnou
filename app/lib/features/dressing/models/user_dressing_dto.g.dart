@@ -18,6 +18,7 @@ _$UserDressingDtoImpl _$$UserDressingDtoImplFromJson(
       belongsTo: json['belongs_to'] as String?,
       notes: json['notes'] as String?,
       imagePath: json['image_path'] as String,
+      isFavorite: json['is_favorite'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$UserDressingDtoImplToJson(
@@ -31,4 +32,5 @@ Map<String, dynamic> _$$UserDressingDtoImplToJson(
       'belongs_to': instance.belongsTo,
       'notes': instance.notes,
       'image_path': instance.imagePath,
+      'is_favorite': instance.isFavorite,
     };

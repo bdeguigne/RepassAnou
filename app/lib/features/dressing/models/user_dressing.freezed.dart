@@ -36,6 +36,8 @@ mixin _$UserDressing {
   String? get notes => throw _privateConstructorUsedError;
   @JsonKey(name: 'image_path')
   String get imagePath => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_favorite')
+  bool get isFavorite => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -58,7 +60,8 @@ abstract class $UserDressingCopyWith<$Res> {
       @JsonKey(name: 'dressing_colors') DressingColor dressingColor,
       @JsonKey(name: 'belongs_to') String? belongsTo,
       String? notes,
-      @JsonKey(name: 'image_path') String imagePath});
+      @JsonKey(name: 'image_path') String imagePath,
+      @JsonKey(name: 'is_favorite') bool isFavorite});
 
   $UserCopyWith<$Res> get user;
   $DressingCategoryCopyWith<$Res> get dressingCategory;
@@ -88,6 +91,7 @@ class _$UserDressingCopyWithImpl<$Res, $Val extends UserDressing>
     Object? belongsTo = freezed,
     Object? notes = freezed,
     Object? imagePath = null,
+    Object? isFavorite = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -126,6 +130,10 @@ class _$UserDressingCopyWithImpl<$Res, $Val extends UserDressing>
           ? _value.imagePath
           : imagePath // ignore: cast_nullable_to_non_nullable
               as String,
+      isFavorite: null == isFavorite
+          ? _value.isFavorite
+          : isFavorite // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -179,7 +187,8 @@ abstract class _$$UserDressingImplCopyWith<$Res>
       @JsonKey(name: 'dressing_colors') DressingColor dressingColor,
       @JsonKey(name: 'belongs_to') String? belongsTo,
       String? notes,
-      @JsonKey(name: 'image_path') String imagePath});
+      @JsonKey(name: 'image_path') String imagePath,
+      @JsonKey(name: 'is_favorite') bool isFavorite});
 
   @override
   $UserCopyWith<$Res> get user;
@@ -211,6 +220,7 @@ class __$$UserDressingImplCopyWithImpl<$Res>
     Object? belongsTo = freezed,
     Object? notes = freezed,
     Object? imagePath = null,
+    Object? isFavorite = null,
   }) {
     return _then(_$UserDressingImpl(
       id: freezed == id
@@ -249,6 +259,10 @@ class __$$UserDressingImplCopyWithImpl<$Res>
           ? _value.imagePath
           : imagePath // ignore: cast_nullable_to_non_nullable
               as String,
+      isFavorite: null == isFavorite
+          ? _value.isFavorite
+          : isFavorite // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -265,7 +279,8 @@ class _$UserDressingImpl extends _UserDressing {
       @JsonKey(name: 'dressing_colors') required this.dressingColor,
       @JsonKey(name: 'belongs_to') this.belongsTo,
       this.notes,
-      @JsonKey(name: 'image_path') required this.imagePath})
+      @JsonKey(name: 'image_path') required this.imagePath,
+      @JsonKey(name: 'is_favorite') this.isFavorite = false})
       : super._();
 
   factory _$UserDressingImpl.fromJson(Map<String, dynamic> json) =>
@@ -296,10 +311,13 @@ class _$UserDressingImpl extends _UserDressing {
   @override
   @JsonKey(name: 'image_path')
   final String imagePath;
+  @override
+  @JsonKey(name: 'is_favorite')
+  final bool isFavorite;
 
   @override
   String toString() {
-    return 'UserDressing(id: $id, user: $user, title: $title, dressingCategory: $dressingCategory, dressingMaterial: $dressingMaterial, dressingColor: $dressingColor, belongsTo: $belongsTo, notes: $notes, imagePath: $imagePath)';
+    return 'UserDressing(id: $id, user: $user, title: $title, dressingCategory: $dressingCategory, dressingMaterial: $dressingMaterial, dressingColor: $dressingColor, belongsTo: $belongsTo, notes: $notes, imagePath: $imagePath, isFavorite: $isFavorite)';
   }
 
   @override
@@ -320,7 +338,9 @@ class _$UserDressingImpl extends _UserDressing {
                 other.belongsTo == belongsTo) &&
             (identical(other.notes, notes) || other.notes == notes) &&
             (identical(other.imagePath, imagePath) ||
-                other.imagePath == imagePath));
+                other.imagePath == imagePath) &&
+            (identical(other.isFavorite, isFavorite) ||
+                other.isFavorite == isFavorite));
   }
 
   @JsonKey(ignore: true)
@@ -335,7 +355,8 @@ class _$UserDressingImpl extends _UserDressing {
       dressingColor,
       belongsTo,
       notes,
-      imagePath);
+      imagePath,
+      isFavorite);
 
   @JsonKey(ignore: true)
   @override
@@ -364,7 +385,8 @@ abstract class _UserDressing extends UserDressing {
           required final DressingColor dressingColor,
           @JsonKey(name: 'belongs_to') final String? belongsTo,
           final String? notes,
-          @JsonKey(name: 'image_path') required final String imagePath}) =
+          @JsonKey(name: 'image_path') required final String imagePath,
+          @JsonKey(name: 'is_favorite') final bool isFavorite}) =
       _$UserDressingImpl;
   _UserDressing._() : super._();
 
@@ -396,6 +418,9 @@ abstract class _UserDressing extends UserDressing {
   @override
   @JsonKey(name: 'image_path')
   String get imagePath;
+  @override
+  @JsonKey(name: 'is_favorite')
+  bool get isFavorite;
   @override
   @JsonKey(ignore: true)
   _$$UserDressingImplCopyWith<_$UserDressingImpl> get copyWith =>

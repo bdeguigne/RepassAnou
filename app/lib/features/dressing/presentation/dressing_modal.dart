@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/design_system/app_text_field.dart';
 import 'package:repasse_anou/design_system/drop_down.dart';
 import 'package:repasse_anou/design_system/label_content.dart';
@@ -48,6 +49,7 @@ class DressingModal extends HookConsumerWidget {
         useState<DressingMaterial?>(userDressing?.dressingMaterial);
     final selectedColor = useState<DressingColor?>(userDressing?.dressingColor);
     final imageTaken = useState<XFile?>(null);
+    final isFavorite = useState<bool>(userDressing?.isFavorite ?? false);
 
     Future<void> saveDressingAndCloseModal() async {
       final success = await ref
@@ -60,6 +62,7 @@ class DressingModal extends HookConsumerWidget {
             belongsToController.text,
             notesController.text,
             File(imageTaken.value!.path),
+            isFavorite.value,
           );
 
       if (success == true && context.mounted) {
@@ -90,6 +93,20 @@ class DressingModal extends HookConsumerWidget {
       }
     }
 
+    Future<void> editFavorite() async {
+      final success = await ref
+          .read(addDressingModalControllerProvider.notifier)
+          .editFavoriteDressingItem(
+            isFavorite.value,
+            userDressing!,
+          );
+
+      if (success == true && context.mounted) {
+        // ignore: unused_result
+        ref.refresh(usersDressingsProvider);
+      }
+    }
+
     Widget buildContent() {
       if (dressingCategories.isLoading ||
           dressingColors.isLoading ||
@@ -113,8 +130,26 @@ class DressingModal extends HookConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  onPressed: () {
+                    isFavorite.value = !isFavorite.value;
+                    if (isEditing) {
+                      editFavorite();
+                    }
+                  },
+                  icon: SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: isFavorite.value
+                        ? AppIcons.heartFill
+                        : SizedBox(child: AppIcons.heart),
+                  ),
+                ),
+              ),
               const SizedBox(
-                height: 65,
+                height: 24,
               ),
               LabelContent(
                 title: 'Intitulé',
