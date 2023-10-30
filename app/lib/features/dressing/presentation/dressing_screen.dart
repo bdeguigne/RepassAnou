@@ -8,12 +8,14 @@ import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
 import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
+import 'package:repasse_anou/features/dressing/presentation/dressing_detail_screen.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_modal.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_screen_view_model.dart';
 import 'package:repasse_anou/design_system/app_bottom_sheet.dart';
 import 'package:repasse_anou/design_system/ink_well.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 import 'package:repasse_anou/features/photo/data/image_storage_repository.dart';
+import 'package:repasse_anou/routing/navigation_controller.dart';
 
 @RoutePage()
 class DressingScreen extends ConsumerStatefulWidget {
@@ -26,6 +28,8 @@ class DressingScreen extends ConsumerStatefulWidget {
 class _DressingScreenState extends ConsumerState<DressingScreen> {
   late DressingScreenViewModel model =
       ref.read(dressingScreenViewModelProvider.notifier);
+  late NavigationController navigationController =
+      ref.read(navigationControllerProvider);
 
   final List<UserDressing> selectedDressing = [];
 
@@ -182,21 +186,10 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
                     image: imageData,
                     selected: selectedDressing.contains(dressing),
                     isFavorite: dressing.isFavorite,
-                    onSelected: (bool? value) {
-                      setState(() {
-                        value == true
-                            ? selectedDressing.add(dressing)
-                            : selectedDressing.remove(dressing);
-                      });
-                    },
-                    onLongPress: () {
-                      showDialog<void>(
-                        context: context,
-                        builder: (context) {
-                          return DressingModal(
-                            userDressing: dressing,
-                          );
-                        },
+                    openBuilder: (context, action) {
+                      return DressingDetailScreen(
+                        imageData: imageData,
+                        userDressing: dressing,
                       );
                     },
                   ),

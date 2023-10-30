@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:repasse_anou/design_system/app_checkbox.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
-import 'package:repasse_anou/design_system/ink_well.dart';
 import 'package:repasse_anou/design_system/shimmer_loading.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 
@@ -16,8 +16,10 @@ class DressingCard extends HookWidget {
     this.image,
     this.selected = false,
     this.onSelected,
-    this.onLongPress,
+    this.onLongPressed,
+    this.onPressed,
     this.isFavorite = false,
+    this.openBuilder,
   });
 
   final String? title;
@@ -25,7 +27,9 @@ class DressingCard extends HookWidget {
   final Uint8List? image;
   final bool selected;
   final void Function(bool?)? onSelected;
-  final void Function()? onLongPress;
+  final void Function()? onPressed;
+  final void Function()? onLongPressed;
+  final Widget Function(BuildContext, void Function())? openBuilder;
   final bool isFavorite;
 
   @override
@@ -100,36 +104,51 @@ class DressingCard extends HookWidget {
                             spreadRadius: 0,
                           )
                         ]),
-                        child: AppInkWell(
-                          radius: const BorderRadius.all(Radius.circular(10)),
-                          onTap: () => onSelected?.call(!selected),
-                          onLongPress: () => onLongPress?.call(),
-                          child: ClipRRect(
+                        child: OpenContainer(
+                          tappable: true,
+                          openElevation: 0,
+                          closedElevation: 0,
+                          transitionType: ContainerTransitionType.fade,
+                          transitionDuration: const Duration(milliseconds: 350),
+                          openShape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
-                            child: image != null
-                                ? SizedBox(
-                                    width: 124,
-                                    height: 172,
-                                    child: Image.memory(
-                                      image!,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )
-                                : Container(),
+                          ),
+                          closedShape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          openBuilder: openBuilder ??
+                              (context, action) {
+                                return Container();
+                              },
+                          closedBuilder: (context, action) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: image != null
+                                  ? SizedBox(
+                                      width: 124,
+                                      height: 172,
+                                      child: Image.memory(
+                                        image!,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )
+                                  : Container(),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    if (onSelected != null)
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: AppCheckbox(
+                            value: onSelected != null ? selected : false,
+                            onChanged: onSelected,
                           ),
                         ),
                       ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: AppCheckbox(
-                          value: onSelected != null ? selected : false,
-                          onChanged: onSelected,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),

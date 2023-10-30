@@ -6,11 +6,15 @@ class LabelContent extends StatelessWidget {
   const LabelContent({
     required this.title,
     required this.child,
+    this.titleTextStyle,
+    this.spacing = 5,
     super.key,
   });
 
   final String title;
   final Widget child;
+  final TextStyle? titleTextStyle;
+  final double spacing;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +24,9 @@ class LabelContent extends StatelessWidget {
       children: [
         Text(
           title,
-          style: bodyMedium.copyWith(color: blackVariant),
+          style: titleTextStyle ?? bodyMedium.copyWith(color: blackVariant),
         ),
-        const SizedBox(height: 5),
+        SizedBox(height: spacing),
         child,
       ],
     );

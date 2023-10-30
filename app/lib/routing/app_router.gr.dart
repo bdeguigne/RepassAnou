@@ -21,6 +21,17 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const AccountScreen(),
       );
     },
+    DressingDetailRoute.name: (routeData) {
+      final args = routeData.argsAs<DressingDetailRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: DressingDetailScreen(
+          key: args.key,
+          userDressing: args.userDressing,
+          imageData: args.imageData,
+        ),
+      );
+    },
     DressingRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -78,6 +89,49 @@ class AccountRoute extends PageRouteInfo<void> {
   static const String name = 'AccountRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [DressingDetailScreen]
+class DressingDetailRoute extends PageRouteInfo<DressingDetailRouteArgs> {
+  DressingDetailRoute({
+    Key? key,
+    required UserDressing userDressing,
+    required Uint8List imageData,
+    List<PageRouteInfo>? children,
+  }) : super(
+          DressingDetailRoute.name,
+          args: DressingDetailRouteArgs(
+            key: key,
+            userDressing: userDressing,
+            imageData: imageData,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'DressingDetailRoute';
+
+  static const PageInfo<DressingDetailRouteArgs> page =
+      PageInfo<DressingDetailRouteArgs>(name);
+}
+
+class DressingDetailRouteArgs {
+  const DressingDetailRouteArgs({
+    this.key,
+    required this.userDressing,
+    required this.imageData,
+  });
+
+  final Key? key;
+
+  final UserDressing userDressing;
+
+  final Uint8List imageData;
+
+  @override
+  String toString() {
+    return 'DressingDetailRouteArgs{key: $key, userDressing: $userDressing, imageData: $imageData}';
+  }
 }
 
 /// generated route for

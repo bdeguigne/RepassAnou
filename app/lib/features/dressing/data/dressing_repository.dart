@@ -86,7 +86,14 @@ class DressingRepository {
           .eq('user_id', userController.loggedUser!.id);
 
       final userDressings =
-          response.map((data) => UserDressing.fromJson(data)).toList();
+          response.map((data) => UserDressing.fromJson(data)).toList()
+            ..sort(
+              (a, b) => a.isFavorite == b.isFavorite
+                  ? 0
+                  : a.isFavorite
+                      ? -1
+                      : 1,
+            );
       return userDressings;
     } catch (e) {
       logger.e(e);
