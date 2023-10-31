@@ -2,17 +2,21 @@ import 'dart:typed_data';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/design_system/app_images.dart';
 import 'package:repasse_anou/design_system/label_content.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/design_system/rounded_label.dart';
 import 'package:repasse_anou/design_system/theme.dart';
+import 'package:repasse_anou/features/dressing/application/dressing_detail_screen_controller.dart';
+import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
+import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
 
 @RoutePage()
-class DressingDetailScreen extends StatelessWidget {
+class DressingDetailScreen extends HookConsumerWidget {
   const DressingDetailScreen({
     super.key,
     required this.userDressing,
@@ -23,7 +27,26 @@ class DressingDetailScreen extends StatelessWidget {
   final Uint8List imageData;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ValueNotifier<bool> favValue = useState(userDressing.isFavorite);
+    final AsyncValue<void> dressingDetailState =
+        ref.watch(dressingDetailScreenControllerProvider);
+
+    Future<void> editFavorite(bool value) async {
+      final success = await ref
+          .read(dressingDetailScreenControllerProvider.notifier)
+          .editFavoriteDressingItem(
+            value,
+            userDressing,
+          );
+
+      if (success == true && context.mounted) {
+        favValue.value = value;
+        // ignore: unused_result
+        ref.refresh(usersDressingsProvider);
+      }
+    }
+
     return AppLayout(
       child: CustomScrollView(
         slivers: [
@@ -33,6 +56,10 @@ class DressingDetailScreen extends StatelessWidget {
             delegate: DressingPersistentHeader(
               imageData: imageData,
               userDressing: userDressing,
+              favValue: favValue.value,
+              onFavPressed: (value) {
+                editFavorite(value);
+              },
             ),
           ),
           SliverFillRemaining(
@@ -97,14 +124,24 @@ class DressingDetailContent extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  width: 22,
-                  height: 22,
-                  margin: const EdgeInsets.all(10),
-                  decoration: const ShapeDecoration(
-                    shape: OvalBorder(),
-                    color: Colors.black,
-                  ),
+                Stack(
+                  children: [
+                    Container(
+                      width: 22,
+                      height: 22,
+                      margin: const EdgeInsets.all(10),
+                      decoration: const ShapeDecoration(
+                        shape: OvalBorder(),
+                        color: Colors.black,
+                      ),
+                      child: userDressing.dressingColor.label ==
+                              DressingColorLabels.black
+                          ? Center(
+                              child: AppIcons.checkWhite,
+                            )
+                          : Container(),
+                    ),
+                  ],
                 ),
                 Container(
                   width: 22,
@@ -114,15 +151,27 @@ class DressingDetailContent extends StatelessWidget {
                     shape: OvalBorder(),
                     color: Color(0xFFE4E4E4),
                   ),
+                  child: userDressing.dressingColor.label ==
+                          DressingColorLabels.white
+                      ? Center(
+                          child: AppIcons.check,
+                        )
+                      : Container(),
                 ),
                 Container(
                   width: 22,
                   height: 22,
                   margin: const EdgeInsets.all(10),
-                  decoration: const ShapeDecoration(
-                    shape: OvalBorder(),
+                  child: Stack(
+                    children: [
+                      AppImages.color,
+                      if (userDressing.dressingColor.label ==
+                          DressingColorLabels.color)
+                        Center(
+                          child: AppIcons.check,
+                        ),
+                    ],
                   ),
-                  child: AppImages.color,
                 ),
               ],
             ),
@@ -133,17 +182,12 @@ class DressingDetailContent extends StatelessWidget {
         ),
         buildSection(
           'Matière',
-          const Row(
+          Row(
             children: [
               Padding(
-                padding: EdgeInsets.only(right: 10),
-                child: RoundedLabel(label: 'Laine'),
+                padding: const EdgeInsets.only(right: 10),
+                child: RoundedLabel(label: userDressing.dressingMaterial.label),
               ),
-              Padding(
-                padding: EdgeInsets.only(right: 10),
-                child: RoundedLabel(label: 'Coton'),
-              ),
-              RoundedLabel(label: 'Viscose'),
             ],
           ),
         ),
@@ -175,10 +219,15 @@ class DressingPersistentHeader extends SliverPersistentHeaderDelegate {
   const DressingPersistentHeader({
     required this.userDressing,
     required this.imageData,
+    this.onFavPressed,
+    this.favValue = false,
   });
 
   final UserDressing userDressing;
   final Uint8List imageData;
+
+  final void Function(bool)? onFavPressed;
+  final bool favValue;
 
   @override
   Widget build(
@@ -267,12 +316,18 @@ class DressingPersistentHeader extends SliverPersistentHeaderDelegate {
                   icon: AppIcons.arrowBack,
                 ),
                 IconButton(
-                  onPressed: () {},
-                  icon: SizedBox(
-                    height: 24,
-                    width: 24,
-                    child: AppIcons.heart,
-                  ),
+                  onPressed: () => onFavPressed?.call(!favValue),
+                  icon: favValue
+                      ? SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: AppIcons.heartFill,
+                        )
+                      : SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: AppIcons.heart,
+                        ),
                 ),
               ],
             ),

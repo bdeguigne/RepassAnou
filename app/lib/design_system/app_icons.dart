@@ -6,4 +6,9 @@ class AppIcons {
   static Widget heartFill = SvgPicture.asset('assets/icons/heart-fill.svg');
   static Widget arrowBack =
       const Icon(Icons.arrow_back_ios_new, color: Colors.black);
+  static Widget checkWhite = SvgPicture.asset(
+    'assets/icons/check.svg',
+    colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+  );
+  static Widget check = SvgPicture.asset('assets/icons/check.svg');
 }
