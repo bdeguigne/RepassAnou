@@ -11,6 +11,7 @@ import 'package:repasse_anou/landing_screen.dart';
 import 'package:repasse_anou/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_detail_screen.dart';
+
 part 'app_router.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Screen,Route')
