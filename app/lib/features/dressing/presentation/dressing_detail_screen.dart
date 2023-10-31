@@ -11,10 +11,12 @@ import 'package:repasse_anou/design_system/label_content.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/design_system/rounded_label.dart';
 import 'package:repasse_anou/design_system/theme.dart';
+import 'package:repasse_anou/features/dressing/application/add_dressing_modal_controller.dart';
 import 'package:repasse_anou/features/dressing/application/dressing_detail_screen_controller.dart';
 import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
+import 'package:repasse_anou/features/dressing/models/user_dressing_and_image.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_modal.dart';
 
 @RoutePage()
@@ -22,24 +24,42 @@ class DressingDetailScreen extends HookConsumerWidget {
   const DressingDetailScreen({
     super.key,
     required this.userDressing,
-    required this.imageData,
+    required this.image,
   });
 
   final UserDressing userDressing;
-  final Uint8List imageData;
+  final Uint8List image;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ValueNotifier<bool> favValue = useState(userDressing.isFavorite);
-    final AsyncValue<void> dressingDetailState =
-        ref.watch(dressingDetailScreenControllerProvider);
+
+    //store the user dressing data for updating the page after editing
+    final ValueNotifier<UserDressing> userDressingData = useState(userDressing);
+    final ValueNotifier<Uint8List> imageData = useState(image);
+
+    ref.watch(dressingDetailScreenControllerProvider);
+    final AsyncValue<UserDressingAndImage?> dressingModalState =
+        ref.watch(addDressingModalControllerProvider);
+
+    useEffect(
+      () {
+        if (dressingModalState is AsyncData &&
+            dressingModalState.value != null) {
+          userDressingData.value = dressingModalState.value!.userDressing;
+          imageData.value = dressingModalState.value!.image ?? image;
+        }
+        return;
+      },
+      [dressingModalState],
+    );
 
     Future<void> editFavorite(bool value) async {
       final success = await ref
           .read(dressingDetailScreenControllerProvider.notifier)
           .editFavoriteDressingItem(
             value,
-            userDressing,
+            userDressingData.value,
           );
 
       if (success == true && context.mounted) {
@@ -56,8 +76,8 @@ class DressingDetailScreen extends HookConsumerWidget {
             pinned: true,
             floating: true,
             delegate: DressingPersistentHeader(
-              imageData: imageData,
-              userDressing: userDressing,
+              imageData: imageData.value,
+              userDressing: userDressingData.value,
               favValue: favValue.value,
               onFavPressed: (value) {
                 editFavorite(value);
@@ -69,7 +89,8 @@ class DressingDetailScreen extends HookConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: DressingDetailContent(
-                userDressing: userDressing,
+                userDressing: userDressingData.value,
+                imageData: imageData.value,
               ),
             ),
           ),
@@ -83,9 +104,11 @@ class DressingDetailContent extends StatelessWidget {
   const DressingDetailContent({
     super.key,
     required this.userDressing,
+    required this.imageData,
   });
 
   final UserDressing userDressing;
+  final Uint8List imageData;
 
   @override
   Widget build(BuildContext context) {
@@ -219,6 +242,7 @@ class DressingDetailContent extends StatelessWidget {
                 builder: (context) {
                   return DressingModal(
                     userDressing: userDressing,
+                    imageData: imageData,
                   );
                 },
               );

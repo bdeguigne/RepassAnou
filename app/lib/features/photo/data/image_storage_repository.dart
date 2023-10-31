@@ -54,6 +54,21 @@ class ImageStorageRepository {
           'Une erreur est survenue lors de la récupération de l\'image');
     }
   }
+
+  Future<void> deleteImage(String path) async {
+    try {
+      await ref
+          .read(supabaseClientProvider)
+          .storage
+          .dressingImagesBucket
+          .remove([path]);
+      ref.read(loggerProvider).i('deleteImage $path OK');
+    } catch (e) {
+      ref.read(loggerProvider).e(e);
+      throw const ExceptionMessage(
+          'Une erreur est survenue lors de la suppression de l\'image');
+    }
+  }
 }
 
 @Riverpod(keepAlive: true)

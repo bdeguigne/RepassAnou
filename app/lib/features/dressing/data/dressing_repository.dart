@@ -7,6 +7,7 @@ import 'package:repasse_anou/features/dressing/models/dressing_category.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_material.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
+import 'package:repasse_anou/features/dressing/models/user_dressing_and_image.dart';
 import 'package:repasse_anou/features/photo/data/image_storage_repository.dart';
 import 'package:repasse_anou/utils/extensions.dart';
 import 'package:repasse_anou/utils/supabase_extension.dart';
@@ -102,7 +103,7 @@ class DressingRepository {
     }
   }
 
-  Future<void> saveDressingItem(
+  Future<UserDressingAndImage?> saveDressingItem(
     String title,
     DressingCategory category,
     DressingMaterial material,
@@ -119,7 +120,7 @@ class DressingRepository {
 
       final path = await imageStorageRepository.uploadImage(image);
 
-      final userDressingDto = UserDressing(
+      final UserDressing updatedUserDressing = UserDressing(
         user: userController.loggedUser!,
         title: title,
         dressingCategory: category,
@@ -129,9 +130,11 @@ class DressingRepository {
         notes: notes,
         imagePath: path,
         isFavorite: isFavorite,
-      ).toDto();
+      );
 
-      await supabase.usersDressingsTable.insert(userDressingDto.toJson());
+      await supabase.usersDressingsTable
+          .insert(updatedUserDressing.toDto().toJson());
+      return UserDressingAndImage(userDressing: updatedUserDressing);
     } catch (e) {
       logger.e(e);
       throw const ExceptionMessage(
@@ -139,38 +142,45 @@ class DressingRepository {
     }
   }
 
-  Future<void> editDressingItem(
+  Future<UserDressingAndImage?> editDressingItem(
     String title,
     DressingCategory category,
     DressingMaterial material,
     DressingColor color,
     String? belongsTo,
     String? notes,
-    // File image,
     UserDressing userDressing,
+    File? image,
   ) async {
     try {
       if (userController.loggedUser == null) {
         throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
       }
+      String? path;
+      if (image != null) {
+        // remove old image
+        await imageStorageRepository.deleteImage(userDressing.imagePath);
 
-      // final path = await imageStorageRepository.uploadImage(image);
+        path = await imageStorageRepository.uploadImage(image);
+      }
 
-      final userDressingDto = userDressing
-          .copyWith(
-            title: title,
-            dressingCategory: category,
-            dressingMaterial: material,
-            dressingColor: color,
-            belongsTo: belongsTo,
-            notes: notes,
-            // imagePath: path,
-          )
-          .toDto();
+      final UserDressing updatedUserDressing = userDressing.copyWith(
+        title: title,
+        dressingCategory: category,
+        dressingMaterial: material,
+        dressingColor: color,
+        belongsTo: belongsTo,
+        notes: notes,
+        imagePath: path ?? userDressing.imagePath,
+      );
 
       await supabase.usersDressingsTable
-          .update(userDressingDto.toJson())
+          .update(updatedUserDressing.toDto().toJson())
           .eq('id', userDressing.id);
+
+      // return the data with image to update the UI
+      return UserDressingAndImage(
+          userDressing: updatedUserDressing, image: image?.readAsBytesSync());
     } catch (e) {
       logger.e(e);
       throw const ExceptionMessage(

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,9 +8,14 @@ import 'package:repasse_anou/design_system/ink_well.dart';
 import 'package:repasse_anou/features/photo/application/image_picker_service.dart';
 
 class RoundedPhotoPicker extends HookConsumerWidget {
-  const RoundedPhotoPicker({super.key, this.onImagePicked});
+  const RoundedPhotoPicker({
+    super.key,
+    this.onImagePicked,
+    this.imageData,
+  });
 
   final void Function(XFile image)? onImagePicked;
+  final Uint8List? imageData;
 
   Widget buildShowPhoto(XFile? image, WidgetRef ref, bool isLoading) {
     return Container(
@@ -18,7 +24,9 @@ class RoundedPhotoPicker extends HookConsumerWidget {
       decoration: ShapeDecoration(
         image: DecorationImage(
           image: image == null
-              ? Image.asset('assets/images/empty-dressing.png').image
+              ? (imageData != null
+                  ? Image.memory(imageData!).image
+                  : Image.asset('assets/images/empty-dressing.png').image)
               : Image.file(File(image.path)).image,
           fit: BoxFit.fill,
         ),

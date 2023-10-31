@@ -188,7 +188,7 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
                     isFavorite: dressing.isFavorite,
                     openBuilder: (context, action) {
                       return DressingDetailScreen(
-                        imageData: imageData,
+                        image: imageData,
                         userDressing: dressing,
                       );
                     },

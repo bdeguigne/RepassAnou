@@ -28,7 +28,7 @@ abstract class _$AppRouter extends RootStackRouter {
         child: DressingDetailScreen(
           key: args.key,
           userDressing: args.userDressing,
-          imageData: args.imageData,
+          image: args.image,
         ),
       );
     },
@@ -97,14 +97,14 @@ class DressingDetailRoute extends PageRouteInfo<DressingDetailRouteArgs> {
   DressingDetailRoute({
     Key? key,
     required UserDressing userDressing,
-    required Uint8List imageData,
+    required Uint8List image,
     List<PageRouteInfo>? children,
   }) : super(
           DressingDetailRoute.name,
           args: DressingDetailRouteArgs(
             key: key,
             userDressing: userDressing,
-            imageData: imageData,
+            image: image,
           ),
           initialChildren: children,
         );
@@ -119,18 +119,18 @@ class DressingDetailRouteArgs {
   const DressingDetailRouteArgs({
     this.key,
     required this.userDressing,
-    required this.imageData,
+    required this.image,
   });
 
   final Key? key;
 
   final UserDressing userDressing;
 
-  final Uint8List imageData;
+  final Uint8List image;
 
   @override
   String toString() {
-    return 'DressingDetailRouteArgs{key: $key, userDressing: $userDressing, imageData: $imageData}';
+    return 'DressingDetailRouteArgs{key: $key, userDressing: $userDressing, image: $image}';
   }
 }
 

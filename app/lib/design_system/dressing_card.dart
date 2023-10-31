@@ -109,7 +109,7 @@ class DressingCard extends HookWidget {
                           openElevation: 0,
                           closedElevation: 0,
                           transitionType: ContainerTransitionType.fade,
-                          transitionDuration: const Duration(milliseconds: 350),
+                          transitionDuration: const Duration(milliseconds: 300),
                           openShape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),

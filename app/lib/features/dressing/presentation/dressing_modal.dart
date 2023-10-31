@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -15,16 +16,22 @@ import 'package:repasse_anou/features/dressing/models/dressing_category.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_material.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
+import 'package:repasse_anou/features/dressing/models/user_dressing_and_image.dart';
 import 'package:repasse_anou/features/photo/presentation/rounded_photo_picker.dart';
 import 'package:repasse_anou/utils/input_validator.dart';
 import 'package:repasse_anou/utils/messenger_controller.dart';
 
 class DressingModal extends HookConsumerWidget {
-  DressingModal({super.key, this.userDressing});
+  DressingModal({
+    super.key,
+    this.userDressing,
+    this.imageData,
+  });
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final UserDressing? userDressing;
+  final Uint8List? imageData;
 
   bool get isEditing => userDressing != null;
 
@@ -36,7 +43,7 @@ class DressingModal extends HookConsumerWidget {
         ref.watch(dressingColorsProvider);
     final AsyncValue<List<DressingMaterial>> dressingMaterials =
         ref.watch(dressingMaterialsProvider);
-    final AsyncValue<void> addDressingState =
+    final AsyncValue<UserDressingAndImage?> addDressingState =
         ref.watch(addDressingModalControllerProvider);
 
     final titleController = useTextEditingController(text: userDressing?.title);
@@ -82,8 +89,8 @@ class DressingModal extends HookConsumerWidget {
             selectedColor.value!,
             belongsToController.text,
             notesController.text,
-            // File(imageTaken.value!.path),
             userDressing!,
+            imageTaken.value != null ? File(imageTaken.value!.path) : null,
           );
 
       if (success == true && context.mounted) {
@@ -259,16 +266,18 @@ class DressingModal extends HookConsumerWidget {
                 height: 56,
                 child: ElevatedButton(
                   onPressed: () {
-                    if (imageTaken.value == null) {
+                    if (imageTaken.value == null && imageData == null) {
                       ref
                           .read(messengerControllerProvider)
                           .showErrorSnackbar("L'image est obligatoire");
                     }
-                    if (_formKey.currentState!.validate() &&
-                        imageTaken.value != null) {
-                      isEditing
-                          ? editDressingAndCloseModal()
-                          : saveDressingAndCloseModal();
+                    if (_formKey.currentState!.validate()) {
+                      if (imageTaken.value != null && isEditing == false) {
+                        saveDressingAndCloseModal();
+                      }
+                      if (isEditing == true) {
+                        editDressingAndCloseModal();
+                      }
                     }
                   },
                   child: Text(isEditing ? 'Modifier' : 'Terminer')
@@ -282,11 +291,14 @@ class DressingModal extends HookConsumerWidget {
     }
 
     Widget buildPhoto() {
-      return RoundedPhotoPicker(onImagePicked: (image) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          imageTaken.value = image;
-        });
-      });
+      return RoundedPhotoPicker(
+        onImagePicked: (image) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            imageTaken.value = image;
+          });
+        },
+        imageData: imageData,
+      );
     }
 
     return Stack(

@@ -5,6 +5,7 @@ import 'package:repasse_anou/features/dressing/models/dressing_category.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_material.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
+import 'package:repasse_anou/features/dressing/models/user_dressing_and_image.dart';
 import 'package:repasse_anou/utils/extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'add_dressing_modal_controller.g.dart';
@@ -12,7 +13,9 @@ part 'add_dressing_modal_controller.g.dart';
 @riverpod
 class AddDressingModalController extends _$AddDressingModalController {
   @override
-  FutureOr<void> build() {}
+  FutureOr<UserDressingAndImage?> build() {
+    return null;
+  }
 
   Future<bool> saveDressingItem(
     String title,
@@ -44,8 +47,8 @@ class AddDressingModalController extends _$AddDressingModalController {
     DressingColor selectedColor,
     String belongsTo,
     String notes,
-    // File image,
     UserDressing dressingItem,
+    File? image,
   ) async {
     final DressingRepository dressingRepository =
         ref.read(dressingRepositoryProvider);
@@ -59,8 +62,8 @@ class AddDressingModalController extends _$AddDressingModalController {
         selectedColor,
         belongsTo,
         notes,
-        // image,
         dressingItem,
+        image,
       ),
       successMessage: 'Vêtement modifié avec succès',
     );
@@ -75,8 +78,10 @@ class AddDressingModalController extends _$AddDressingModalController {
     state = const AsyncLoading();
 
     state = await ref.guardAndNotifyOnError(
-      () =>
-          dressingRepository.editFavoriteDressingItem(isFavorite, dressingItem),
+      () async {
+        dressingRepository.editFavoriteDressingItem(isFavorite, dressingItem);
+        return null;
+      },
       successMessage:
           'Vêtement ${isFavorite == true ? "ajouté" : "supprimé"} des favoris',
     );
