@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:repasse_anou/design_system/app_buttons.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/design_system/app_images.dart';
 import 'package:repasse_anou/design_system/label_content.dart';
@@ -14,6 +15,7 @@ import 'package:repasse_anou/features/dressing/application/dressing_detail_scree
 import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
+import 'package:repasse_anou/features/dressing/presentation/dressing_modal.dart';
 
 @RoutePage()
 class DressingDetailScreen extends HookConsumerWidget {
@@ -197,7 +199,9 @@ class DressingDetailContent extends StatelessWidget {
         buildSection(
           'Notes',
           Container(
-            child: const Text('Aucune').bodyMedium,
+            child: userDressing.notes != null
+                ? Text(userDressing.notes!).bodyMedium
+                : const Text('Aucune').bodyMedium,
           ),
         ),
         const SizedBox(
@@ -207,8 +211,19 @@ class DressingDetailContent extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           height: 56,
-          child:
-              ElevatedButton(onPressed: () {}, child: const Text('Modifier')),
+          child: AppButton.primary(
+            text: 'Modifier',
+            onPressed: () {
+              showDialog<void>(
+                context: context,
+                builder: (context) {
+                  return DressingModal(
+                    userDressing: userDressing,
+                  );
+                },
+              );
+            },
+          ),
         ),
       ],
     );
@@ -252,8 +267,6 @@ class DressingPersistentHeader extends SliverPersistentHeaderDelegate {
           child: Container(
             height: 80,
             width: MediaQuery.of(context).size.width,
-            // padding:
-            //     const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -266,24 +279,22 @@ class DressingPersistentHeader extends SliverPersistentHeaderDelegate {
               child: Wrap(
                 alignment: WrapAlignment.spaceBetween,
                 runAlignment: WrapAlignment.spaceBetween,
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Pull blanc',
+                        userDressing.title,
                         style: appTheme.textTheme.headlineMedium?.copyWith(
                           fontSize: 16,
                         ),
                       ),
-                      const Text('Dressing de Lou').labelLarge,
+                      const Text('Dressing de').labelLarge,
                     ],
                   ),
-                  ElevatedButton(
+                  AppButton.secondary(
                     onPressed: () {},
-                    child: const Text('Supprimer'),
+                    text: 'Supprimer',
                   ),
                 ],
               ),
