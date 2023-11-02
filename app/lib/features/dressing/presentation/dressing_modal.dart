@@ -100,20 +100,6 @@ class DressingModal extends HookConsumerWidget {
       }
     }
 
-    Future<void> editFavorite() async {
-      final success = await ref
-          .read(addDressingModalControllerProvider.notifier)
-          .editFavoriteDressingItem(
-            isFavorite.value,
-            userDressing!,
-          );
-
-      if (success == true && context.mounted) {
-        // ignore: unused_result
-        ref.refresh(usersDressingsProvider);
-      }
-    }
-
     Widget buildContent() {
       if (dressingCategories.isLoading ||
           dressingColors.isLoading ||
@@ -137,26 +123,24 @@ class DressingModal extends HookConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  onPressed: () {
-                    isFavorite.value = !isFavorite.value;
-                    if (isEditing) {
-                      editFavorite();
-                    }
-                  },
-                  icon: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: isFavorite.value
-                        ? AppIcons.heartFill
-                        : SizedBox(child: AppIcons.heart),
+              if (!isEditing)
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () {
+                      isFavorite.value = !isFavorite.value;
+                    },
+                    icon: SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: isFavorite.value
+                          ? AppIcons.heartFill
+                          : SizedBox(child: AppIcons.heart),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 24,
+              SizedBox(
+                height: isEditing ? 64 : 24,
               ),
               LabelContent(
                 title: 'Intitulé',
@@ -171,7 +155,7 @@ class DressingModal extends HookConsumerWidget {
               ),
               LabelContent(
                 title: 'Catégorie',
-                child: DropDown<DressingCategory?>(
+                child: DropDown<DressingCategory?>.simple(
                   onChanged: (value) => selectedCategory.value = value,
                   validator: (value) => value == null
                       ? 'Veuillez sélectionner une catégorie'
@@ -193,12 +177,13 @@ class DressingModal extends HookConsumerWidget {
               ),
               LabelContent(
                 title: 'Matière',
-                child: DropDown<DressingMaterial?>(
+                child: DropDown<DressingMaterial?>.multiple(
                   validator: (value) => value == null
                       ? 'Veuillez sélectionner une matière'
                       : null,
                   value: selectedMaterial.value,
-                  onChanged: (value) => selectedMaterial.value = value,
+                  // onChanged: (value) => selectedMaterial.value = value,
+                  onChanged: (value) => print(value),
                   hint: 'Coton, soie, laine...',
                   items: dressingMaterials.value!
                       .map(
@@ -215,7 +200,7 @@ class DressingModal extends HookConsumerWidget {
               ),
               LabelContent(
                 title: 'Couleur',
-                child: DropDown<DressingColor?>(
+                child: DropDown<DressingColor?>.simple(
                   onChanged: (value) => selectedColor.value = value,
                   validator: (value) => value == null
                       ? 'Veuillez sélectionner une couleur'
