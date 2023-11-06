@@ -215,6 +215,20 @@ class DressingRepository {
           'Une erreur est survenue lors de la sauvegarde du vêtement');
     }
   }
+
+  Future<void> deleteUserDressing(UserDressing dressing) async {
+    try {
+      if (userController.loggedUser == null) {
+        throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
+      }
+
+      await supabase.usersDressingsTable.delete().eq('id', dressing.id);
+    } catch (e) {
+      logger.e(e);
+      throw const ExceptionMessage(
+          'Une erreur est survenue lors de la suppression du vêtement');
+    }
+  }
 }
 
 @riverpod

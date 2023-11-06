@@ -1,6 +1,7 @@
 import 'package:logger/logger.dart';
 import 'package:repasse_anou/exception/exception_message.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_material.dart';
+import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing_material_dto.dart';
 import 'package:repasse_anou/utils/supabase_extension.dart';
 import 'package:repasse_anou/utils/top_level_providers.dart';
@@ -19,7 +20,7 @@ class DressingMaterialsRepository {
   Future<void> addMaterialToDressing(
       String dressingId, List<DressingMaterial> materials) async {
     try {
-      await supabase.usersDressingsMaterials.insert(
+      await supabase.usersDressingsMaterialsTable.insert(
         materials
             .map((material) => UserDressingMaterialDto(
                   userDressingId: dressingId,
@@ -31,6 +32,18 @@ class DressingMaterialsRepository {
       logger.e(e);
       throw const ExceptionMessage(
           'Une erreur est survenue lors de l\'ajout de la matière au dressing');
+    }
+  }
+
+  Future<void> deleteMaterialToDressing(UserDressing dressing) async {
+    try {
+      await supabase.usersDressingsMaterialsTable
+          .delete()
+          .eq('user_dressing_id', dressing.id);
+    } catch (e) {
+      logger.e(e);
+      throw const ExceptionMessage(
+          'Une erreur est survenue lors de la suppression de la matière du dressing');
     }
   }
 }

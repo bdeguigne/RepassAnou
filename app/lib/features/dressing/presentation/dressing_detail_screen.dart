@@ -70,6 +70,18 @@ class DressingDetailScreen extends HookConsumerWidget {
       }
     }
 
+    Future<void> deleteDressing() async {
+      final success = await ref
+          .read(dressingDetailScreenServiceProvider.notifier)
+          .deleteUserDressing(userDressingData.value);
+
+      if (success == true && context.mounted) {
+        // ignore: unused_result
+        ref.refresh(usersDressingsProvider);
+        AutoRouter.of(context).pop();
+      }
+    }
+
     return AppLayout(
       child: CustomScrollView(
         slivers: [
@@ -77,13 +89,15 @@ class DressingDetailScreen extends HookConsumerWidget {
             pinned: true,
             floating: true,
             delegate: DressingPersistentHeader(
-              imageData: imageData.value,
-              userDressing: userDressingData.value,
-              favValue: favValue.value,
-              onFavPressed: (value) {
-                editFavorite(value);
-              },
-            ),
+                imageData: imageData.value,
+                userDressing: userDressingData.value,
+                favValue: favValue.value,
+                onFavPressed: (value) {
+                  editFavorite(value);
+                },
+                onDeleteDressingPressed: () {
+                  deleteDressing();
+                }),
           ),
           SliverFillRemaining(
             hasScrollBody: false,
@@ -261,12 +275,14 @@ class DressingPersistentHeader extends SliverPersistentHeaderDelegate {
     required this.imageData,
     this.onFavPressed,
     this.favValue = false,
+    this.onDeleteDressingPressed,
   });
 
   final UserDressing userDressing;
   final Uint8List imageData;
 
   final void Function(bool)? onFavPressed;
+  final VoidCallback? onDeleteDressingPressed;
   final bool favValue;
 
   @override
@@ -318,7 +334,7 @@ class DressingPersistentHeader extends SliverPersistentHeaderDelegate {
                     ],
                   ),
                   AppButton.secondary(
-                    onPressed: () {},
+                    onPressed: () => onDeleteDressingPressed?.call(),
                     text: 'Supprimer',
                   ),
                 ],

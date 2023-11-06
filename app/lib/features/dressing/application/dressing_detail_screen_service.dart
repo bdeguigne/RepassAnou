@@ -1,3 +1,4 @@
+import 'package:repasse_anou/features/dressing/data/dressing_materials_repository.dart';
 import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -21,6 +22,29 @@ class DressingDetailScreenService extends _$DressingDetailScreenService {
           dressingRepository.editFavoriteDressingItem(isFavorite, dressingItem),
       successMessage:
           'Vêtement ${isFavorite == true ? "ajouté" : "supprimé"} des favoris',
+    );
+
+    return state.hasError == false;
+  }
+
+  Future<bool> deleteUserDressing(UserDressing dressing) async {
+    state = const AsyncLoading();
+    final DressingRepository dressingRepository =
+        ref.read(dressingRepositoryProvider);
+    final DressingMaterialsRepository dressingMaterialsRepository =
+        ref.read(dressingMatetialsRepositoryProvider);
+
+    state = await ref.guardAndNotifyOnError(
+      () => dressingMaterialsRepository.deleteMaterialToDressing(dressing),
+    );
+
+    if (state.hasError) {
+      return false;
+    }
+
+    state = await ref.guardAndNotifyOnError(
+      () => dressingRepository.deleteUserDressing(dressing),
+      successMessage: 'Vêtement supprimé',
     );
 
     return state.hasError == false;
