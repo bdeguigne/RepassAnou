@@ -28,7 +28,8 @@ mixin _$UserDressing {
   @JsonKey(name: 'dressing_categories')
   DressingCategory get dressingCategory => throw _privateConstructorUsedError;
   @JsonKey(name: 'dressing_materials')
-  DressingMaterial get dressingMaterial => throw _privateConstructorUsedError;
+  List<DressingMaterial> get dressingMaterials =>
+      throw _privateConstructorUsedError;
   @JsonKey(name: 'dressing_colors')
   DressingColor get dressingColor => throw _privateConstructorUsedError;
   @JsonKey(name: 'belongs_to')
@@ -56,7 +57,8 @@ abstract class $UserDressingCopyWith<$Res> {
       @JsonKey(name: 'users') User user,
       String title,
       @JsonKey(name: 'dressing_categories') DressingCategory dressingCategory,
-      @JsonKey(name: 'dressing_materials') DressingMaterial dressingMaterial,
+      @JsonKey(name: 'dressing_materials')
+      List<DressingMaterial> dressingMaterials,
       @JsonKey(name: 'dressing_colors') DressingColor dressingColor,
       @JsonKey(name: 'belongs_to') String? belongsTo,
       String? notes,
@@ -65,7 +67,6 @@ abstract class $UserDressingCopyWith<$Res> {
 
   $UserCopyWith<$Res> get user;
   $DressingCategoryCopyWith<$Res> get dressingCategory;
-  $DressingMaterialCopyWith<$Res> get dressingMaterial;
   $DressingColorCopyWith<$Res> get dressingColor;
 }
 
@@ -86,7 +87,7 @@ class _$UserDressingCopyWithImpl<$Res, $Val extends UserDressing>
     Object? user = null,
     Object? title = null,
     Object? dressingCategory = null,
-    Object? dressingMaterial = null,
+    Object? dressingMaterials = null,
     Object? dressingColor = null,
     Object? belongsTo = freezed,
     Object? notes = freezed,
@@ -110,10 +111,10 @@ class _$UserDressingCopyWithImpl<$Res, $Val extends UserDressing>
           ? _value.dressingCategory
           : dressingCategory // ignore: cast_nullable_to_non_nullable
               as DressingCategory,
-      dressingMaterial: null == dressingMaterial
-          ? _value.dressingMaterial
-          : dressingMaterial // ignore: cast_nullable_to_non_nullable
-              as DressingMaterial,
+      dressingMaterials: null == dressingMaterials
+          ? _value.dressingMaterials
+          : dressingMaterials // ignore: cast_nullable_to_non_nullable
+              as List<DressingMaterial>,
       dressingColor: null == dressingColor
           ? _value.dressingColor
           : dressingColor // ignore: cast_nullable_to_non_nullable
@@ -155,14 +156,6 @@ class _$UserDressingCopyWithImpl<$Res, $Val extends UserDressing>
 
   @override
   @pragma('vm:prefer-inline')
-  $DressingMaterialCopyWith<$Res> get dressingMaterial {
-    return $DressingMaterialCopyWith<$Res>(_value.dressingMaterial, (value) {
-      return _then(_value.copyWith(dressingMaterial: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
   $DressingColorCopyWith<$Res> get dressingColor {
     return $DressingColorCopyWith<$Res>(_value.dressingColor, (value) {
       return _then(_value.copyWith(dressingColor: value) as $Val);
@@ -183,7 +176,8 @@ abstract class _$$UserDressingImplCopyWith<$Res>
       @JsonKey(name: 'users') User user,
       String title,
       @JsonKey(name: 'dressing_categories') DressingCategory dressingCategory,
-      @JsonKey(name: 'dressing_materials') DressingMaterial dressingMaterial,
+      @JsonKey(name: 'dressing_materials')
+      List<DressingMaterial> dressingMaterials,
       @JsonKey(name: 'dressing_colors') DressingColor dressingColor,
       @JsonKey(name: 'belongs_to') String? belongsTo,
       String? notes,
@@ -194,8 +188,6 @@ abstract class _$$UserDressingImplCopyWith<$Res>
   $UserCopyWith<$Res> get user;
   @override
   $DressingCategoryCopyWith<$Res> get dressingCategory;
-  @override
-  $DressingMaterialCopyWith<$Res> get dressingMaterial;
   @override
   $DressingColorCopyWith<$Res> get dressingColor;
 }
@@ -215,7 +207,7 @@ class __$$UserDressingImplCopyWithImpl<$Res>
     Object? user = null,
     Object? title = null,
     Object? dressingCategory = null,
-    Object? dressingMaterial = null,
+    Object? dressingMaterials = null,
     Object? dressingColor = null,
     Object? belongsTo = freezed,
     Object? notes = freezed,
@@ -239,10 +231,10 @@ class __$$UserDressingImplCopyWithImpl<$Res>
           ? _value.dressingCategory
           : dressingCategory // ignore: cast_nullable_to_non_nullable
               as DressingCategory,
-      dressingMaterial: null == dressingMaterial
-          ? _value.dressingMaterial
-          : dressingMaterial // ignore: cast_nullable_to_non_nullable
-              as DressingMaterial,
+      dressingMaterials: null == dressingMaterials
+          ? _value._dressingMaterials
+          : dressingMaterials // ignore: cast_nullable_to_non_nullable
+              as List<DressingMaterial>,
       dressingColor: null == dressingColor
           ? _value.dressingColor
           : dressingColor // ignore: cast_nullable_to_non_nullable
@@ -275,13 +267,15 @@ class _$UserDressingImpl extends _UserDressing {
       @JsonKey(name: 'users') required this.user,
       required this.title,
       @JsonKey(name: 'dressing_categories') required this.dressingCategory,
-      @JsonKey(name: 'dressing_materials') required this.dressingMaterial,
+      @JsonKey(name: 'dressing_materials')
+      final List<DressingMaterial> dressingMaterials = const [],
       @JsonKey(name: 'dressing_colors') required this.dressingColor,
       @JsonKey(name: 'belongs_to') this.belongsTo,
       this.notes,
       @JsonKey(name: 'image_path') required this.imagePath,
       @JsonKey(name: 'is_favorite') this.isFavorite = false})
-      : super._();
+      : _dressingMaterials = dressingMaterials,
+        super._();
 
   factory _$UserDressingImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserDressingImplFromJson(json);
@@ -297,9 +291,16 @@ class _$UserDressingImpl extends _UserDressing {
   @override
   @JsonKey(name: 'dressing_categories')
   final DressingCategory dressingCategory;
+  final List<DressingMaterial> _dressingMaterials;
   @override
   @JsonKey(name: 'dressing_materials')
-  final DressingMaterial dressingMaterial;
+  List<DressingMaterial> get dressingMaterials {
+    if (_dressingMaterials is EqualUnmodifiableListView)
+      return _dressingMaterials;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_dressingMaterials);
+  }
+
   @override
   @JsonKey(name: 'dressing_colors')
   final DressingColor dressingColor;
@@ -317,7 +318,7 @@ class _$UserDressingImpl extends _UserDressing {
 
   @override
   String toString() {
-    return 'UserDressing(id: $id, user: $user, title: $title, dressingCategory: $dressingCategory, dressingMaterial: $dressingMaterial, dressingColor: $dressingColor, belongsTo: $belongsTo, notes: $notes, imagePath: $imagePath, isFavorite: $isFavorite)';
+    return 'UserDressing(id: $id, user: $user, title: $title, dressingCategory: $dressingCategory, dressingMaterials: $dressingMaterials, dressingColor: $dressingColor, belongsTo: $belongsTo, notes: $notes, imagePath: $imagePath, isFavorite: $isFavorite)';
   }
 
   @override
@@ -330,8 +331,8 @@ class _$UserDressingImpl extends _UserDressing {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.dressingCategory, dressingCategory) ||
                 other.dressingCategory == dressingCategory) &&
-            (identical(other.dressingMaterial, dressingMaterial) ||
-                other.dressingMaterial == dressingMaterial) &&
+            const DeepCollectionEquality()
+                .equals(other._dressingMaterials, _dressingMaterials) &&
             (identical(other.dressingColor, dressingColor) ||
                 other.dressingColor == dressingColor) &&
             (identical(other.belongsTo, belongsTo) ||
@@ -351,7 +352,7 @@ class _$UserDressingImpl extends _UserDressing {
       user,
       title,
       dressingCategory,
-      dressingMaterial,
+      const DeepCollectionEquality().hash(_dressingMaterials),
       dressingColor,
       belongsTo,
       notes,
@@ -380,7 +381,7 @@ abstract class _UserDressing extends UserDressing {
           @JsonKey(name: 'dressing_categories')
           required final DressingCategory dressingCategory,
           @JsonKey(name: 'dressing_materials')
-          required final DressingMaterial dressingMaterial,
+          final List<DressingMaterial> dressingMaterials,
           @JsonKey(name: 'dressing_colors')
           required final DressingColor dressingColor,
           @JsonKey(name: 'belongs_to') final String? belongsTo,
@@ -406,7 +407,7 @@ abstract class _UserDressing extends UserDressing {
   DressingCategory get dressingCategory;
   @override
   @JsonKey(name: 'dressing_materials')
-  DressingMaterial get dressingMaterial;
+  List<DressingMaterial> get dressingMaterials;
   @override
   @JsonKey(name: 'dressing_colors')
   DressingColor get dressingColor;

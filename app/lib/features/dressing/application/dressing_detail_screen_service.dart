@@ -3,10 +3,10 @@ import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:repasse_anou/utils/extensions.dart';
 
-part 'dressing_detail_screen_controller.g.dart';
+part 'dressing_detail_screen_service.g.dart';
 
 @riverpod
-class DressingDetailScreenController extends _$DressingDetailScreenController {
+class DressingDetailScreenService extends _$DressingDetailScreenService {
   @override
   FutureOr<void> build() {}
 

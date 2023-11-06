@@ -13,8 +13,10 @@ _$UserDressingImpl _$$UserDressingImplFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       dressingCategory: DressingCategory.fromJson(
           json['dressing_categories'] as Map<String, dynamic>),
-      dressingMaterial: DressingMaterial.fromJson(
-          json['dressing_materials'] as Map<String, dynamic>),
+      dressingMaterials: (json['dressing_materials'] as List<dynamic>?)
+              ?.map((e) => DressingMaterial.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       dressingColor: DressingColor.fromJson(
           json['dressing_colors'] as Map<String, dynamic>),
       belongsTo: json['belongs_to'] as String?,
@@ -28,7 +30,7 @@ Map<String, dynamic> _$$UserDressingImplToJson(_$UserDressingImpl instance) =>
       'users': instance.user,
       'title': instance.title,
       'dressing_categories': instance.dressingCategory,
-      'dressing_materials': instance.dressingMaterial,
+      'dressing_materials': instance.dressingMaterials,
       'dressing_colors': instance.dressingColor,
       'belongs_to': instance.belongsTo,
       'notes': instance.notes,

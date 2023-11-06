@@ -26,6 +26,14 @@ class ColumnSpacing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final spacedChildren = children
+        .expand((widget) => [widget, SizedBox(width: spacing.toDouble())])
+        .toList();
+
+    if (spacedChildren.isNotEmpty) {
+      spacedChildren.removeLast();
+    }
+
     return Column(
       mainAxisAlignment: mainAxisAlignment,
       mainAxisSize: mainAxisSize,
@@ -33,10 +41,7 @@ class ColumnSpacing extends StatelessWidget {
       textDirection: textDirection,
       verticalDirection: verticalDirection,
       textBaseline: textBaseline,
-      children: children
-          .expand((widget) => [widget, SizedBox(height: spacing.toDouble())])
-          .toList()
-        ..removeLast(),
+      children: spacedChildren,
     );
   }
 }
@@ -65,6 +70,14 @@ class RowSpacing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final spacedChildren = children
+        .expand((widget) => [widget, SizedBox(width: spacing.toDouble())])
+        .toList();
+
+    if (spacedChildren.isNotEmpty) {
+      spacedChildren.removeLast();
+    }
+
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       mainAxisSize: mainAxisSize,
@@ -72,10 +85,7 @@ class RowSpacing extends StatelessWidget {
       textDirection: textDirection,
       verticalDirection: verticalDirection,
       textBaseline: textBaseline,
-      children: children
-          .expand((widget) => [widget, SizedBox(width: spacing.toDouble())])
-          .toList()
-        ..removeLast(),
+      children: spacedChildren,
     );
   }
 }

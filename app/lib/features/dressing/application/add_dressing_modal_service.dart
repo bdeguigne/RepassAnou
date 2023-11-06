@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:repasse_anou/features/dressing/data/dressing_materials_repository.dart';
 import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_category.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
@@ -8,10 +9,11 @@ import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing_and_image.dart';
 import 'package:repasse_anou/utils/extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-part 'add_dressing_modal_controller.g.dart';
+
+part 'add_dressing_modal_service.g.dart';
 
 @riverpod
-class AddDressingModalController extends _$AddDressingModalController {
+class AddDressingModalService extends _$AddDressingModalService {
   @override
   FutureOr<UserDressingAndImage?> build() {
     return null;
@@ -20,20 +22,37 @@ class AddDressingModalController extends _$AddDressingModalController {
   Future<bool> saveDressingItem(
     String title,
     DressingCategory selectedCategory,
-    DressingMaterial selectedMaterial,
+    List<DressingMaterial> selectedMaterial,
     DressingColor selectedColor,
     String belongsTo,
     String notes,
     File image,
     bool isFavorite,
   ) async {
+    state = const AsyncLoading();
+
     final DressingRepository dressingRepository =
         ref.read(dressingRepositoryProvider);
-    state = const AsyncLoading();
+    final DressingMaterialsRepository dressingMaterialsRepository =
+        ref.read(dressingMatetialsRepositoryProvider);
 
     state = await ref.guardAndNotifyOnError(
       () => dressingRepository.saveDressingItem(title, selectedCategory,
           selectedMaterial, selectedColor, belongsTo, notes, image, isFavorite),
+    );
+
+    if (state.hasError ||
+        state.value == null ||
+        state.value!.userDressing.id == null) {
+      return false;
+    }
+
+    state = await ref.guardAndNotifyOnError(
+      () async {
+        await dressingMaterialsRepository.addMaterialToDressing(
+            state.value!.userDressing.id!, selectedMaterial);
+        return state.value!;
+      },
       successMessage: 'Vêtement enregistré avec succès',
     );
 
@@ -43,7 +62,7 @@ class AddDressingModalController extends _$AddDressingModalController {
   Future<bool> editDressingItem(
     String title,
     DressingCategory selectedCategory,
-    DressingMaterial selectedMaterial,
+    List<DressingMaterial> selectedMaterial,
     DressingColor selectedColor,
     String belongsTo,
     String notes,

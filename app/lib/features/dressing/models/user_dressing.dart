@@ -18,8 +18,9 @@ class UserDressing with _$UserDressing {
     required String title,
     @JsonKey(name: 'dressing_categories')
     required DressingCategory dressingCategory,
+    @Default([])
     @JsonKey(name: 'dressing_materials')
-    required DressingMaterial dressingMaterial,
+    List<DressingMaterial> dressingMaterials,
     @JsonKey(name: 'dressing_colors') required DressingColor dressingColor,
     @JsonKey(name: 'belongs_to') String? belongsTo,
     String? notes,
@@ -51,7 +52,6 @@ class UserDressing with _$UserDressing {
         userId: user.id,
         title: title,
         dressingCategoryId: dressingCategory.id,
-        dressingMaterialId: dressingMaterial.id,
         dressingColorId: dressingColor.id,
         belongsTo: belongsTo,
         notes: notes,

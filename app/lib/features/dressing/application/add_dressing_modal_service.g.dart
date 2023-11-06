@@ -1,27 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'dressing_detail_screen_controller.dart';
+part of 'add_dressing_modal_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$dressingDetailScreenControllerHash() =>
-    r'e175507baa55b8e52bf01eb00ad0eca761d561f8';
+String _$addDressingModalServiceHash() =>
+    r'd03dea326c721bbfe625b5f26e08e739c67f913a';
 
-/// See also [DressingDetailScreenController].
-@ProviderFor(DressingDetailScreenController)
-final dressingDetailScreenControllerProvider = AutoDisposeAsyncNotifierProvider<
-    DressingDetailScreenController, void>.internal(
-  DressingDetailScreenController.new,
-  name: r'dressingDetailScreenControllerProvider',
+/// See also [AddDressingModalService].
+@ProviderFor(AddDressingModalService)
+final addDressingModalServiceProvider = AutoDisposeAsyncNotifierProvider<
+    AddDressingModalService, UserDressingAndImage?>.internal(
+  AddDressingModalService.new,
+  name: r'addDressingModalServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$dressingDetailScreenControllerHash,
+      : _$addDressingModalServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$DressingDetailScreenController = AutoDisposeAsyncNotifier<void>;
+typedef _$AddDressingModalService
+    = AutoDisposeAsyncNotifier<UserDressingAndImage?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter

@@ -11,13 +11,14 @@ import 'package:repasse_anou/design_system/label_content.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/design_system/rounded_label.dart';
 import 'package:repasse_anou/design_system/theme.dart';
-import 'package:repasse_anou/features/dressing/application/add_dressing_modal_controller.dart';
-import 'package:repasse_anou/features/dressing/application/dressing_detail_screen_controller.dart';
+import 'package:repasse_anou/features/dressing/application/add_dressing_modal_service.dart';
+import 'package:repasse_anou/features/dressing/application/dressing_detail_screen_service.dart';
 import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing_and_image.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_modal.dart';
+import 'package:repasse_anou/utils/spacing_row_column.dart';
 
 @RoutePage()
 class DressingDetailScreen extends HookConsumerWidget {
@@ -38,9 +39,9 @@ class DressingDetailScreen extends HookConsumerWidget {
     final ValueNotifier<UserDressing> userDressingData = useState(userDressing);
     final ValueNotifier<Uint8List> imageData = useState(image);
 
-    ref.watch(dressingDetailScreenControllerProvider);
+    ref.watch(dressingDetailScreenServiceProvider);
     final AsyncValue<UserDressingAndImage?> dressingModalState =
-        ref.watch(addDressingModalControllerProvider);
+        ref.watch(addDressingModalServiceProvider);
 
     useEffect(
       () {
@@ -56,7 +57,7 @@ class DressingDetailScreen extends HookConsumerWidget {
 
     Future<void> editFavorite(bool value) async {
       final success = await ref
-          .read(dressingDetailScreenControllerProvider.notifier)
+          .read(dressingDetailScreenServiceProvider.notifier)
           .editFavoriteDressingItem(
             value,
             userDressingData.value,
@@ -207,13 +208,13 @@ class DressingDetailContent extends StatelessWidget {
         ),
         buildSection(
           'Matière',
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: RoundedLabel(label: userDressing.dressingMaterial.label),
-              ),
-            ],
+          RowSpacing(
+            spacing: 10,
+            children: userDressing.dressingMaterials
+                .map(
+                  (material) => RoundedLabel(label: material.label),
+                )
+                .toList(),
           ),
         ),
         const SizedBox(

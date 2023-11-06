@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:repasse_anou/design_system/app_checkbox.dart';
 import 'package:repasse_anou/design_system/chip.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 import 'package:repasse_anou/utils/spacing_row_column.dart';
@@ -71,7 +72,8 @@ class DropDown<T> extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final selectedValue = useState<T?>(value);
-    final selectedMultipleValue = useState<List<T?>>([value]);
+    final selectedMultipleValue =
+        useState<List<T?>>(value != null ? [value] : []);
     final selectedMultipleLabels = useState<List<String?>>([]);
     final isMenuOpen = useState<bool>(false);
 
@@ -82,7 +84,7 @@ class DropDown<T> extends HookWidget {
         selectedMultipleLabels.value.add(label.label);
       }
       return null;
-    }, [value]);
+    }, []);
 
     Widget buildSelectedItemSimple(String value) {
       return Padding(
@@ -125,10 +127,67 @@ class DropDown<T> extends HookWidget {
       );
     }
 
+    Widget buildItemSimple(String label) {
+      return Text(
+        label,
+        style: bodyMedium.copyWith(
+          color: const Color(0xff6E7590),
+        ),
+      );
+    }
+
+    Widget buildItemMultiple(T? value, String label) {
+      return StatefulBuilder(
+        builder: (context, menuSetState) {
+          final isSelected = selectedMultipleValue.value.contains(value);
+          return InkWell(
+            onTap: () {
+              //Make an new instance of the list (List.from) to trigger the change
+
+              selectedMultipleValue.value = isSelected
+                  ? List.from(selectedMultipleValue.value..remove(value))
+                  : List.from(selectedMultipleValue.value..add(value));
+
+              final label =
+                  items?.where((element) => element.value == value).firstOrNull;
+
+              selectedMultipleLabels.value = selectedMultipleLabels.value
+                      .contains(label?.label)
+                  ? List.from(
+                      selectedMultipleLabels.value..remove(label?.label))
+                  : List.from(selectedMultipleLabels.value..add(label?.label));
+
+              //This rebuilds the dropdownMenu Widget to update the check mark
+              menuSetState(() {});
+
+              onChangedMultiple?.call(selectedMultipleValue.value);
+            },
+            child: RowSpacing(
+              spacing: 8,
+              children: [
+                AppCheckbox(
+                  value: isSelected,
+                  onChanged: null,
+                ),
+                Text(
+                  label,
+                  style: bodyMedium.copyWith(
+                    color: const Color(0xff6E7590),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
     Widget buildDropdown(bool isOpen) {
       return DropdownButton2<T>(
         isExpanded: true,
-        menuItemStyleData: const MenuItemStyleData(),
+        menuItemStyleData: const MenuItemStyleData(
+          height: 40,
+        ),
         hint: Text(
           hint ?? '',
           style: const TextStyle(
@@ -163,80 +222,42 @@ class DropDown<T> extends HookWidget {
           isMenuOpen.value = isOpen;
         },
         value: multiple
-            ? selectedMultipleLabels.value.isEmpty
+            ? selectedMultipleValue.value.isEmpty
                 ? null
-                : selectedValue.value
+                : selectedMultipleValue.value.last
             : selectedValue.value,
         onChanged: (value) {
-          if (multiple) {
-            final label =
-                items?.where((element) => element.value == value).firstOrNull;
-
-            if (selectedMultipleLabels.value.contains(label?.label)) {
-              selectedMultipleLabels.value.remove(label?.label);
-            } else {
-              selectedMultipleLabels.value.add(label?.label);
-            }
-
-            if (selectedMultipleValue.value.contains(value)) {
-              selectedMultipleValue.value.remove(value);
-            } else {
-              selectedMultipleValue.value.add(value);
-            }
-            onChangedMultiple?.call(selectedMultipleValue.value);
-          } else {
+          if (!multiple) {
             selectedValue.value = value;
             onChanged?.call(value);
           }
         },
         items: items
             ?.map(
-              (category) => DropdownMenuItem<T>(
-                value: category.value,
-                child: selectedMultipleLabels.value.contains(category.label) &&
-                        multiple
-                    ? RowSpacing(
-                        spacing: 8,
-                        children: [
-                          const Icon(
-                            Icons.check,
-                            size: 14,
-                            color: grey,
-                          ),
-                          Text(
-                            category.label,
-                            style: bodyMedium.copyWith(
-                              color: const Color(0xff6E7590),
-                            ),
-                          ),
-                        ],
-                      )
-                    : Text(
-                        category.label,
-                        style: bodyMedium.copyWith(
-                          color: const Color(0xff6E7590),
-                        ),
-                      ),
+              (item) => DropdownMenuItem<T>(
+                value: item.value,
+                //disable default onTap to avoid closing menu when selecting an item on multiple dropdown
+                enabled: !multiple,
+                child: multiple
+                    ? buildItemMultiple(item.value, item.label)
+                    : buildItemSimple(item.label),
               ),
             )
             .toList(),
         selectedItemBuilder: items != null
             ? (context) {
-                // add post frame callback to wait for the layout to be rendered
                 return items!.map((item) {
                   return multiple
-                      ? selectedMultipleLabels.value.isNotEmpty
-                          ? buildSelectedItemMultiple(selectedMultipleLabels
-                              .value
-                              .map((e) => e)
-                              .toList())
-                          : Container()
+                      ? buildSelectedItemMultiple(
+                          selectedMultipleLabels.value.map((e) => e).toList(),
+                        )
                       : buildSelectedItemSimple(item.label);
                 }).toList();
               }
             : null,
         dropdownStyleData: const DropdownStyleData(
           direction: DropdownDirection.left,
+          maxHeight: 200,
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(

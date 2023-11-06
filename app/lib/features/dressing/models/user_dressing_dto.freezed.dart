@@ -26,9 +26,8 @@ mixin _$UserDressingDto {
   String get userId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   @JsonKey(name: 'dressing_category_id')
-  int get dressingCategoryId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'dressing_material_id')
-  int get dressingMaterialId => throw _privateConstructorUsedError;
+  int get dressingCategoryId =>
+      throw _privateConstructorUsedError; // @JsonKey(name: 'dressing_material_id') required int dressingMaterialId,
   @JsonKey(name: 'dressing_color_id')
   int get dressingColorId => throw _privateConstructorUsedError;
   @JsonKey(name: 'belongs_to')
@@ -56,7 +55,6 @@ abstract class $UserDressingDtoCopyWith<$Res> {
       @JsonKey(name: 'user_id') String userId,
       String title,
       @JsonKey(name: 'dressing_category_id') int dressingCategoryId,
-      @JsonKey(name: 'dressing_material_id') int dressingMaterialId,
       @JsonKey(name: 'dressing_color_id') int dressingColorId,
       @JsonKey(name: 'belongs_to') String? belongsTo,
       String? notes,
@@ -81,7 +79,6 @@ class _$UserDressingDtoCopyWithImpl<$Res, $Val extends UserDressingDto>
     Object? userId = null,
     Object? title = null,
     Object? dressingCategoryId = null,
-    Object? dressingMaterialId = null,
     Object? dressingColorId = null,
     Object? belongsTo = freezed,
     Object? notes = freezed,
@@ -104,10 +101,6 @@ class _$UserDressingDtoCopyWithImpl<$Res, $Val extends UserDressingDto>
       dressingCategoryId: null == dressingCategoryId
           ? _value.dressingCategoryId
           : dressingCategoryId // ignore: cast_nullable_to_non_nullable
-              as int,
-      dressingMaterialId: null == dressingMaterialId
-          ? _value.dressingMaterialId
-          : dressingMaterialId // ignore: cast_nullable_to_non_nullable
               as int,
       dressingColorId: null == dressingColorId
           ? _value.dressingColorId
@@ -146,7 +139,6 @@ abstract class _$$UserDressingDtoImplCopyWith<$Res>
       @JsonKey(name: 'user_id') String userId,
       String title,
       @JsonKey(name: 'dressing_category_id') int dressingCategoryId,
-      @JsonKey(name: 'dressing_material_id') int dressingMaterialId,
       @JsonKey(name: 'dressing_color_id') int dressingColorId,
       @JsonKey(name: 'belongs_to') String? belongsTo,
       String? notes,
@@ -169,7 +161,6 @@ class __$$UserDressingDtoImplCopyWithImpl<$Res>
     Object? userId = null,
     Object? title = null,
     Object? dressingCategoryId = null,
-    Object? dressingMaterialId = null,
     Object? dressingColorId = null,
     Object? belongsTo = freezed,
     Object? notes = freezed,
@@ -192,10 +183,6 @@ class __$$UserDressingDtoImplCopyWithImpl<$Res>
       dressingCategoryId: null == dressingCategoryId
           ? _value.dressingCategoryId
           : dressingCategoryId // ignore: cast_nullable_to_non_nullable
-              as int,
-      dressingMaterialId: null == dressingMaterialId
-          ? _value.dressingMaterialId
-          : dressingMaterialId // ignore: cast_nullable_to_non_nullable
               as int,
       dressingColorId: null == dressingColorId
           ? _value.dressingColorId
@@ -229,7 +216,6 @@ class _$UserDressingDtoImpl implements _UserDressingDto {
       @JsonKey(name: 'user_id') required this.userId,
       required this.title,
       @JsonKey(name: 'dressing_category_id') required this.dressingCategoryId,
-      @JsonKey(name: 'dressing_material_id') required this.dressingMaterialId,
       @JsonKey(name: 'dressing_color_id') required this.dressingColorId,
       @JsonKey(name: 'belongs_to') this.belongsTo,
       this.notes,
@@ -250,9 +236,7 @@ class _$UserDressingDtoImpl implements _UserDressingDto {
   @override
   @JsonKey(name: 'dressing_category_id')
   final int dressingCategoryId;
-  @override
-  @JsonKey(name: 'dressing_material_id')
-  final int dressingMaterialId;
+// @JsonKey(name: 'dressing_material_id') required int dressingMaterialId,
   @override
   @JsonKey(name: 'dressing_color_id')
   final int dressingColorId;
@@ -270,7 +254,7 @@ class _$UserDressingDtoImpl implements _UserDressingDto {
 
   @override
   String toString() {
-    return 'UserDressingDto(id: $id, userId: $userId, title: $title, dressingCategoryId: $dressingCategoryId, dressingMaterialId: $dressingMaterialId, dressingColorId: $dressingColorId, belongsTo: $belongsTo, notes: $notes, imagePath: $imagePath, isFavorite: $isFavorite)';
+    return 'UserDressingDto(id: $id, userId: $userId, title: $title, dressingCategoryId: $dressingCategoryId, dressingColorId: $dressingColorId, belongsTo: $belongsTo, notes: $notes, imagePath: $imagePath, isFavorite: $isFavorite)';
   }
 
   @override
@@ -283,8 +267,6 @@ class _$UserDressingDtoImpl implements _UserDressingDto {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.dressingCategoryId, dressingCategoryId) ||
                 other.dressingCategoryId == dressingCategoryId) &&
-            (identical(other.dressingMaterialId, dressingMaterialId) ||
-                other.dressingMaterialId == dressingMaterialId) &&
             (identical(other.dressingColorId, dressingColorId) ||
                 other.dressingColorId == dressingColorId) &&
             (identical(other.belongsTo, belongsTo) ||
@@ -304,7 +286,6 @@ class _$UserDressingDtoImpl implements _UserDressingDto {
       userId,
       title,
       dressingCategoryId,
-      dressingMaterialId,
       dressingColorId,
       belongsTo,
       notes,
@@ -333,8 +314,6 @@ abstract class _UserDressingDto implements UserDressingDto {
       required final String title,
       @JsonKey(name: 'dressing_category_id')
       required final int dressingCategoryId,
-      @JsonKey(name: 'dressing_material_id')
-      required final int dressingMaterialId,
       @JsonKey(name: 'dressing_color_id') required final int dressingColorId,
       @JsonKey(name: 'belongs_to') final String? belongsTo,
       final String? notes,
@@ -356,10 +335,7 @@ abstract class _UserDressingDto implements UserDressingDto {
   @override
   @JsonKey(name: 'dressing_category_id')
   int get dressingCategoryId;
-  @override
-  @JsonKey(name: 'dressing_material_id')
-  int get dressingMaterialId;
-  @override
+  @override // @JsonKey(name: 'dressing_material_id') required int dressingMaterialId,
   @JsonKey(name: 'dressing_color_id')
   int get dressingColorId;
   @override

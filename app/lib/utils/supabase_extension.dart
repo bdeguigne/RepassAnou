@@ -8,6 +8,8 @@ extension SupabaseExtensions<T> on s.SupabaseClient {
   s.SupabaseQueryBuilder get dressingMaterialsTable =>
       from('dressing_materials');
   s.SupabaseQueryBuilder get usersDressingsTable => from('users_dressings');
+  s.SupabaseQueryBuilder get usersDressingsMaterials =>
+      from('users_dressings_materials');
 }
 
 extension SupabaseStorageExtensions<T> on s.SupabaseStorageClient {

@@ -10,7 +10,7 @@ import 'package:repasse_anou/design_system/app_text_field.dart';
 import 'package:repasse_anou/design_system/drop_down.dart';
 import 'package:repasse_anou/design_system/label_content.dart';
 import 'package:repasse_anou/design_system/theme.dart';
-import 'package:repasse_anou/features/dressing/application/add_dressing_modal_controller.dart';
+import 'package:repasse_anou/features/dressing/application/add_dressing_modal_service.dart';
 import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_category.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
@@ -44,7 +44,7 @@ class DressingModal extends HookConsumerWidget {
     final AsyncValue<List<DressingMaterial>> dressingMaterials =
         ref.watch(dressingMaterialsProvider);
     final AsyncValue<UserDressingAndImage?> addDressingState =
-        ref.watch(addDressingModalControllerProvider);
+        ref.watch(addDressingModalServiceProvider);
 
     final titleController = useTextEditingController(text: userDressing?.title);
     final belongsToController =
@@ -52,19 +52,18 @@ class DressingModal extends HookConsumerWidget {
     final notesController = useTextEditingController(text: userDressing?.notes);
     final selectedCategory =
         useState<DressingCategory?>(userDressing?.dressingCategory);
-    final selectedMaterial =
-        useState<DressingMaterial?>(userDressing?.dressingMaterial);
+    final selectedMaterials = useState<List<DressingMaterial>>([]);
     final selectedColor = useState<DressingColor?>(userDressing?.dressingColor);
     final imageTaken = useState<XFile?>(null);
     final isFavorite = useState<bool>(userDressing?.isFavorite ?? false);
 
     Future<void> saveDressingAndCloseModal() async {
       final success = await ref
-          .read(addDressingModalControllerProvider.notifier)
+          .read(addDressingModalServiceProvider.notifier)
           .saveDressingItem(
             titleController.text,
             selectedCategory.value!,
-            selectedMaterial.value!,
+            selectedMaterials.value,
             selectedColor.value!,
             belongsToController.text,
             notesController.text,
@@ -81,11 +80,11 @@ class DressingModal extends HookConsumerWidget {
 
     Future<void> editDressingAndCloseModal() async {
       final success = await ref
-          .read(addDressingModalControllerProvider.notifier)
+          .read(addDressingModalServiceProvider.notifier)
           .editDressingItem(
             titleController.text,
             selectedCategory.value!,
-            selectedMaterial.value!,
+            selectedMaterials.value,
             selectedColor.value!,
             belongsToController.text,
             notesController.text,
@@ -181,9 +180,11 @@ class DressingModal extends HookConsumerWidget {
                   validator: (value) => value == null
                       ? 'Veuillez sélectionner une matière'
                       : null,
-                  value: selectedMaterial.value,
-                  // onChanged: (value) => selectedMaterial.value = value,
-                  onChanged: (value) => print(value),
+                  value: selectedMaterials.value.isEmpty
+                      ? null
+                      : selectedMaterials.value.last,
+                  onChanged: (value) => selectedMaterials.value =
+                      value.whereType<DressingMaterial>().toList(),
                   hint: 'Coton, soie, laine...',
                   items: dressingMaterials.value!
                       .map(

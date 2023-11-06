@@ -10,7 +10,7 @@ class UserDressingDto with _$UserDressingDto {
     @JsonKey(name: 'user_id') required String userId,
     required String title,
     @JsonKey(name: 'dressing_category_id') required int dressingCategoryId,
-    @JsonKey(name: 'dressing_material_id') required int dressingMaterialId,
+    // @JsonKey(name: 'dressing_material_id') required int dressingMaterialId,
     @JsonKey(name: 'dressing_color_id') required int dressingColorId,
     @JsonKey(name: 'belongs_to') String? belongsTo,
     String? notes,

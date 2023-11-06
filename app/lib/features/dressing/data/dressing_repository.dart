@@ -62,8 +62,9 @@ class DressingRepository {
 
   Future<List<DressingMaterial>> getDressingMaterials() async {
     try {
-      final response =
-          await supabase.dressingMaterialsTable.select<s.PostgrestList>();
+      final response = await supabase.dressingMaterialsTable
+          .select<s.PostgrestList>()
+          .order('id', ascending: true);
       final List<DressingMaterial> dressingMaterials = response
           .map((Map<String, dynamic> json) => DressingMaterial.fromJson(json))
           .toList();
@@ -106,7 +107,7 @@ class DressingRepository {
   Future<UserDressingAndImage?> saveDressingItem(
     String title,
     DressingCategory category,
-    DressingMaterial material,
+    List<DressingMaterial> material,
     DressingColor color,
     String? belongsTo,
     String? notes,
@@ -124,7 +125,6 @@ class DressingRepository {
         user: userController.loggedUser!,
         title: title,
         dressingCategory: category,
-        dressingMaterial: material,
         dressingColor: color,
         belongsTo: belongsTo,
         notes: notes,
@@ -132,9 +132,16 @@ class DressingRepository {
         isFavorite: isFavorite,
       );
 
-      await supabase.usersDressingsTable
-          .insert(updatedUserDressing.toDto().toJson());
-      return UserDressingAndImage(userDressing: updatedUserDressing);
+      final data = await supabase.usersDressingsTable
+          .insert(updatedUserDressing.toDto().toJson())
+          .select<s.PostgrestMap>('id')
+          .single();
+
+      return UserDressingAndImage(
+        userDressing: updatedUserDressing.copyWith(
+          id: data['id'],
+        ),
+      );
     } catch (e) {
       logger.e(e);
       throw const ExceptionMessage(
@@ -145,7 +152,7 @@ class DressingRepository {
   Future<UserDressingAndImage?> editDressingItem(
     String title,
     DressingCategory category,
-    DressingMaterial material,
+    List<DressingMaterial> material,
     DressingColor color,
     String? belongsTo,
     String? notes,
@@ -167,7 +174,7 @@ class DressingRepository {
       final UserDressing updatedUserDressing = userDressing.copyWith(
         title: title,
         dressingCategory: category,
-        dressingMaterial: material,
+        // dressingMaterial: material,
         dressingColor: color,
         belongsTo: belongsTo,
         notes: notes,
