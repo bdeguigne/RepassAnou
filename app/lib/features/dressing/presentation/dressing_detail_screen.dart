@@ -89,15 +89,16 @@ class DressingDetailScreen extends HookConsumerWidget {
             pinned: true,
             floating: true,
             delegate: DressingPersistentHeader(
-                imageData: imageData.value,
-                userDressing: userDressingData.value,
-                favValue: favValue.value,
-                onFavPressed: (value) {
-                  editFavorite(value);
-                },
-                onDeleteDressingPressed: () {
-                  deleteDressing();
-                }),
+              imageData: imageData.value,
+              userDressing: userDressingData.value,
+              favValue: favValue.value,
+              onFavPressed: (value) {
+                editFavorite(value);
+              },
+              onDeleteDressingPressed: () {
+                deleteDressing();
+              },
+            ),
           ),
           SliverFillRemaining(
             hasScrollBody: false,

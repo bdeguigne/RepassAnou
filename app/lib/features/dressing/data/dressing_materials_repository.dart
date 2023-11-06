@@ -46,6 +46,18 @@ class DressingMaterialsRepository {
           'Une erreur est survenue lors de la suppression de la matière du dressing');
     }
   }
+
+  Future<void> editMaterialToDressing(
+      UserDressing dressing, List<DressingMaterial> materials) async {
+    try {
+      await deleteMaterialToDressing(dressing);
+      await addMaterialToDressing(dressing.id ?? '', materials);
+    } catch (e) {
+      logger.e(e);
+      throw const ExceptionMessage(
+          'Une erreur est survenue lors de la modification du la matière du dressing');
+    }
+  }
 }
 
 final Provider<DressingMaterialsRepository>

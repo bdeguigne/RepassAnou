@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:logger/logger.dart';
 import 'package:repasse_anou/exception/exception_message.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
+import 'package:repasse_anou/features/dressing/data/dressing_materials_repository.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_category.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_material.dart';
@@ -23,11 +24,13 @@ class DressingRepository {
     this.logger,
     this.userController,
     this.imageStorageRepository,
+    this.dressingMaterialsRepository,
   );
   final s.SupabaseClient supabase;
   final Logger logger;
   final UserController userController;
   final ImageStorageRepository imageStorageRepository;
+  final DressingMaterialsRepository dressingMaterialsRepository;
 
   Future<List<DressingCategory>> getDressingCategories() async {
     try {
@@ -152,7 +155,7 @@ class DressingRepository {
   Future<UserDressingAndImage?> editDressingItem(
     String title,
     DressingCategory category,
-    List<DressingMaterial> material,
+    List<DressingMaterial> materials,
     DressingColor color,
     String? belongsTo,
     String? notes,
@@ -163,6 +166,10 @@ class DressingRepository {
       if (userController.loggedUser == null) {
         throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
       }
+      if (materials.isEmpty) {
+        throw const ExceptionMessage(
+            'Veuillez sélectionner au moins une matière');
+      }
       String? path;
       if (image != null) {
         // remove old image
@@ -171,15 +178,29 @@ class DressingRepository {
         path = await imageStorageRepository.uploadImage(image);
       }
 
+      final isMaterialsDifferent =
+          materials.length != userDressing.dressingMaterials.length ||
+              !userDressing.dressingMaterials
+                  .every((element) => materials.contains(element));
+
+      if (isMaterialsDifferent) {
+        logger.i('materials are different');
+        await dressingMaterialsRepository.editMaterialToDressing(
+            userDressing, materials);
+      }
+
       final UserDressing updatedUserDressing = userDressing.copyWith(
         title: title,
         dressingCategory: category,
-        // dressingMaterial: material,
+        dressingMaterials:
+            isMaterialsDifferent ? materials : userDressing.dressingMaterials,
         dressingColor: color,
         belongsTo: belongsTo,
         notes: notes,
         imagePath: path ?? userDressing.imagePath,
       );
+
+      if (isMaterialsDifferent) {}
 
       await supabase.usersDressingsTable
           .update(updatedUserDressing.toDto().toJson())
@@ -264,5 +285,6 @@ final Provider<DressingRepository> dressingRepositoryProvider =
     ref.read(loggerProvider),
     ref.read(userControllerProvider.notifier),
     ref.read(imageStorageRepositoryProvider),
+    ref.read(dressingMatetialsRepositoryProvider),
   );
 });

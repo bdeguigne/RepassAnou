@@ -1,6 +1,7 @@
 import 'package:repasse_anou/features/dressing/data/dressing_materials_repository.dart';
 import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
+import 'package:repasse_anou/features/photo/data/image_storage_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:repasse_anou/utils/extensions.dart';
 
@@ -33,9 +34,19 @@ class DressingDetailScreenService extends _$DressingDetailScreenService {
         ref.read(dressingRepositoryProvider);
     final DressingMaterialsRepository dressingMaterialsRepository =
         ref.read(dressingMatetialsRepositoryProvider);
+    final ImageStorageRepository imageStorageRepository =
+        ref.read(imageStorageRepositoryProvider);
 
     state = await ref.guardAndNotifyOnError(
       () => dressingMaterialsRepository.deleteMaterialToDressing(dressing),
+    );
+
+    if (state.hasError) {
+      return false;
+    }
+
+    state = await ref.guardAndNotifyOnError(
+      () => imageStorageRepository.deleteImage(dressing.imagePath),
     );
 
     if (state.hasError) {

@@ -24,6 +24,7 @@ class DropDown<T> extends HookWidget {
   final String? Function(T?)? validator;
   final T? value;
   final bool multiple;
+  final List<String> initialValues;
 
   const DropDown._({
     this.onChanged,
@@ -33,6 +34,7 @@ class DropDown<T> extends HookWidget {
     this.multiple = false,
     this.hint,
     this.validator,
+    this.initialValues = const [],
     super.key,
   });
 
@@ -56,16 +58,17 @@ class DropDown<T> extends HookWidget {
     void Function(List<T?>)? onChanged,
     List<AppDropdownMenuItem<T>>? items,
     String? hint,
-    T? value,
+    List<String> initialValues = const [],
     String? Function(T?)? validator,
   }) {
     return DropDown<T>._(
       onChangedMultiple: onChanged,
       items: items,
-      value: value,
+      value: null,
       hint: hint,
       validator: validator,
       multiple: true,
+      initialValues: initialValues,
     );
   }
 
@@ -77,12 +80,22 @@ class DropDown<T> extends HookWidget {
     final selectedMultipleLabels = useState<List<String?>>([]);
     final isMenuOpen = useState<bool>(false);
 
-    useEffect(() {
-      final label =
-          items?.where((element) => element.value == value).firstOrNull;
-      if (label != null) {
-        selectedMultipleLabels.value.add(label.label);
+    void handleInitialDataForMultipleSelect() {
+      final labels =
+          items?.where((element) => initialValues.contains(element.label));
+
+      if (labels != null) {
+        selectedMultipleLabels.value = List.from(selectedMultipleLabels.value
+          ..addAll(
+            labels.map((e) => e.label),
+          ));
+
+        selectedMultipleValue.value = labels.map((e) => e.value).toList();
       }
+    }
+
+    useEffect(() {
+      handleInitialDataForMultipleSelect();
       return null;
     }, []);
 

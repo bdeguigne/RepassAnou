@@ -52,7 +52,8 @@ class DressingModal extends HookConsumerWidget {
     final notesController = useTextEditingController(text: userDressing?.notes);
     final selectedCategory =
         useState<DressingCategory?>(userDressing?.dressingCategory);
-    final selectedMaterials = useState<List<DressingMaterial>>([]);
+    final selectedMaterials =
+        useState<List<DressingMaterial>>(userDressing?.dressingMaterials ?? []);
     final selectedColor = useState<DressingColor?>(userDressing?.dressingColor);
     final imageTaken = useState<XFile?>(null);
     final isFavorite = useState<bool>(userDressing?.isFavorite ?? false);
@@ -180,12 +181,13 @@ class DressingModal extends HookConsumerWidget {
                   validator: (value) => value == null
                       ? 'Veuillez sélectionner une matière'
                       : null,
-                  value: selectedMaterials.value.isEmpty
-                      ? null
-                      : selectedMaterials.value.last,
                   onChanged: (value) => selectedMaterials.value =
                       value.whereType<DressingMaterial>().toList(),
                   hint: 'Coton, soie, laine...',
+                  initialValues: userDressing?.dressingMaterials
+                          .map((e) => e.label)
+                          .toList() ??
+                      [],
                   items: dressingMaterials.value!
                       .map(
                         (category) => AppDropdownMenuItem<DressingMaterial?>(
