@@ -7,6 +7,7 @@ import 'package:repasse_anou/utils/extensions.dart';
 import 'package:repasse_anou/utils/supabase_extension.dart';
 import 'package:repasse_anou/utils/top_level_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 part 'image_storage_repository.g.dart';
 
@@ -26,11 +27,22 @@ class ImageStorageRepository {
 
       final String path = '${loggedUser.id}/${ref.read(uuidProvider).v4()}.jpg';
 
+      var compressedImage = await FlutterImageCompress.compressWithFile(
+        file.absolute.path,
+        quality: 1,
+        minWidth: 960,
+        minHeight: 540,
+      );
+
+      if (compressedImage == null) {
+        throw const ExceptionMessage('Impossible de compresser l\'image');
+      }
+
       final response = await ref
           .read(supabaseClientProvider)
           .storage
           .dressingImagesBucket
-          .uploadBinary(path, file.readAsBytesSync());
+          .uploadBinary(path, compressedImage);
       ref.read(loggerProvider).i('uploadImage response: $response');
       return path;
     } catch (e) {
