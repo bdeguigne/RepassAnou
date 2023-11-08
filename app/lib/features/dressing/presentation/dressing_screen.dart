@@ -33,10 +33,15 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
       ref.read(navigationControllerProvider);
 
   final List<UserDressing> selectedDressing = [];
+  List<String> ignoredBelongsTo = [];
 
   @override
   void initState() {
     super.initState();
+
+    setState(() {
+      ignoredBelongsTo = [];
+    });
 
     final hasReadDressingMessage =
         ref.read(userControllerProvider)?.hasReadDressingMessage;
@@ -165,23 +170,21 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
     return usersDressings.when<Widget>(
       data: (data) {
         if (data.isEmpty) {
-          return Expanded(
-              child: Center(
-            child: const Text('Dressing vide').bodyLarge,
-          ));
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            setState(() {
+              ignoredBelongsTo.add(belongsTo.id);
+            });
+          });
+          // return empty content because we already ignore this belongsTo
+          return Container();
         }
         return SizedBox(
-          height: 215,
+          height: 225,
           child: ListView.builder(
             itemCount: data.length,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              if (data.first.belongsTo.name == 'Lou') {
-                print("WOWOWOWOWO $data");
-              }
-              if (data.elementAtOrNull(index) == null) {
-                return Text("NULL");
-              }
               final dressing = data.elementAt(index);
               final bool isLastItem = data.length - 1 != index;
               final padding = EdgeInsets.only(right: isLastItem ? 4 : 0);
@@ -224,14 +227,14 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
             Text('Une erreur est survenue lors de la récupération du dressing'),
       ),
       loading: () => SizedBox(
-        height: 215,
+        height: 225,
         child: ListView(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             children: List.generate(
               3,
               (index) => const Padding(
-                padding: EdgeInsets.only(right: 4),
+                padding: EdgeInsets.only(right: 4.0),
                 child: DressingCard(isLoading: true),
               ),
             )),
@@ -245,34 +248,32 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
       data: (data) {
         return Expanded(
           child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              children: data
-                  .map((belongsTo) => SizedBox(
-                        height: 235,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+              // padding: const EdgeInsets.symmetric(horizontal: 20),
+              children: data.map((belongsTo) {
+            return !ignoredBelongsTo.contains(belongsTo.id)
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Dressing de ${belongsTo.name}')
-                                    .headlineMedium,
-                                Text(
-                                  'Voir tout',
-                                  style: labelLarge.copyWith(
-                                      color: const Color(0xFF9B9B9B)),
-                                ),
-                              ],
+                            Text('Dressing de ${belongsTo.name}')
+                                .headlineMedium,
+                            Text(
+                              'Voir tout',
+                              style: labelLarge.copyWith(
+                                  color: const Color(0xFF9B9B9B)),
                             ),
-                            buildDressingItems(belongsTo),
                           ],
                         ),
-                      ))
-                  .toList()
-
-              // buildDressingItems(usersDressings),
-              // buildDressingBelongsToItems(usersDressingBelongsTo),
-              ),
+                      ),
+                      buildDressingItems(belongsTo),
+                    ],
+                  )
+                : Container();
+          }).toList()),
         );
       },
       error: (error, stackTrace) => const Center(
@@ -329,31 +330,6 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
           height: 20,
         ),
         buildDressingBelongsToItems(usersDressingBelongsTo),
-        // Expanded(
-        //   child: ListView(
-        //     children: [
-        //       Padding(
-        //         padding: const EdgeInsets.symmetric(horizontal: 20),
-        //         child: Row(
-        //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //           children: [
-        //             const Text('Dressing de').headlineMedium,
-        //             Text(
-        //               'Voir tout',
-        //               style:
-        //                   labelLarge.copyWith(color: const Color(0xFF9B9B9B)),
-        //             ),
-        //           ],
-        //         ),
-        //       ),
-        //       buildDressingItems(usersDressings),
-        //       buildDressingBelongsToItems(usersDressingBelongsTo),
-        //     ],
-        //   ),
-        // ),
-        // const SizedBox(
-        //   height: 12,
-        // ),
       ],
     ));
   }

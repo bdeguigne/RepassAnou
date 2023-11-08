@@ -66,7 +66,7 @@ class DressingDetailScreen extends HookConsumerWidget {
       if (success == true && context.mounted) {
         favValue.value = value;
         // ignore: unused_result
-        ref.refresh(usersDressingsBelongsToProvider);
+        ref.refresh(usersDressingsByBelongsToProvider(userDressing.belongsTo));
       }
     }
 
@@ -77,7 +77,7 @@ class DressingDetailScreen extends HookConsumerWidget {
 
       if (success == true && context.mounted) {
         // ignore: unused_result
-        ref.refresh(usersDressingsBelongsToProvider);
+        ref.refresh(usersDressingsByBelongsToProvider(userDressing.belongsTo));
         AutoRouter.of(context).pop();
       }
     }
