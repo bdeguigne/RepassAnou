@@ -24,6 +24,7 @@ _$UserDressingImpl _$$UserDressingImplFromJson(Map<String, dynamic> json) =>
       notes: json['notes'] as String?,
       imagePath: json['image_path'] as String,
       isFavorite: json['is_favorite'] as bool? ?? false,
+      createdAt: DateTime.parse(json['created_at'] as String),
     );
 
 Map<String, dynamic> _$$UserDressingImplToJson(_$UserDressingImpl instance) =>
@@ -37,4 +38,5 @@ Map<String, dynamic> _$$UserDressingImplToJson(_$UserDressingImpl instance) =>
       'notes': instance.notes,
       'image_path': instance.imagePath,
       'is_favorite': instance.isFavorite,
+      'created_at': instance.createdAt.toIso8601String(),
     };

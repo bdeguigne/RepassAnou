@@ -28,6 +28,7 @@ class UserDressing with _$UserDressing {
     String? notes,
     @JsonKey(name: 'image_path') required String imagePath,
     @JsonKey(name: 'is_favorite') @Default(false) bool isFavorite,
+    @JsonKey(name: 'created_at') required DateTime createdAt,
   }) = _UserDressing;
 
   factory UserDressing.fromJson(Map<String, dynamic> json) =>
@@ -59,5 +60,6 @@ class UserDressing with _$UserDressing {
         imagePath: imagePath,
         isFavorite: isFavorite,
         usersDressingBelongsToId: belongsTo.id,
+        createdAt: createdAt,
       );
 }

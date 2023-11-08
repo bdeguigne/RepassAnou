@@ -66,7 +66,7 @@ class DressingDetailScreen extends HookConsumerWidget {
       if (success == true && context.mounted) {
         favValue.value = value;
         // ignore: unused_result
-        ref.refresh(usersDressingsProvider);
+        ref.refresh(usersDressingsBelongsToProvider);
       }
     }
 
@@ -77,7 +77,7 @@ class DressingDetailScreen extends HookConsumerWidget {
 
       if (success == true && context.mounted) {
         // ignore: unused_result
-        ref.refresh(usersDressingsProvider);
+        ref.refresh(usersDressingsBelongsToProvider);
         AutoRouter.of(context).pop();
       }
     }
@@ -87,7 +87,6 @@ class DressingDetailScreen extends HookConsumerWidget {
         slivers: [
           SliverPersistentHeader(
             pinned: true,
-            floating: true,
             delegate: DressingPersistentHeader(
               imageData: imageData.value,
               userDressing: userDressingData.value,

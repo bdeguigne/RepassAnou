@@ -80,7 +80,8 @@ class DressingRepository {
     }
   }
 
-  Future<List<UserDressing>> getUsersDressings() async {
+  Future<List<UserDressing>> getUsersDressingsByBelongsTo(
+      UserDressingBelongsTo userDressingBelongsTo) async {
     try {
       if (userController.loggedUser == null) {
         throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
@@ -88,11 +89,13 @@ class DressingRepository {
 
       final response = await supabase.usersDressingsTable
           .select<s.PostgrestList>(
-              'id, users(*), title, dressing_categories(*), dressing_materials(*), dressing_colors(*), users_dressings_belongs_to(id, name), notes, image_path, is_favorite')
-          .eq('user_id', userController.loggedUser!.id);
+              'id, users(*), title, dressing_categories(*), dressing_materials(*), dressing_colors(*), users_dressings_belongs_to(id, name), notes, image_path, is_favorite, created_at')
+          .eq('user_id', userController.loggedUser!.id)
+          .eq('user_dressing_belongs_to_id', userDressingBelongsTo.id)
+          .order('created_at')
+          .limit(5);
 
       final userDressings = response.map((data) {
-        print('DATA $data');
         return UserDressing.fromJson(data);
       }).toList()
         ..sort(
@@ -105,8 +108,29 @@ class DressingRepository {
       return userDressings;
     } catch (e) {
       logger.e(e);
+      logger.e(e.runtimeType);
       throw const ExceptionMessage(
           'Une erreur est survenue lors de la récupération du vêtement');
+    }
+  }
+
+  Future<List<UserDressingBelongsTo>> getUsersDressingsBelongsTo() async {
+    try {
+      if (userController.loggedUser == null) {
+        throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
+      }
+      final response = await supabase.usersDressingsBelongsToTable
+          .select<s.PostgrestList>()
+          .eq('user_id', userController.loggedUser!.id);
+
+      final usersDressingsBelongsTo = response.map((data) {
+        return UserDressingBelongsTo.fromJson(data);
+      }).toList();
+      return usersDressingsBelongsTo;
+    } catch (e) {
+      logger.e(e);
+      throw const ExceptionMessage(
+          'Une erreur est survenue lors de la récupération des appartenances de vêtements');
     }
   }
 
@@ -135,6 +159,7 @@ class DressingRepository {
         notes: notes,
         imagePath: path,
         isFavorite: isFavorite,
+        createdAt: DateTime.now(),
       );
 
       final data = await supabase.usersDressingsTable
@@ -275,9 +300,21 @@ Future<List<DressingMaterial>> dressingMaterials(
 }
 
 @Riverpod(keepAlive: true)
-Future<List<UserDressing>> usersDressings(UsersDressingsRef ref) async {
+Future<List<UserDressing>> usersDressingsByBelongsTo(
+    UsersDressingsByBelongsToRef ref,
+    UserDressingBelongsTo userDressingBelongsTo) async {
   final dressingRepository = ref.watch(dressingRepositoryProvider);
-  return ref.notifyOnError(dressingRepository.getUsersDressings);
+  return ref.notifyOnError(
+    () =>
+        dressingRepository.getUsersDressingsByBelongsTo(userDressingBelongsTo),
+  );
+}
+
+@Riverpod(keepAlive: true)
+Future<List<UserDressingBelongsTo>> usersDressingsBelongsTo(
+    UsersDressingsBelongsToRef ref) async {
+  final dressingRepository = ref.watch(dressingRepositoryProvider);
+  return ref.notifyOnError(dressingRepository.getUsersDressingsBelongsTo);
 }
 
 final Provider<DressingRepository> dressingRepositoryProvider =

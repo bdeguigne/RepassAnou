@@ -8,6 +8,7 @@ import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
 import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
+import 'package:repasse_anou/features/dressing/models/user_dressing_belong_to.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_detail_screen.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_modal.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_screen_view_model.dart';
@@ -156,24 +157,32 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
     );
   }
 
-  Widget buildDressingItems(AsyncValue<List<UserDressing>> usersDressings) {
+  Widget buildDressingItems(UserDressingBelongsTo belongsTo) {
+    final AsyncValue<List<UserDressing>> usersDressings = ref.watch(
+      usersDressingsByBelongsToProvider(belongsTo),
+    );
+
     return usersDressings.when<Widget>(
       data: (data) {
         if (data.isEmpty) {
-          return Flexible(
-            child: Column(
-              children: buildEmptyDressing(),
-            ),
-          );
+          return Expanded(
+              child: Center(
+            child: const Text('Dressing vide').bodyLarge,
+          ));
         }
-
-        return Flexible(
+        return SizedBox(
+          height: 215,
           child: ListView.builder(
             itemCount: data.length,
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
             itemBuilder: (context, index) {
-              final dressing = data[index];
+              if (data.first.belongsTo.name == 'Lou') {
+                print("WOWOWOWOWO $data");
+              }
+              if (data.elementAtOrNull(index) == null) {
+                return Text("NULL");
+              }
+              final dressing = data.elementAt(index);
               final bool isLastItem = data.length - 1 != index;
               final padding = EdgeInsets.only(right: isLastItem ? 4 : 0);
 
@@ -214,7 +223,8 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
         child:
             Text('Une erreur est survenue lors de la récupération du dressing'),
       ),
-      loading: () => Flexible(
+      loading: () => SizedBox(
+        height: 215,
         child: ListView(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -229,10 +239,56 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
     );
   }
 
+  Widget buildDressingBelongsToItems(
+      AsyncValue<List<UserDressingBelongsTo>> usersDressingBelongsTo) {
+    return usersDressingBelongsTo.when(
+      data: (data) {
+        return Expanded(
+          child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              children: data
+                  .map((belongsTo) => SizedBox(
+                        height: 235,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Dressing de ${belongsTo.name}')
+                                    .headlineMedium,
+                                Text(
+                                  'Voir tout',
+                                  style: labelLarge.copyWith(
+                                      color: const Color(0xFF9B9B9B)),
+                                ),
+                              ],
+                            ),
+                            buildDressingItems(belongsTo),
+                          ],
+                        ),
+                      ))
+                  .toList()
+
+              // buildDressingItems(usersDressings),
+              // buildDressingBelongsToItems(usersDressingBelongsTo),
+              ),
+        );
+      },
+      error: (error, stackTrace) => const Center(
+        child:
+            Text('Une erreur est survenue lors de la récupération du dressing'),
+      ),
+      loading: () => const Center(
+        child: Text('Loading...'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final AsyncValue<List<UserDressing>> usersDressings =
-        ref.watch(usersDressingsProvider);
+    final AsyncValue<List<UserDressingBelongsTo>> usersDressingBelongsTo =
+        ref.watch(usersDressingsBelongsToProvider);
 
     return AppLayout(
         child: Column(
@@ -272,23 +328,32 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
         const SizedBox(
           height: 20,
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Dressing de').headlineMedium,
-              Text(
-                'Voir tout',
-                style: labelLarge.copyWith(color: const Color(0xFF9B9B9B)),
-              ),
-            ],
-          ),
-        ),
+        buildDressingBelongsToItems(usersDressingBelongsTo),
+        // Expanded(
+        //   child: ListView(
+        //     children: [
+        //       Padding(
+        //         padding: const EdgeInsets.symmetric(horizontal: 20),
+        //         child: Row(
+        //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //           children: [
+        //             const Text('Dressing de').headlineMedium,
+        //             Text(
+        //               'Voir tout',
+        //               style:
+        //                   labelLarge.copyWith(color: const Color(0xFF9B9B9B)),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //       buildDressingItems(usersDressings),
+        //       buildDressingBelongsToItems(usersDressingBelongsTo),
+        //     ],
+        //   ),
+        // ),
         // const SizedBox(
         //   height: 12,
         // ),
-        buildDressingItems(usersDressings),
       ],
     ));
   }

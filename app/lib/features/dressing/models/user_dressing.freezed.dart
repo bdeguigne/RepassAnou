@@ -39,6 +39,8 @@ mixin _$UserDressing {
   String get imagePath => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_favorite')
   bool get isFavorite => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
+  DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -64,7 +66,8 @@ abstract class $UserDressingCopyWith<$Res> {
       UserDressingBelongsTo belongsTo,
       String? notes,
       @JsonKey(name: 'image_path') String imagePath,
-      @JsonKey(name: 'is_favorite') bool isFavorite});
+      @JsonKey(name: 'is_favorite') bool isFavorite,
+      @JsonKey(name: 'created_at') DateTime createdAt});
 
   $UserCopyWith<$Res> get user;
   $DressingCategoryCopyWith<$Res> get dressingCategory;
@@ -95,6 +98,7 @@ class _$UserDressingCopyWithImpl<$Res, $Val extends UserDressing>
     Object? notes = freezed,
     Object? imagePath = null,
     Object? isFavorite = null,
+    Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -137,6 +141,10 @@ class _$UserDressingCopyWithImpl<$Res, $Val extends UserDressing>
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
               as bool,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ) as $Val);
   }
 
@@ -193,7 +201,8 @@ abstract class _$$UserDressingImplCopyWith<$Res>
       UserDressingBelongsTo belongsTo,
       String? notes,
       @JsonKey(name: 'image_path') String imagePath,
-      @JsonKey(name: 'is_favorite') bool isFavorite});
+      @JsonKey(name: 'is_favorite') bool isFavorite,
+      @JsonKey(name: 'created_at') DateTime createdAt});
 
   @override
   $UserCopyWith<$Res> get user;
@@ -226,6 +235,7 @@ class __$$UserDressingImplCopyWithImpl<$Res>
     Object? notes = freezed,
     Object? imagePath = null,
     Object? isFavorite = null,
+    Object? createdAt = null,
   }) {
     return _then(_$UserDressingImpl(
       id: freezed == id
@@ -268,6 +278,10 @@ class __$$UserDressingImplCopyWithImpl<$Res>
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
               as bool,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -286,7 +300,8 @@ class _$UserDressingImpl extends _UserDressing {
       @JsonKey(name: 'users_dressings_belongs_to') required this.belongsTo,
       this.notes,
       @JsonKey(name: 'image_path') required this.imagePath,
-      @JsonKey(name: 'is_favorite') this.isFavorite = false})
+      @JsonKey(name: 'is_favorite') this.isFavorite = false,
+      @JsonKey(name: 'created_at') required this.createdAt})
       : _dressingMaterials = dressingMaterials,
         super._();
 
@@ -328,10 +343,13 @@ class _$UserDressingImpl extends _UserDressing {
   @override
   @JsonKey(name: 'is_favorite')
   final bool isFavorite;
+  @override
+  @JsonKey(name: 'created_at')
+  final DateTime createdAt;
 
   @override
   String toString() {
-    return 'UserDressing(id: $id, user: $user, title: $title, dressingCategory: $dressingCategory, dressingMaterials: $dressingMaterials, dressingColor: $dressingColor, belongsTo: $belongsTo, notes: $notes, imagePath: $imagePath, isFavorite: $isFavorite)';
+    return 'UserDressing(id: $id, user: $user, title: $title, dressingCategory: $dressingCategory, dressingMaterials: $dressingMaterials, dressingColor: $dressingColor, belongsTo: $belongsTo, notes: $notes, imagePath: $imagePath, isFavorite: $isFavorite, createdAt: $createdAt)';
   }
 
   @override
@@ -354,7 +372,9 @@ class _$UserDressingImpl extends _UserDressing {
             (identical(other.imagePath, imagePath) ||
                 other.imagePath == imagePath) &&
             (identical(other.isFavorite, isFavorite) ||
-                other.isFavorite == isFavorite));
+                other.isFavorite == isFavorite) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
@@ -370,7 +390,8 @@ class _$UserDressingImpl extends _UserDressing {
       belongsTo,
       notes,
       imagePath,
-      isFavorite);
+      isFavorite,
+      createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -401,7 +422,8 @@ abstract class _UserDressing extends UserDressing {
           required final UserDressingBelongsTo belongsTo,
           final String? notes,
           @JsonKey(name: 'image_path') required final String imagePath,
-          @JsonKey(name: 'is_favorite') final bool isFavorite}) =
+          @JsonKey(name: 'is_favorite') final bool isFavorite,
+          @JsonKey(name: 'created_at') required final DateTime createdAt}) =
       _$UserDressingImpl;
   _UserDressing._() : super._();
 
@@ -436,6 +458,9 @@ abstract class _UserDressing extends UserDressing {
   @override
   @JsonKey(name: 'is_favorite')
   bool get isFavorite;
+  @override
+  @JsonKey(name: 'created_at')
+  DateTime get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$UserDressingImplCopyWith<_$UserDressingImpl> get copyWith =>

@@ -17,6 +17,7 @@ class UserDressingDto with _$UserDressingDto {
     String? notes,
     @JsonKey(name: 'image_path') required String imagePath,
     @JsonKey(name: 'is_favorite') @Default(false) bool isFavorite,
+     @JsonKey(name: 'created_at') required DateTime createdAt,
   }) = _UserDressingDto;
 
   factory UserDressingDto.fromJson(Map<String, dynamic> json) =>

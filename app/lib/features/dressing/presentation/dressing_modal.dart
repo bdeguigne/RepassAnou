@@ -74,7 +74,7 @@ class DressingModal extends HookConsumerWidget {
 
       if (success == true && context.mounted) {
         // ignore: unused_result
-        ref.refresh(usersDressingsProvider);
+        ref.refresh(usersDressingsBelongsToProvider);
         Navigator.pop(context);
       }
     }
@@ -95,7 +95,7 @@ class DressingModal extends HookConsumerWidget {
 
       if (success == true && context.mounted) {
         // ignore: unused_result
-        ref.refresh(usersDressingsProvider);
+        ref.refresh(usersDressingsBelongsToProvider);
         Navigator.pop(context);
       }
     }
