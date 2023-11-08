@@ -3,6 +3,7 @@ import 'package:repasse_anou/features/auth/models/user.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_category.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_material.dart';
+import 'package:repasse_anou/features/dressing/models/user_dressing_belong_to.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing_dto.dart';
 
 part 'user_dressing.freezed.dart';
@@ -22,7 +23,8 @@ class UserDressing with _$UserDressing {
     @JsonKey(name: 'dressing_materials')
     List<DressingMaterial> dressingMaterials,
     @JsonKey(name: 'dressing_colors') required DressingColor dressingColor,
-    @JsonKey(name: 'belongs_to') String? belongsTo,
+    @JsonKey(name: 'users_dressings_belongs_to')
+    required UserDressingBelongsTo belongsTo,
     String? notes,
     @JsonKey(name: 'image_path') required String imagePath,
     @JsonKey(name: 'is_favorite') @Default(false) bool isFavorite,
@@ -53,9 +55,9 @@ class UserDressing with _$UserDressing {
         title: title,
         dressingCategoryId: dressingCategory.id,
         dressingColorId: dressingColor.id,
-        belongsTo: belongsTo,
         notes: notes,
         imagePath: imagePath,
         isFavorite: isFavorite,
+        usersDressingBelongsToId: belongsTo.id,
       );
 }

@@ -32,8 +32,8 @@ mixin _$UserDressing {
       throw _privateConstructorUsedError;
   @JsonKey(name: 'dressing_colors')
   DressingColor get dressingColor => throw _privateConstructorUsedError;
-  @JsonKey(name: 'belongs_to')
-  String? get belongsTo => throw _privateConstructorUsedError;
+  @JsonKey(name: 'users_dressings_belongs_to')
+  UserDressingBelongsTo get belongsTo => throw _privateConstructorUsedError;
   String? get notes => throw _privateConstructorUsedError;
   @JsonKey(name: 'image_path')
   String get imagePath => throw _privateConstructorUsedError;
@@ -60,7 +60,8 @@ abstract class $UserDressingCopyWith<$Res> {
       @JsonKey(name: 'dressing_materials')
       List<DressingMaterial> dressingMaterials,
       @JsonKey(name: 'dressing_colors') DressingColor dressingColor,
-      @JsonKey(name: 'belongs_to') String? belongsTo,
+      @JsonKey(name: 'users_dressings_belongs_to')
+      UserDressingBelongsTo belongsTo,
       String? notes,
       @JsonKey(name: 'image_path') String imagePath,
       @JsonKey(name: 'is_favorite') bool isFavorite});
@@ -68,6 +69,7 @@ abstract class $UserDressingCopyWith<$Res> {
   $UserCopyWith<$Res> get user;
   $DressingCategoryCopyWith<$Res> get dressingCategory;
   $DressingColorCopyWith<$Res> get dressingColor;
+  $UserDressingBelongsToCopyWith<$Res> get belongsTo;
 }
 
 /// @nodoc
@@ -89,7 +91,7 @@ class _$UserDressingCopyWithImpl<$Res, $Val extends UserDressing>
     Object? dressingCategory = null,
     Object? dressingMaterials = null,
     Object? dressingColor = null,
-    Object? belongsTo = freezed,
+    Object? belongsTo = null,
     Object? notes = freezed,
     Object? imagePath = null,
     Object? isFavorite = null,
@@ -119,10 +121,10 @@ class _$UserDressingCopyWithImpl<$Res, $Val extends UserDressing>
           ? _value.dressingColor
           : dressingColor // ignore: cast_nullable_to_non_nullable
               as DressingColor,
-      belongsTo: freezed == belongsTo
+      belongsTo: null == belongsTo
           ? _value.belongsTo
           : belongsTo // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as UserDressingBelongsTo,
       notes: freezed == notes
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
@@ -161,6 +163,14 @@ class _$UserDressingCopyWithImpl<$Res, $Val extends UserDressing>
       return _then(_value.copyWith(dressingColor: value) as $Val);
     });
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserDressingBelongsToCopyWith<$Res> get belongsTo {
+    return $UserDressingBelongsToCopyWith<$Res>(_value.belongsTo, (value) {
+      return _then(_value.copyWith(belongsTo: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -179,7 +189,8 @@ abstract class _$$UserDressingImplCopyWith<$Res>
       @JsonKey(name: 'dressing_materials')
       List<DressingMaterial> dressingMaterials,
       @JsonKey(name: 'dressing_colors') DressingColor dressingColor,
-      @JsonKey(name: 'belongs_to') String? belongsTo,
+      @JsonKey(name: 'users_dressings_belongs_to')
+      UserDressingBelongsTo belongsTo,
       String? notes,
       @JsonKey(name: 'image_path') String imagePath,
       @JsonKey(name: 'is_favorite') bool isFavorite});
@@ -190,6 +201,8 @@ abstract class _$$UserDressingImplCopyWith<$Res>
   $DressingCategoryCopyWith<$Res> get dressingCategory;
   @override
   $DressingColorCopyWith<$Res> get dressingColor;
+  @override
+  $UserDressingBelongsToCopyWith<$Res> get belongsTo;
 }
 
 /// @nodoc
@@ -209,7 +222,7 @@ class __$$UserDressingImplCopyWithImpl<$Res>
     Object? dressingCategory = null,
     Object? dressingMaterials = null,
     Object? dressingColor = null,
-    Object? belongsTo = freezed,
+    Object? belongsTo = null,
     Object? notes = freezed,
     Object? imagePath = null,
     Object? isFavorite = null,
@@ -239,10 +252,10 @@ class __$$UserDressingImplCopyWithImpl<$Res>
           ? _value.dressingColor
           : dressingColor // ignore: cast_nullable_to_non_nullable
               as DressingColor,
-      belongsTo: freezed == belongsTo
+      belongsTo: null == belongsTo
           ? _value.belongsTo
           : belongsTo // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as UserDressingBelongsTo,
       notes: freezed == notes
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
@@ -270,7 +283,7 @@ class _$UserDressingImpl extends _UserDressing {
       @JsonKey(name: 'dressing_materials')
       final List<DressingMaterial> dressingMaterials = const [],
       @JsonKey(name: 'dressing_colors') required this.dressingColor,
-      @JsonKey(name: 'belongs_to') this.belongsTo,
+      @JsonKey(name: 'users_dressings_belongs_to') required this.belongsTo,
       this.notes,
       @JsonKey(name: 'image_path') required this.imagePath,
       @JsonKey(name: 'is_favorite') this.isFavorite = false})
@@ -305,8 +318,8 @@ class _$UserDressingImpl extends _UserDressing {
   @JsonKey(name: 'dressing_colors')
   final DressingColor dressingColor;
   @override
-  @JsonKey(name: 'belongs_to')
-  final String? belongsTo;
+  @JsonKey(name: 'users_dressings_belongs_to')
+  final UserDressingBelongsTo belongsTo;
   @override
   final String? notes;
   @override
@@ -384,7 +397,8 @@ abstract class _UserDressing extends UserDressing {
           final List<DressingMaterial> dressingMaterials,
           @JsonKey(name: 'dressing_colors')
           required final DressingColor dressingColor,
-          @JsonKey(name: 'belongs_to') final String? belongsTo,
+          @JsonKey(name: 'users_dressings_belongs_to')
+          required final UserDressingBelongsTo belongsTo,
           final String? notes,
           @JsonKey(name: 'image_path') required final String imagePath,
           @JsonKey(name: 'is_favorite') final bool isFavorite}) =
@@ -412,8 +426,8 @@ abstract class _UserDressing extends UserDressing {
   @JsonKey(name: 'dressing_colors')
   DressingColor get dressingColor;
   @override
-  @JsonKey(name: 'belongs_to')
-  String? get belongsTo;
+  @JsonKey(name: 'users_dressings_belongs_to')
+  UserDressingBelongsTo get belongsTo;
   @override
   String? get notes;
   @override

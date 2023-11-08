@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:repasse_anou/features/dressing/data/dressing_belongs_to_repository.dart';
 import 'package:repasse_anou/features/dressing/data/dressing_materials_repository.dart';
 import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_category.dart';
@@ -7,6 +8,7 @@ import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_material.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing_and_image.dart';
+import 'package:repasse_anou/features/dressing/models/user_dressing_belong_to.dart';
 import 'package:repasse_anou/utils/extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -24,7 +26,7 @@ class AddDressingModalService extends _$AddDressingModalService {
     DressingCategory selectedCategory,
     List<DressingMaterial> selectedMaterial,
     DressingColor selectedColor,
-    String belongsTo,
+    String belongsToName,
     String notes,
     File image,
     bool isFavorite,
@@ -35,10 +37,30 @@ class AddDressingModalService extends _$AddDressingModalService {
         ref.read(dressingRepositoryProvider);
     final DressingMaterialsRepository dressingMaterialsRepository =
         ref.read(dressingMatetialsRepositoryProvider);
+    final DressingBelongsToRepository dressingBelongsToRepository =
+        ref.read(dressingBelongsToRepositoryProvider);
+
+    UserDressingBelongsTo? belongsTo;
+
+    // if is new belongs to
 
     state = await ref.guardAndNotifyOnError(
+      () async {
+        belongsTo = await dressingBelongsToRepository.addDressingBelongsToName(
+          name: belongsToName,
+        );
+        return null;
+      },
+    );
+
+    if (state.hasError || belongsTo == null) {
+      return false;
+    }
+
+    state = const AsyncLoading();
+    state = await ref.guardAndNotifyOnError(
       () => dressingRepository.saveDressingItem(title, selectedCategory,
-          selectedMaterial, selectedColor, belongsTo, notes, image, isFavorite),
+          selectedColor, belongsTo!, notes, image, isFavorite),
     );
 
     if (state.hasError ||
@@ -47,6 +69,7 @@ class AddDressingModalService extends _$AddDressingModalService {
       return false;
     }
 
+    state = const AsyncLoading();
     state = await ref.guardAndNotifyOnError(
       () async {
         await dressingMaterialsRepository.addMaterialToDressing(

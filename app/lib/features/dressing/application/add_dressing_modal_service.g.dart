@@ -7,7 +7,7 @@ part of 'add_dressing_modal_service.dart';
 // **************************************************************************
 
 String _$addDressingModalServiceHash() =>
-    r'd03dea326c721bbfe625b5f26e08e739c67f913a';
+    r'c934f543cdee3cfee91c7d8f79453fbd9748970b';
 
 /// See also [AddDressingModalService].
 @ProviderFor(AddDressingModalService)

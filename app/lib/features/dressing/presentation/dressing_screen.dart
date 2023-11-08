@@ -160,8 +160,10 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
     return usersDressings.when<Widget>(
       data: (data) {
         if (data.isEmpty) {
-          return Column(
-            children: buildEmptyDressing(),
+          return Flexible(
+            child: Column(
+              children: buildEmptyDressing(),
+            ),
           );
         }
 
@@ -234,7 +236,6 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
 
     return AppLayout(
         child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.all(20),

@@ -9,6 +9,7 @@ import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_material.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing_and_image.dart';
+import 'package:repasse_anou/features/dressing/models/user_dressing_belong_to.dart';
 import 'package:repasse_anou/features/photo/data/image_storage_repository.dart';
 import 'package:repasse_anou/utils/extensions.dart';
 import 'package:repasse_anou/utils/supabase_extension.dart';
@@ -87,18 +88,20 @@ class DressingRepository {
 
       final response = await supabase.usersDressingsTable
           .select<s.PostgrestList>(
-              'id, users(*), title, dressing_categories(*), dressing_materials(*), dressing_colors(*), belongs_to, notes, image_path, is_favorite')
+              'id, users(*), title, dressing_categories(*), dressing_materials(*), dressing_colors(*), users_dressings_belongs_to(id, name), notes, image_path, is_favorite')
           .eq('user_id', userController.loggedUser!.id);
 
-      final userDressings =
-          response.map((data) => UserDressing.fromJson(data)).toList()
-            ..sort(
-              (a, b) => a.isFavorite == b.isFavorite
-                  ? 0
-                  : a.isFavorite
-                      ? -1
-                      : 1,
-            );
+      final userDressings = response.map((data) {
+        print('DATA $data');
+        return UserDressing.fromJson(data);
+      }).toList()
+        ..sort(
+          (a, b) => a.isFavorite == b.isFavorite
+              ? 0
+              : a.isFavorite
+                  ? -1
+                  : 1,
+        );
       return userDressings;
     } catch (e) {
       logger.e(e);
@@ -110,9 +113,8 @@ class DressingRepository {
   Future<UserDressingAndImage?> saveDressingItem(
     String title,
     DressingCategory category,
-    List<DressingMaterial> material,
     DressingColor color,
-    String? belongsTo,
+    UserDressingBelongsTo belongsTo,
     String? notes,
     File image,
     bool isFavorite,
@@ -195,7 +197,7 @@ class DressingRepository {
         dressingMaterials:
             isMaterialsDifferent ? materials : userDressing.dressingMaterials,
         dressingColor: color,
-        belongsTo: belongsTo,
+        // belongsTo: belongsTo,
         notes: notes,
         imagePath: path ?? userDressing.imagePath,
       );

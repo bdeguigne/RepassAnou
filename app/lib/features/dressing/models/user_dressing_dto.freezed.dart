@@ -30,8 +30,8 @@ mixin _$UserDressingDto {
       throw _privateConstructorUsedError; // @JsonKey(name: 'dressing_material_id') required int dressingMaterialId,
   @JsonKey(name: 'dressing_color_id')
   int get dressingColorId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'belongs_to')
-  String? get belongsTo => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_dressing_belongs_to_id')
+  String get usersDressingBelongsToId => throw _privateConstructorUsedError;
   String? get notes => throw _privateConstructorUsedError;
   @JsonKey(name: 'image_path')
   String get imagePath => throw _privateConstructorUsedError;
@@ -56,7 +56,8 @@ abstract class $UserDressingDtoCopyWith<$Res> {
       String title,
       @JsonKey(name: 'dressing_category_id') int dressingCategoryId,
       @JsonKey(name: 'dressing_color_id') int dressingColorId,
-      @JsonKey(name: 'belongs_to') String? belongsTo,
+      @JsonKey(name: 'user_dressing_belongs_to_id')
+      String usersDressingBelongsToId,
       String? notes,
       @JsonKey(name: 'image_path') String imagePath,
       @JsonKey(name: 'is_favorite') bool isFavorite});
@@ -80,7 +81,7 @@ class _$UserDressingDtoCopyWithImpl<$Res, $Val extends UserDressingDto>
     Object? title = null,
     Object? dressingCategoryId = null,
     Object? dressingColorId = null,
-    Object? belongsTo = freezed,
+    Object? usersDressingBelongsToId = null,
     Object? notes = freezed,
     Object? imagePath = null,
     Object? isFavorite = null,
@@ -106,10 +107,10 @@ class _$UserDressingDtoCopyWithImpl<$Res, $Val extends UserDressingDto>
           ? _value.dressingColorId
           : dressingColorId // ignore: cast_nullable_to_non_nullable
               as int,
-      belongsTo: freezed == belongsTo
-          ? _value.belongsTo
-          : belongsTo // ignore: cast_nullable_to_non_nullable
-              as String?,
+      usersDressingBelongsToId: null == usersDressingBelongsToId
+          ? _value.usersDressingBelongsToId
+          : usersDressingBelongsToId // ignore: cast_nullable_to_non_nullable
+              as String,
       notes: freezed == notes
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
@@ -140,7 +141,8 @@ abstract class _$$UserDressingDtoImplCopyWith<$Res>
       String title,
       @JsonKey(name: 'dressing_category_id') int dressingCategoryId,
       @JsonKey(name: 'dressing_color_id') int dressingColorId,
-      @JsonKey(name: 'belongs_to') String? belongsTo,
+      @JsonKey(name: 'user_dressing_belongs_to_id')
+      String usersDressingBelongsToId,
       String? notes,
       @JsonKey(name: 'image_path') String imagePath,
       @JsonKey(name: 'is_favorite') bool isFavorite});
@@ -162,7 +164,7 @@ class __$$UserDressingDtoImplCopyWithImpl<$Res>
     Object? title = null,
     Object? dressingCategoryId = null,
     Object? dressingColorId = null,
-    Object? belongsTo = freezed,
+    Object? usersDressingBelongsToId = null,
     Object? notes = freezed,
     Object? imagePath = null,
     Object? isFavorite = null,
@@ -188,10 +190,10 @@ class __$$UserDressingDtoImplCopyWithImpl<$Res>
           ? _value.dressingColorId
           : dressingColorId // ignore: cast_nullable_to_non_nullable
               as int,
-      belongsTo: freezed == belongsTo
-          ? _value.belongsTo
-          : belongsTo // ignore: cast_nullable_to_non_nullable
-              as String?,
+      usersDressingBelongsToId: null == usersDressingBelongsToId
+          ? _value.usersDressingBelongsToId
+          : usersDressingBelongsToId // ignore: cast_nullable_to_non_nullable
+              as String,
       notes: freezed == notes
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
@@ -217,7 +219,8 @@ class _$UserDressingDtoImpl implements _UserDressingDto {
       required this.title,
       @JsonKey(name: 'dressing_category_id') required this.dressingCategoryId,
       @JsonKey(name: 'dressing_color_id') required this.dressingColorId,
-      @JsonKey(name: 'belongs_to') this.belongsTo,
+      @JsonKey(name: 'user_dressing_belongs_to_id')
+      required this.usersDressingBelongsToId,
       this.notes,
       @JsonKey(name: 'image_path') required this.imagePath,
       @JsonKey(name: 'is_favorite') this.isFavorite = false});
@@ -241,8 +244,8 @@ class _$UserDressingDtoImpl implements _UserDressingDto {
   @JsonKey(name: 'dressing_color_id')
   final int dressingColorId;
   @override
-  @JsonKey(name: 'belongs_to')
-  final String? belongsTo;
+  @JsonKey(name: 'user_dressing_belongs_to_id')
+  final String usersDressingBelongsToId;
   @override
   final String? notes;
   @override
@@ -254,7 +257,7 @@ class _$UserDressingDtoImpl implements _UserDressingDto {
 
   @override
   String toString() {
-    return 'UserDressingDto(id: $id, userId: $userId, title: $title, dressingCategoryId: $dressingCategoryId, dressingColorId: $dressingColorId, belongsTo: $belongsTo, notes: $notes, imagePath: $imagePath, isFavorite: $isFavorite)';
+    return 'UserDressingDto(id: $id, userId: $userId, title: $title, dressingCategoryId: $dressingCategoryId, dressingColorId: $dressingColorId, usersDressingBelongsToId: $usersDressingBelongsToId, notes: $notes, imagePath: $imagePath, isFavorite: $isFavorite)';
   }
 
   @override
@@ -269,8 +272,9 @@ class _$UserDressingDtoImpl implements _UserDressingDto {
                 other.dressingCategoryId == dressingCategoryId) &&
             (identical(other.dressingColorId, dressingColorId) ||
                 other.dressingColorId == dressingColorId) &&
-            (identical(other.belongsTo, belongsTo) ||
-                other.belongsTo == belongsTo) &&
+            (identical(
+                    other.usersDressingBelongsToId, usersDressingBelongsToId) ||
+                other.usersDressingBelongsToId == usersDressingBelongsToId) &&
             (identical(other.notes, notes) || other.notes == notes) &&
             (identical(other.imagePath, imagePath) ||
                 other.imagePath == imagePath) &&
@@ -287,7 +291,7 @@ class _$UserDressingDtoImpl implements _UserDressingDto {
       title,
       dressingCategoryId,
       dressingColorId,
-      belongsTo,
+      usersDressingBelongsToId,
       notes,
       imagePath,
       isFavorite);
@@ -315,7 +319,8 @@ abstract class _UserDressingDto implements UserDressingDto {
       @JsonKey(name: 'dressing_category_id')
       required final int dressingCategoryId,
       @JsonKey(name: 'dressing_color_id') required final int dressingColorId,
-      @JsonKey(name: 'belongs_to') final String? belongsTo,
+      @JsonKey(name: 'user_dressing_belongs_to_id')
+      required final String usersDressingBelongsToId,
       final String? notes,
       @JsonKey(name: 'image_path') required final String imagePath,
       @JsonKey(name: 'is_favorite')
@@ -339,8 +344,8 @@ abstract class _UserDressingDto implements UserDressingDto {
   @JsonKey(name: 'dressing_color_id')
   int get dressingColorId;
   @override
-  @JsonKey(name: 'belongs_to')
-  String? get belongsTo;
+  @JsonKey(name: 'user_dressing_belongs_to_id')
+  String get usersDressingBelongsToId;
   @override
   String? get notes;
   @override

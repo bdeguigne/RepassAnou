@@ -12,7 +12,8 @@ class UserDressingDto with _$UserDressingDto {
     @JsonKey(name: 'dressing_category_id') required int dressingCategoryId,
     // @JsonKey(name: 'dressing_material_id') required int dressingMaterialId,
     @JsonKey(name: 'dressing_color_id') required int dressingColorId,
-    @JsonKey(name: 'belongs_to') String? belongsTo,
+    @JsonKey(name: 'user_dressing_belongs_to_id')
+    required String usersDressingBelongsToId,
     String? notes,
     @JsonKey(name: 'image_path') required String imagePath,
     @JsonKey(name: 'is_favorite') @Default(false) bool isFavorite,

@@ -331,7 +331,8 @@ class DressingPersistentHeader extends SliverPersistentHeaderDelegate {
                           fontSize: 16,
                         ),
                       ),
-                      const Text('Dressing de').labelLarge,
+                      Text('Dressing de ${userDressing.belongsTo.name}')
+                          .labelLarge,
                     ],
                   ),
                   AppButton.secondary(

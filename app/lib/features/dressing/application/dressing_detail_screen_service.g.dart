@@ -7,7 +7,7 @@ part of 'dressing_detail_screen_service.dart';
 // **************************************************************************
 
 String _$dressingDetailScreenServiceHash() =>
-    r'ba06e634eb09c194b59139456d7d95f96ae2cd71';
+    r'14fde950a1938d190d44b8a750e2620a90bdfd6d';
 
 /// See also [DressingDetailScreenService].
 @ProviderFor(DressingDetailScreenService)

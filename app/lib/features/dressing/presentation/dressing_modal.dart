@@ -48,7 +48,7 @@ class DressingModal extends HookConsumerWidget {
 
     final titleController = useTextEditingController(text: userDressing?.title);
     final belongsToController =
-        useTextEditingController(text: userDressing?.belongsTo);
+        useTextEditingController(text: userDressing?.belongsTo.name);
     final notesController = useTextEditingController(text: userDressing?.notes);
     final selectedCategory =
         useState<DressingCategory?>(userDressing?.dressingCategory);
