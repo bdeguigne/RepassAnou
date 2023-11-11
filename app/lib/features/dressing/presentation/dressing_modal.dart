@@ -17,6 +17,7 @@ import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_material.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing_and_image.dart';
+import 'package:repasse_anou/features/dressing/models/user_dressing_belong_to.dart';
 import 'package:repasse_anou/features/photo/presentation/rounded_photo_picker.dart';
 import 'package:repasse_anou/utils/input_validator.dart';
 import 'package:repasse_anou/utils/messenger_controller.dart';
@@ -225,10 +226,21 @@ class DressingModal extends HookConsumerWidget {
               ),
               LabelContent(
                 title: 'Appartient à',
-                child: AppTextField(
-                  hint: 'Chacun son dressing, pas de jaloux ! ',
-                  controller: belongsToController,
-                  // validator: InputValidator.notEmpty,
+                child: DropDown<UserDressingBelongsTo?>.input(
+                  hint: 'Chacun son dressing, pas de jaloux !',
+                  onChanged: (value) => print(value),
+                  validator: (value) => value == null
+                      ? 'Veuillez sélectionner une personne'
+                      : null,
+                  items: const [
+                    AppDropdownMenuItem(
+                      value: UserDressingBelongsTo(
+                        id: 'test',
+                        name: 'test',
+                      ),
+                      label: 'test',
+                    )
+                  ],
                 ),
               ),
               const SizedBox(

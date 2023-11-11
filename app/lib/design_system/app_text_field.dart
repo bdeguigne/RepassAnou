@@ -8,12 +8,14 @@ class AppTextField extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.controller,
+    this.border = true,
   });
 
   final String? hint;
   final void Function(String value)? onChanged;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
+  final bool border;
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +37,12 @@ class AppTextField extends StatelessWidget {
             color: hintText,
             fontFamily: 'Nunito',
           ),
-          enabledBorder: appOutlineInputBorder,
-          border: appOutlineInputBorder,
-          focusedBorder: appOutlineInputBorder,
+          enabledBorder:
+              border ? appOutlineInputBorder : appOutlineTransparentInputBorder,
+          border:
+              border ? appOutlineInputBorder : appOutlineTransparentInputBorder,
+          focusedBorder:
+              border ? appOutlineInputBorder : appOutlineTransparentInputBorder,
         ),
       ),
     );

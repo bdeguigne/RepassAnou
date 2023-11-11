@@ -2,18 +2,32 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:repasse_anou/design_system/app_checkbox.dart';
+import 'package:repasse_anou/design_system/app_text_field.dart';
 import 'package:repasse_anou/design_system/chip.dart';
 import 'package:repasse_anou/design_system/theme.dart';
+import 'package:repasse_anou/features/dressing/models/user_dressing_belong_to.dart';
 import 'package:repasse_anou/utils/spacing_row_column.dart';
 
 class AppDropdownMenuItem<T> {
   const AppDropdownMenuItem({
     required this.value,
     required this.label,
+    this.right = false,
+    this.type,
   });
 
-  final T value;
+  final T? value;
   final String label;
+  final bool right;
+  final DropDownInputWidget? type;
+}
+
+enum DropDownInputWidget { addNewMember, input }
+
+enum DropDownType {
+  simple,
+  multiple,
+  input,
 }
 
 class DropDown<T> extends HookWidget {
@@ -23,7 +37,7 @@ class DropDown<T> extends HookWidget {
   final String? hint;
   final String? Function(T?)? validator;
   final T? value;
-  final bool multiple;
+  final DropDownType type;
   final List<String> initialValues;
 
   const DropDown._({
@@ -31,7 +45,7 @@ class DropDown<T> extends HookWidget {
     this.onChangedMultiple,
     required this.items,
     required this.value,
-    this.multiple = false,
+    this.type = DropDownType.simple,
     this.hint,
     this.validator,
     this.initialValues = const [],
@@ -67,8 +81,24 @@ class DropDown<T> extends HookWidget {
       value: null,
       hint: hint,
       validator: validator,
-      multiple: true,
+      type: DropDownType.multiple,
       initialValues: initialValues,
+    );
+  }
+
+  factory DropDown.input({
+    void Function(List<T?>)? onChanged,
+    List<AppDropdownMenuItem<T>>? items,
+    String? hint,
+    String? Function(T?)? validator,
+  }) {
+    return DropDown<T>._(
+      onChangedMultiple: onChanged,
+      items: items,
+      value: null,
+      hint: hint,
+      validator: validator,
+      type: DropDownType.input,
     );
   }
 
@@ -79,6 +109,9 @@ class DropDown<T> extends HookWidget {
         useState<List<T?>>(value != null ? [value] : []);
     final selectedMultipleLabels = useState<List<String?>>([]);
     final isMenuOpen = useState<bool>(false);
+    final itemsWithTextInput = useState<List<AppDropdownMenuItem<T>>>([]);
+    final showInput = useState<bool>(false);
+    final textEditingController = useTextEditingController();
 
     void handleInitialDataForMultipleSelect() {
       final labels =
@@ -96,6 +129,20 @@ class DropDown<T> extends HookWidget {
 
     useEffect(() {
       handleInitialDataForMultipleSelect();
+
+      if (type == DropDownType.input && items != null) {
+        itemsWithTextInput.value.addAll(
+          [
+            const AppDropdownMenuItem(
+              value: null,
+              label: '+ Ajouter un membre',
+              right: true,
+              type: DropDownInputWidget.addNewMember,
+            ),
+            ...items!,
+          ],
+        );
+      }
       return null;
     }, []);
 
@@ -195,6 +242,54 @@ class DropDown<T> extends HookWidget {
       );
     }
 
+    Widget buildItem(AppDropdownMenuItem<T> item) {
+      switch (type) {
+        case DropDownType.simple:
+          return buildItemSimple(item.label);
+        case DropDownType.multiple:
+          return buildItemMultiple(item.value, item.label);
+        case DropDownType.input:
+          if (item.type == DropDownInputWidget.addNewMember) {
+            return StatefulBuilder(
+              builder: (context, menuSetState) => TextButton(
+                onPressed: () {
+                  // showInput.value = true;
+                  itemsWithTextInput.value = List.from([
+                    const AppDropdownMenuItem(
+                      value: UserDressingBelongsTo(
+                        id: 'test',
+                        name: 'test',
+                      ),
+                      label: 'OKOKOKO',
+                    )
+                  ]);
+                  menuSetState(() {});
+                },
+                child: Text(
+                  item.label,
+                  style: appTheme.textTheme.bodyMedium!.copyWith(
+                    color: const Color(0xff6E7590),
+                  ),
+                ),
+              ),
+            );
+          } else {
+            return buildItemSimple(item.label);
+          }
+      }
+    }
+
+    Widget buildSelectedItem(AppDropdownMenuItem<T> item) {
+      switch (type) {
+        case DropDownType.simple:
+          return buildSelectedItemSimple(item.label);
+        case DropDownType.multiple:
+          return buildSelectedItemMultiple(selectedMultipleLabels.value);
+        case DropDownType.input:
+          return buildSelectedItemSimple(item.label);
+      }
+    }
+
     Widget buildDropdown(bool isOpen) {
       return DropdownButton2<T>(
         isExpanded: true,
@@ -234,37 +329,53 @@ class DropDown<T> extends HookWidget {
         onMenuStateChange: (isOpen) {
           isMenuOpen.value = isOpen;
         },
-        value: multiple
+        value: type == DropDownType.multiple
             ? selectedMultipleValue.value.isEmpty
                 ? null
                 : selectedMultipleValue.value.last
             : selectedValue.value,
         onChanged: (value) {
-          if (!multiple) {
+          if ((type != DropDownType.multiple)) {
             selectedValue.value = value;
             onChanged?.call(value);
           }
         },
-        items: items
-            ?.map(
-              (item) => DropdownMenuItem<T>(
-                value: item.value,
-                //disable default onTap to avoid closing menu when selecting an item on multiple dropdown
-                enabled: !multiple,
-                child: multiple
-                    ? buildItemMultiple(item.value, item.label)
-                    : buildItemSimple(item.label),
-              ),
-            )
-            .toList(),
+        items: type == DropDownType.input
+            ? showInput.value == true
+                ? [
+                    DropdownMenuItem<T>(
+                      value: null,
+                      child: AppTextField(
+                        controller: textEditingController,
+                        hint: 'Nom du nouveau membre',
+                      ),
+                    )
+                  ]
+                : itemsWithTextInput.value
+                    .map(
+                      (item) => DropdownMenuItem<T>(
+                        value: item.value,
+                        alignment: item.right
+                            ? AlignmentDirectional.centerEnd
+                            : AlignmentDirectional.centerStart,
+                        child: buildItem(item),
+                      ),
+                    )
+                    .toList()
+            : items
+                ?.map(
+                  (item) => DropdownMenuItem<T>(
+                    value: item.value,
+                    //disable default onTap to avoid closing menu when selecting an item on multiple dropdown
+                    enabled: type != DropDownType.multiple,
+                    child: buildItem(item),
+                  ),
+                )
+                .toList(),
         selectedItemBuilder: items != null
             ? (context) {
                 return items!.map((item) {
-                  return multiple
-                      ? buildSelectedItemMultiple(
-                          selectedMultipleLabels.value.map((e) => e).toList(),
-                        )
-                      : buildSelectedItemSimple(item.label);
+                  return buildSelectedItem(item);
                 }).toList();
               }
             : null,

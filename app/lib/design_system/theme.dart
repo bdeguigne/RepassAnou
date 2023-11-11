@@ -71,6 +71,16 @@ const appOutlineInputBorder = OutlineInputBorder(
   ),
 );
 
+const appOutlineTransparentInputBorder = OutlineInputBorder(
+  borderRadius: BorderRadius.all(
+    Radius.circular(20),
+  ),
+  borderSide: BorderSide(
+    color: Colors.transparent, // Couleur de bordure
+    width: 0, // Largeur de bordure
+  ),
+);
+
 final ThemeData appTheme = ThemeData(
   platform: TargetPlatform.iOS,
   useMaterial3: true,
