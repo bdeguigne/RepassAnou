@@ -1,15 +1,113 @@
 import 'package:flutter/material.dart';
 import 'package:repasse_anou/design_system/app_text_field.dart';
+import 'package:repasse_anou/design_system/chip.dart';
 import 'package:repasse_anou/design_system/drop_down.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 
+enum CustomDropdownMode { single, multiple, input }
+
 class CustomDropdown<T> extends StatefulWidget {
   final List<AppDropdownMenuItem<T>>? items;
+  final T? initialValue;
+  final List<T>? initialValues;
+  final String Function(T item) selectedLabelBuilder;
+  final CustomDropdownMode mode;
+  final String? hint;
+  final void Function(T?)? onChangedSingle;
+  final void Function(List<T?>)? onChangedMultiple;
+  final bool isError;
+  final String? inputButtonText;
+  final String? inputHint;
+  final void Function(String)? onValidInputPressed;
 
-  const CustomDropdown({
+  const CustomDropdown._({
     Key? key,
     required this.items,
+    this.onChangedSingle,
+    this.onChangedMultiple,
+    this.initialValue,
+    this.initialValues,
+    required this.selectedLabelBuilder,
+    this.mode = CustomDropdownMode.single,
+    this.hint = 'Selectionner un élément',
+    this.isError = false,
+    this.inputButtonText,
+    this.inputHint,
+    this.onValidInputPressed,
   }) : super(key: key);
+
+  factory CustomDropdown.single({
+    required String Function(T item) selectedLabelBuilder,
+    List<AppDropdownMenuItem<T>>? items,
+    String hint = 'Selectionner un élément',
+    T? initialValue,
+    void Function(T?)? onChanged,
+    bool isError = false,
+    // void Function(T?)? onChanged,
+    // String? Function(T?)? validator,
+  }) {
+    return CustomDropdown<T>._(
+      // onChanged: onChanged,
+      selectedLabelBuilder: selectedLabelBuilder,
+      items: items,
+      initialValue: initialValue,
+      hint: hint,
+      mode: CustomDropdownMode.single,
+      onChangedSingle: onChanged,
+      isError: isError,
+      // validator: validator,
+    );
+  }
+
+  factory CustomDropdown.multiple({
+    required String Function(T item) selectedLabelBuilder,
+    List<AppDropdownMenuItem<T>>? items,
+    String hint = 'Selectionner un élément',
+    List<T>? initialValues,
+    void Function(List<T?>)? onChanged,
+    bool isError = false,
+    // void Function(T?)? onChanged,
+    // String? Function(T?)? validator,
+  }) {
+    return CustomDropdown<T>._(
+      // onChanged: onChanged,
+      selectedLabelBuilder: selectedLabelBuilder,
+      items: items,
+      initialValues: initialValues,
+      hint: hint,
+      mode: CustomDropdownMode.multiple,
+      onChangedMultiple: onChanged,
+      isError: isError,
+      // validator: validator,
+    );
+  }
+
+  factory CustomDropdown.input({
+    required String Function(T item) selectedLabelBuilder,
+    List<AppDropdownMenuItem<T>>? items,
+    String? hint,
+    T? initialValue,
+    bool isError = false,
+    void Function(T?)? onChanged,
+    String? inputButtonText,
+    String? inputHint,
+    void Function(String)? onValidInputPressed,
+    // String? Function(T?)? validator,
+  }) {
+    return CustomDropdown<T>._(
+      onChangedSingle: onChanged,
+      selectedLabelBuilder: selectedLabelBuilder,
+      items: items,
+      initialValue: initialValue,
+      hint: hint,
+      mode: CustomDropdownMode.input,
+      isError: isError,
+      inputButtonText: inputButtonText,
+      inputHint: inputHint,
+      onValidInputPressed: onValidInputPressed,
+      // validator: validator,
+    );
+  }
 
   @override
   State<CustomDropdown<T>> createState() => _CustomDropdownState<T>();
@@ -24,14 +122,34 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
   bool isMenuOpen = false;
   late List<AppDropdownMenuItem<T>> _menuItems;
   bool showInput = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _inputController = TextEditingController();
+
   FocusNode inputFocusNode = FocusNode();
+
+  List<T> selectedValues = [];
+  T? singleValue;
 
   @override
   void initState() {
     super.initState();
+
     if (widget.items != null) {
       _menuItems = widget.items!;
     }
+
+    if (widget.mode == CustomDropdownMode.multiple) {
+      if (widget.initialValues != null) {
+        selectedValues = List.from(widget.initialValues!);
+      }
+    } else {
+      singleValue = widget.initialValue;
+    }
+
+    _initAnimations();
+  }
+
+  void _initAnimations() {
     _menuAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 150),
@@ -44,6 +162,23 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
       CurvedAnimation(
           parent: _menuAnimationController, curve: Curves.easeInOut),
     );
+  }
+
+  void _toggleSelection(T value) {
+    setState(() {
+      if (widget.mode == CustomDropdownMode.multiple) {
+        if (selectedValues.contains(value)) {
+          selectedValues.remove(value);
+        } else {
+          selectedValues.add(value);
+        }
+        widget.onChangedMultiple?.call(selectedValues);
+      } else {
+        singleValue = value;
+        _toggleDropdown(); // Fermer le menu si en mode de sélection unique
+        widget.onChangedSingle?.call(value);
+      }
+    });
   }
 
   void _toggleDropdown() {
@@ -59,7 +194,9 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
       Overlay.of(context).insert(_overlayEntry!);
       _menuAnimationController.forward();
     }
-    isMenuOpen = !isMenuOpen;
+    setState(() {
+      isMenuOpen = !isMenuOpen;
+    });
   }
 
   void _changeMenuItems() {
@@ -81,18 +218,20 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
       children: [
         Flexible(
           child: AppTextField(
+            controller: _inputController,
             textInputAction: TextInputAction.done,
-            hint: 'Nom du nouveau membre',
+            hint: widget.inputHint ?? 'Entrez une valeur...',
             border: false,
             focusNode: inputFocusNode,
           ),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () =>
+              widget.onValidInputPressed?.call(_inputController.text),
           child: Padding(
             padding: const EdgeInsets.all(4.0),
             child: Text(
-              'Ajouter',
+              widget.inputButtonText ?? 'Valider',
               style: bodyMedium.copyWith(
                 color: const Color(0xFF6E7590),
               ),
@@ -103,6 +242,18 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
     );
   }
 
+  Widget _buildHint() {
+    return Text(
+      widget.hint ?? '',
+      style: const TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: hintText,
+        fontFamily: 'Nunito',
+      ),
+    );
+  }
+
   OverlayEntry _createOverlayEntry() {
     RenderBox renderBox = context.findRenderObject() as RenderBox;
     var size = renderBox.size;
@@ -110,34 +261,37 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
     const double padding = 18.0;
 
     List<Widget> menuContent = [
-      GestureDetector(
-        onTap: _changeMenuItems,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Align(
-            alignment: Alignment.topRight,
-            child: SizedBox(
-              height: 32,
-              child: TextButton(
-                onPressed: () {
-                  _changeMenuItems();
-                },
-                // Style du bouton
-                child: Text(
-                  '+ Ajouter un membre',
-                  style: bodyMedium.copyWith(
-                    color: const Color(0xFF6E7590),
+      if (widget.mode == CustomDropdownMode.input)
+        GestureDetector(
+          onTap: _changeMenuItems,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: SizedBox(
+                height: 32,
+                child: TextButton(
+                  onPressed: () {
+                    _changeMenuItems();
+                  },
+                  // Style du bouton
+                  child: Text(
+                    '+ Ajouter un membre',
+                    style: bodyMedium.copyWith(
+                      color: const Color(0xFF6E7590),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
         ),
-      ),
       ..._menuItems.map((item) {
         return InkWell(
           onTap: () {
-            // ... logique de sélection de l'élément
+            if (item.value != null) {
+              _toggleSelection(item.value as T);
+            }
           },
           child: ListTile(
             visualDensity: const VisualDensity(vertical: -2),
@@ -203,36 +357,79 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
 
   @override
   Widget build(BuildContext context) {
-    return CompositedTransformTarget(
-      link: _layerLink,
-      child: GestureDetector(
-        onTap: _toggleDropdown,
-        child: Container(
-          width: double.infinity,
-          height: 45,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-            border: Border.fromBorderSide(
-              BorderSide(
-                color: Color(0xffDCE1EF),
+    return Form(
+      key: _formKey,
+      child: CompositedTransformTarget(
+        link: _layerLink,
+        child: GestureDetector(
+          onTap: () {
+            _toggleDropdown();
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            width: double.infinity,
+            height: 45,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(isMenuOpen ? 0 : 20),
+                bottomRight: Radius.circular(isMenuOpen ? 0 : 20),
+                topLeft: const Radius.circular(20),
+                topRight: const Radius.circular(20),
+              ),
+              border: Border.all(
+                color: widget.isError
+                    ? Colors.red
+                    : const Color(0xffDCE1EF), // Rouge si erreur
               ),
             ),
-          ),
-          // Style your dropdown button here
-          child: const Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsets.only(left: 14),
-              child: Text(
-                'Ouvrir',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: hintText,
-                  fontFamily: 'Nunito',
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: widget.mode == CustomDropdownMode.multiple
+                            ? 14
+                            : 0),
+                    scrollDirection: Axis.horizontal,
+                    child: widget.mode == CustomDropdownMode.multiple
+                        ? selectedValues.isEmpty
+                            ? _buildHint()
+                            : Row(
+                                children: selectedValues.map((item) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: AppChip(
+                                      label: widget.selectedLabelBuilder(
+                                        item,
+                                      ),
+                                      onPressed: () => _toggleSelection(item),
+                                    ),
+                                  );
+                                }).toList(),
+                              )
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 14),
+                            child: singleValue != null
+                                ? Text(widget
+                                    .selectedLabelBuilder(singleValue as T))
+                                : _buildHint(),
+                          ),
+                  ),
                 ),
-              ),
+                SizedBox(
+                  width: 32,
+                  height: 32,
+                  child: AnimatedRotation(
+                    duration: const Duration(milliseconds: 150),
+                    turns: isMenuOpen ? 0.5 : 0.0, // 180 degrés de rotation
+                    child: const Icon(
+                      Icons.keyboard_arrow_down,
+                      color: Color(0xff292D32),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

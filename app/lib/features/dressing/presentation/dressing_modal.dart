@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/design_system/app_text_field.dart';
 import 'package:repasse_anou/design_system/custom_drop_down.dart';
+import 'package:repasse_anou/design_system/custom_drop_down_form_field.dart';
 import 'package:repasse_anou/design_system/drop_down.dart';
 import 'package:repasse_anou/design_system/label_content.dart';
 import 'package:repasse_anou/design_system/theme.dart';
@@ -225,16 +226,32 @@ class DressingModal extends HookConsumerWidget {
               const SizedBox(
                 height: 10,
               ),
-              const LabelContent(
+              LabelContent(
                 title: 'Appartient à',
-                child: CustomDropdown<UserDressingBelongsTo?>(
-                  items: [
+                child: CustomDropdownFormField<UserDressingBelongsTo?>.input(
+                  hint: 'Chacun son dressing, pas de jaloux !',
+                  inputHint: 'Nom du nouveau membre',
+                  inputButtonText: 'Ajouter',
+                  onValidInputPressed: (value) {
+                    print('OKAAAAAY $value');
+                  },
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Veuillez sélectionner au moins un élément';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) => print(value),
+                  selectedLabelBuilder: (UserDressingBelongsTo? item) {
+                    return item!.name;
+                  },
+                  items: const [
                     AppDropdownMenuItem<UserDressingBelongsTo?>(
-                      value: null,
+                      value: UserDressingBelongsTo(id: '1', name: 'Item 1'),
                       label: 'Item 1',
                     ),
                     AppDropdownMenuItem<UserDressingBelongsTo?>(
-                      value: null,
+                      value: UserDressingBelongsTo(id: '1', name: 'Item 2'),
                       label: 'Item 2',
                     )
                   ],
