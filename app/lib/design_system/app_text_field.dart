@@ -9,6 +9,8 @@ class AppTextField extends StatelessWidget {
     this.validator,
     this.controller,
     this.border = true,
+    this.focusNode,
+    this.textInputAction,
   });
 
   final String? hint;
@@ -16,13 +18,17 @@ class AppTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextEditingController? controller;
   final bool border;
+  final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       // height: 40,
       child: TextFormField(
+        textInputAction: textInputAction,
         controller: controller,
+        focusNode: focusNode,
         cursorHeight: 16,
         onChanged: onChanged,
         validator: validator,

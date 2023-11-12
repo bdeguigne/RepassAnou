@@ -109,7 +109,7 @@ class DropDown<T> extends HookWidget {
         useState<List<T?>>(value != null ? [value] : []);
     final selectedMultipleLabels = useState<List<String?>>([]);
     final isMenuOpen = useState<bool>(false);
-    final itemsWithTextInput = useState<List<AppDropdownMenuItem<T>>>([]);
+    final menuItems = useState<List<AppDropdownMenuItem<T>>>([]);
     final showInput = useState<bool>(false);
     final textEditingController = useTextEditingController();
 
@@ -130,19 +130,21 @@ class DropDown<T> extends HookWidget {
     useEffect(() {
       handleInitialDataForMultipleSelect();
 
-      if (type == DropDownType.input && items != null) {
-        itemsWithTextInput.value.addAll(
-          [
+      if (items == null) {
+        return null;
+      }
+      var initialItems = [...items!];
+      if (type == DropDownType.input) {
+        initialItems.insert(
+            0,
             const AppDropdownMenuItem(
               value: null,
               label: '+ Ajouter un membre',
               right: true,
               type: DropDownInputWidget.addNewMember,
-            ),
-            ...items!,
-          ],
-        );
+            ));
       }
+      menuItems.value = initialItems;
       return null;
     }, []);
 
@@ -165,8 +167,8 @@ class DropDown<T> extends HookWidget {
                       child: AppChip(
                         label: value,
                         onPressed: () {
-                          final label = items
-                              ?.where((element) => element.label == value)
+                          final label = menuItems.value
+                              .where((element) => element.label == value)
                               .firstOrNull;
                           if (label != null) {
                             selectedMultipleLabels.value = List.from(
@@ -208,8 +210,9 @@ class DropDown<T> extends HookWidget {
                   ? List.from(selectedMultipleValue.value..remove(value))
                   : List.from(selectedMultipleValue.value..add(value));
 
-              final label =
-                  items?.where((element) => element.value == value).firstOrNull;
+              final label = menuItems.value
+                  .where((element) => element.value == value)
+                  .firstOrNull;
 
               selectedMultipleLabels.value = selectedMultipleLabels.value
                       .contains(label?.label)
@@ -242,7 +245,7 @@ class DropDown<T> extends HookWidget {
       );
     }
 
-    Widget buildItem(AppDropdownMenuItem<T> item) {
+    Widget buildItem(AppDropdownMenuItem<T> item, StateSetter? dropDownState) {
       switch (type) {
         case DropDownType.simple:
           return buildItemSimple(item.label);
@@ -253,17 +256,21 @@ class DropDown<T> extends HookWidget {
             return StatefulBuilder(
               builder: (context, menuSetState) => TextButton(
                 onPressed: () {
-                  // showInput.value = true;
-                  itemsWithTextInput.value = List.from([
-                    const AppDropdownMenuItem(
-                      value: UserDressingBelongsTo(
-                        id: 'test',
-                        name: 'test',
-                      ),
-                      label: 'OKOKOKO',
-                    )
-                  ]);
-                  menuSetState(() {});
+                  menuSetState(() {
+                    menuItems.value = List.from([
+                      const AppDropdownMenuItem(
+                        value: UserDressingBelongsTo(
+                          id: 'test',
+                          name: 'OKOKOKO',
+                        ),
+                        label: 'OKOKOKO',
+                      )
+                    ]);
+                  });
+
+                  if (dropDownState != null) {
+                    dropDownState(() {});
+                  }
                 },
                 child: Text(
                   item.label,
@@ -291,109 +298,112 @@ class DropDown<T> extends HookWidget {
     }
 
     Widget buildDropdown(bool isOpen) {
-      return DropdownButton2<T>(
-        isExpanded: true,
-        menuItemStyleData: const MenuItemStyleData(
-          height: 40,
-        ),
-        hint: Text(
-          hint ?? '',
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-            color: hintText,
-            fontFamily: 'Nunito',
+      return StatefulBuilder(
+        builder: (context, dropDownState) => DropdownButton2<T>(
+          isExpanded: true,
+          menuItemStyleData: const MenuItemStyleData(
+            height: 40,
           ),
-        ),
-        iconStyleData: IconStyleData(
-          icon: isOpen
-              ? const Icon(Icons.keyboard_arrow_up)
-              : const Icon(Icons.keyboard_arrow_down),
-        ),
-        buttonStyleData: ButtonStyleData(
-          height: 45,
-          decoration: BoxDecoration(
-            borderRadius: isOpen
-                ? const BorderRadius.only(
-                    topLeft: Radius.circular(20), topRight: Radius.circular(20))
-                : const BorderRadius.all(
-                    Radius.circular(20),
-                  ),
-            border: const Border.fromBorderSide(
-              BorderSide(
-                color: Color(0xffDCE1EF),
+          hint: Text(
+            hint ?? '',
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: hintText,
+              fontFamily: 'Nunito',
+            ),
+          ),
+          iconStyleData: IconStyleData(
+            icon: isOpen
+                ? const Icon(Icons.keyboard_arrow_up)
+                : const Icon(Icons.keyboard_arrow_down),
+          ),
+          buttonStyleData: ButtonStyleData(
+            height: 45,
+            decoration: BoxDecoration(
+              borderRadius: isOpen
+                  ? const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20))
+                  : const BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+              border: const Border.fromBorderSide(
+                BorderSide(
+                  color: Color(0xffDCE1EF),
+                ),
               ),
             ),
           ),
-        ),
-        onMenuStateChange: (isOpen) {
-          isMenuOpen.value = isOpen;
-        },
-        value: type == DropDownType.multiple
-            ? selectedMultipleValue.value.isEmpty
-                ? null
-                : selectedMultipleValue.value.last
-            : selectedValue.value,
-        onChanged: (value) {
-          if ((type != DropDownType.multiple)) {
-            selectedValue.value = value;
-            onChanged?.call(value);
-          }
-        },
-        items: type == DropDownType.input
-            ? showInput.value == true
-                ? [
-                    DropdownMenuItem<T>(
-                      value: null,
-                      child: AppTextField(
-                        controller: textEditingController,
-                        hint: 'Nom du nouveau membre',
-                      ),
-                    )
-                  ]
-                : itemsWithTextInput.value
-                    .map(
-                      (item) => DropdownMenuItem<T>(
-                        value: item.value,
-                        alignment: item.right
-                            ? AlignmentDirectional.centerEnd
-                            : AlignmentDirectional.centerStart,
-                        child: buildItem(item),
-                      ),
-                    )
-                    .toList()
-            : items
-                ?.map(
-                  (item) => DropdownMenuItem<T>(
-                    value: item.value,
-                    //disable default onTap to avoid closing menu when selecting an item on multiple dropdown
-                    enabled: type != DropDownType.multiple,
-                    child: buildItem(item),
-                  ),
+          onMenuStateChange: (isOpen) {
+            isMenuOpen.value = isOpen;
+          },
+          value: type == DropDownType.multiple
+              ? selectedMultipleValue.value.isEmpty
+                  ? null
+                  : selectedMultipleValue.value.last
+              : selectedValue.value,
+          onChanged: (value) {
+            if ((type != DropDownType.multiple)) {
+              selectedValue.value = value;
+              onChanged?.call(value);
+            }
+          },
+          items: type == DropDownType.input
+              ? showInput.value == true
+                  ? [
+                      DropdownMenuItem<T>(
+                        value: null,
+                        enabled: false,
+                        child: AppTextField(
+                          controller: textEditingController,
+                          hint: 'Nom du nouveau membre',
+                        ),
+                      )
+                    ]
+                  : menuItems.value
+                      .map(
+                        (item) => DropdownMenuItem<T>(
+                          enabled: false,
+                          value: item.value,
+                          alignment: item.right
+                              ? AlignmentDirectional.centerEnd
+                              : AlignmentDirectional.centerStart,
+                          child: buildItem(item, dropDownState),
+                        ),
+                      )
+                      .toList()
+              : menuItems.value
+                  .map(
+                    (item) => DropdownMenuItem<T>(
+                      value: item.value,
+                      //disable default onTap to avoid closing menu when selecting an item on multiple dropdown
+                      enabled: type != DropDownType.multiple,
+                      child: buildItem(item, null),
+                    ),
+                  )
+                  .toList(),
+          selectedItemBuilder: (context) {
+            return menuItems.value.map((item) {
+              return buildSelectedItem(item);
+            }).toList();
+          },
+          dropdownStyleData: const DropdownStyleData(
+            direction: DropdownDirection.left,
+            maxHeight: 200,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0x33000000),
+                  blurRadius: 24,
+                  offset: Offset(0, 0),
+                  spreadRadius: 0,
                 )
-                .toList(),
-        selectedItemBuilder: items != null
-            ? (context) {
-                return items!.map((item) {
-                  return buildSelectedItem(item);
-                }).toList();
-              }
-            : null,
-        dropdownStyleData: const DropdownStyleData(
-          direction: DropdownDirection.left,
-          maxHeight: 200,
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Color(0x33000000),
-                blurRadius: 24,
-                offset: Offset(0, 0),
-                spreadRadius: 0,
-              )
-            ],
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(8),
-              bottomRight: Radius.circular(8),
+              ],
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(8),
+                bottomRight: Radius.circular(8),
+              ),
             ),
           ),
         ),

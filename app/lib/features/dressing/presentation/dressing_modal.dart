@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/design_system/app_text_field.dart';
+import 'package:repasse_anou/design_system/custom_drop_down.dart';
 import 'package:repasse_anou/design_system/drop_down.dart';
 import 'package:repasse_anou/design_system/label_content.dart';
 import 'package:repasse_anou/design_system/theme.dart';
@@ -224,21 +225,17 @@ class DressingModal extends HookConsumerWidget {
               const SizedBox(
                 height: 10,
               ),
-              LabelContent(
+              const LabelContent(
                 title: 'Appartient à',
-                child: DropDown<UserDressingBelongsTo?>.input(
-                  hint: 'Chacun son dressing, pas de jaloux !',
-                  onChanged: (value) => print(value),
-                  validator: (value) => value == null
-                      ? 'Veuillez sélectionner une personne'
-                      : null,
-                  items: const [
-                    AppDropdownMenuItem(
-                      value: UserDressingBelongsTo(
-                        id: 'test',
-                        name: 'test',
-                      ),
-                      label: 'test',
+                child: CustomDropdown<UserDressingBelongsTo?>(
+                  items: [
+                    AppDropdownMenuItem<UserDressingBelongsTo?>(
+                      value: null,
+                      label: 'Item 1',
+                    ),
+                    AppDropdownMenuItem<UserDressingBelongsTo?>(
+                      value: null,
+                      label: 'Item 2',
                     )
                   ],
                 ),
