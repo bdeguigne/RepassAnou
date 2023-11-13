@@ -1,0 +1,19 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g clip-path="url(#clip0_307_2)">
+<mask id="mask0_307_2" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+<path d="M20 0H0V20H20V0Z" fill="url(#pattern0)"/>
+</mask>
+<g mask="url(#mask0_307_2)">
+<path d="M31 -2H-6V33H31V-2Z" fill="black"/>
+</g>
+</g>
+<defs>
+<pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_307_2" transform="scale(0.00195312)"/>
+</pattern>
+<clipPath id="clip0_307_2">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+
+</defs>
+</svg>

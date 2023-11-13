@@ -10,7 +10,7 @@ class NavigationController {
 
   void goToLandingPage() {
     router.replaceAll([
-      const LandingRoute(),
+      const LoginRoute(),
     ]);
   }
 

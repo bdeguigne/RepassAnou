@@ -11,4 +11,9 @@ class AppIcons {
     colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
   );
   static Widget check = SvgPicture.asset('assets/icons/check.svg');
+  static Widget dressingSelected = Image.asset(
+    'assets/icons/dressing-selected.png',
+  );
+  static Widget dressingNotSelected =
+      Image.asset('assets/icons/dressing-not-selected.png');
 }

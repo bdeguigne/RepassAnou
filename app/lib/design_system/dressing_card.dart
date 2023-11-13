@@ -143,13 +143,19 @@ class DressingCard extends HookWidget {
                                           )
                                         : Container(),
                                     title != null
-                                        ? Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 8.0),
-                                            child: Text(
-                                              title!,
-                                              style: bodyMedium.copyWith(
-                                                  color: blackVariant),
+                                        ? SizedBox(
+                                            width: 120,
+                                            child: Center(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 8.0),
+                                                child: Text(
+                                                  title!,
+                                                  style: bodyMedium.copyWith(
+                                                    color: blackVariant,
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           )
                                         : Container(),

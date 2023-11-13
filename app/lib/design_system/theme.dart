@@ -22,12 +22,14 @@ const bodyLarge = TextStyle(
   fontWeight: FontWeight.w600,
   color: black,
   fontFamily: 'Nunito',
+  overflow: TextOverflow.ellipsis,
 );
 const bodyMedium = TextStyle(
   fontSize: 12,
   fontWeight: FontWeight.w400,
   color: black,
   fontFamily: 'Nunito',
+  overflow: TextOverflow.ellipsis,
 );
 const bodySmall = TextStyle(
   fontSize: 10.0,
@@ -40,25 +42,52 @@ const labelSmall = TextStyle(
   fontWeight: FontWeight.w400,
   color: grey,
   fontFamily: 'Nunito',
+  overflow: TextOverflow.ellipsis,
 );
 const labelMedium = TextStyle(
   fontSize: 12.0,
   fontWeight: FontWeight.w400,
   color: grey,
   fontFamily: 'Nunito',
+  overflow: TextOverflow.ellipsis,
 );
 const labelLarge = TextStyle(
   fontSize: 14.0,
   fontWeight: FontWeight.w400,
   color: grey,
   fontFamily: 'Nunito',
+  overflow: TextOverflow.ellipsis,
 );
-const headlineLarge = TextStyle(fontSize: 16, fontWeight: FontWeight.w700);
-const headlineMedium = TextStyle(fontSize: 14, fontWeight: FontWeight.w600);
-const headlineSmall = TextStyle(fontSize: 14, fontWeight: FontWeight.w600);
-const displaySmall = TextStyle(fontSize: 11, fontWeight: FontWeight.w300);
-const displayLarge = TextStyle(fontSize: 14, fontWeight: FontWeight.w600);
-const displayMedium = TextStyle(fontSize: 14, fontWeight: FontWeight.w500);
+const headlineLarge = TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.w700,
+  overflow: TextOverflow.ellipsis,
+);
+const headlineMedium = TextStyle(
+  fontSize: 14,
+  fontWeight: FontWeight.w600,
+  overflow: TextOverflow.ellipsis,
+);
+const headlineSmall = TextStyle(
+  fontSize: 14,
+  fontWeight: FontWeight.w600,
+  overflow: TextOverflow.ellipsis,
+);
+const displaySmall = TextStyle(
+  fontSize: 11,
+  fontWeight: FontWeight.w300,
+  overflow: TextOverflow.ellipsis,
+);
+const displayLarge = TextStyle(
+  fontSize: 14,
+  fontWeight: FontWeight.w600,
+  overflow: TextOverflow.ellipsis,
+);
+const displayMedium = TextStyle(
+  fontSize: 14,
+  fontWeight: FontWeight.w500,
+  overflow: TextOverflow.ellipsis,
+);
 const titleMedium = TextStyle(color: Colors.white);
 
 const appOutlineInputBorder = OutlineInputBorder(

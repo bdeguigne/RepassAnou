@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/features/commands/presentation/home_screen.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_screen.dart';
 import 'package:repasse_anou/features/account/presentation/account_screen.dart';
@@ -46,16 +47,22 @@ class _NavigationScreenState extends State<NavigationScreen> {
             pageIndex = newValue;
           });
         },
-        items: const [
-          BottomNavigationBarItem(
+        items: [
+          const BottomNavigationBarItem(
             icon: Icon(Icons.circle),
             label: 'Accueil',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.circle),
+            icon: SizedBox(
+              width: 24,
+              height: 24,
+              child: AppIcons.dressingNotSelected,
+            ),
+            activeIcon: SizedBox(
+                width: 24, height: 24, child: AppIcons.dressingSelected),
             label: 'Mon Dressing',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.circle),
             label: 'Mon compte',
           ),

@@ -11,6 +11,9 @@ class AppTextField extends StatelessWidget {
     this.border = true,
     this.focusNode,
     this.textInputAction,
+    this.keyboardType,
+    this.autocorrect = true,
+    this.obscureText = false,
   });
 
   final String? hint;
@@ -20,6 +23,9 @@ class AppTextField extends StatelessWidget {
   final bool border;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
+  final TextInputType? keyboardType;
+  final bool autocorrect;
+  final bool obscureText;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +40,7 @@ class AppTextField extends StatelessWidget {
         validator: validator,
         decoration: InputDecoration(
           contentPadding:
-              const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           isDense: true,
           hintText: hint ?? '',
           hintStyle: const TextStyle(
@@ -50,6 +56,9 @@ class AppTextField extends StatelessWidget {
           focusedBorder:
               border ? appOutlineInputBorder : appOutlineTransparentInputBorder,
         ),
+        keyboardType: keyboardType,
+        autocorrect: autocorrect,
+        obscureText: obscureText,
       ),
     );
   }

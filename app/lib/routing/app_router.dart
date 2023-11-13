@@ -7,7 +7,6 @@ import 'package:repasse_anou/routing/navigation_screen.dart';
 import 'package:repasse_anou/features/account/presentation/account_screen.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_screen.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
-import 'package:repasse_anou/landing_screen.dart';
 import 'package:repasse_anou/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_detail_screen.dart';
@@ -19,7 +18,7 @@ class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(page: SplashRoute.page, initial: true),
-        AutoRoute(page: LandingRoute.page),
+        // AutoRoute(page: LandingRoute.page),
         AutoRoute(page: LoginRoute.page),
         AutoRoute(page: SignupRoute.page),
         AutoRoute(
