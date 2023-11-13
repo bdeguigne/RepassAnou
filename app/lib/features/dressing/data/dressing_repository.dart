@@ -114,26 +114,6 @@ class DressingRepository {
     }
   }
 
-  Future<List<UserDressingBelongsTo>> getUsersDressingsBelongsTo() async {
-    try {
-      if (userController.loggedUser == null) {
-        throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
-      }
-      final response = await supabase.usersDressingsBelongsToTable
-          .select<s.PostgrestList>()
-          .eq('user_id', userController.loggedUser!.id);
-
-      final usersDressingsBelongsTo = response.map((data) {
-        return UserDressingBelongsTo.fromJson(data);
-      }).toList();
-      return usersDressingsBelongsTo;
-    } catch (e) {
-      logger.e(e);
-      throw const ExceptionMessage(
-          'Une erreur est survenue lors de la récupération des appartenances de vêtements');
-    }
-  }
-
   Future<UserDressingAndImage?> saveDressingItem(
     String title,
     DressingCategory category,
@@ -184,7 +164,7 @@ class DressingRepository {
     DressingCategory category,
     List<DressingMaterial> materials,
     DressingColor color,
-    String? belongsTo,
+    UserDressingBelongsTo belongsTo,
     String? notes,
     UserDressing userDressing,
     File? image,
@@ -222,7 +202,7 @@ class DressingRepository {
         dressingMaterials:
             isMaterialsDifferent ? materials : userDressing.dressingMaterials,
         dressingColor: color,
-        // belongsTo: belongsTo,
+        belongsTo: belongsTo,
         notes: notes,
         imagePath: path ?? userDressing.imagePath,
       );
@@ -308,13 +288,6 @@ Future<List<UserDressing>> usersDressingsByBelongsTo(
     () =>
         dressingRepository.getUsersDressingsByBelongsTo(userDressingBelongsTo),
   );
-}
-
-@Riverpod(keepAlive: true)
-Future<List<UserDressingBelongsTo>> usersDressingsBelongsTo(
-    UsersDressingsBelongsToRef ref) async {
-  final dressingRepository = ref.watch(dressingRepositoryProvider);
-  return ref.notifyOnError(dressingRepository.getUsersDressingsBelongsTo);
 }
 
 final Provider<DressingRepository> dressingRepositoryProvider =

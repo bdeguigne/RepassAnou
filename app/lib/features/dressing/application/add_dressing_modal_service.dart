@@ -26,7 +26,8 @@ class AddDressingModalService extends _$AddDressingModalService {
     DressingCategory selectedCategory,
     List<DressingMaterial> selectedMaterial,
     DressingColor selectedColor,
-    String belongsToName,
+    UserDressingBelongsTo? belongsTo,
+    String? belongsToName,
     String notes,
     File image,
     bool isFavorite,
@@ -40,18 +41,22 @@ class AddDressingModalService extends _$AddDressingModalService {
     final DressingBelongsToRepository dressingBelongsToRepository =
         ref.read(dressingBelongsToRepositoryProvider);
 
-    UserDressingBelongsTo? belongsTo;
+    if (belongsTo == null && belongsToName == null) {
+      return false;
+    }
 
-    // if is new belongs to
-
-    state = await ref.guardAndNotifyOnError(
-      () async {
-        belongsTo = await dressingBelongsToRepository.addDressingBelongsToName(
-          name: belongsToName,
-        );
-        return null;
-      },
-    );
+    // if is belongsTo is null, we need to create it
+    if (belongsTo == null) {
+      state = await ref.guardAndNotifyOnError(
+        () async {
+          belongsTo =
+              await dressingBelongsToRepository.addDressingBelongsToName(
+            name: belongsToName!,
+          );
+          return null;
+        },
+      );
+    }
 
     if (state.hasError || belongsTo == null) {
       return false;
@@ -87,22 +92,47 @@ class AddDressingModalService extends _$AddDressingModalService {
     DressingCategory selectedCategory,
     List<DressingMaterial> selectedMaterial,
     DressingColor selectedColor,
-    String belongsTo,
+    UserDressingBelongsTo? belongsTo,
+    String? belongsToName,
     String notes,
     UserDressing dressingItem,
     File? image,
   ) async {
     final DressingRepository dressingRepository =
         ref.read(dressingRepositoryProvider);
+    final DressingBelongsToRepository dressingBelongsToRepository =
+        ref.read(dressingBelongsToRepositoryProvider);
     state = const AsyncLoading();
 
+    if (belongsTo == null && belongsToName == null) {
+      return false;
+    }
+
+    // if is belongsTo is null, we need to create it
+    if (belongsTo == null) {
+      state = await ref.guardAndNotifyOnError(
+        () async {
+          belongsTo =
+              await dressingBelongsToRepository.addDressingBelongsToName(
+            name: belongsToName!,
+          );
+          return null;
+        },
+      );
+    }
+
+    if (state.hasError || belongsTo == null) {
+      return false;
+    }
+
+    state = const AsyncLoading();
     state = await ref.guardAndNotifyOnError(
       () => dressingRepository.editDressingItem(
         title,
         selectedCategory,
         selectedMaterial,
         selectedColor,
-        belongsTo,
+        belongsTo!,
         notes,
         dressingItem,
         image,

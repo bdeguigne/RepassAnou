@@ -7,12 +7,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/design_system/app_text_field.dart';
-import 'package:repasse_anou/design_system/custom_drop_down.dart';
 import 'package:repasse_anou/design_system/custom_drop_down_form_field.dart';
 import 'package:repasse_anou/design_system/drop_down.dart';
 import 'package:repasse_anou/design_system/label_content.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 import 'package:repasse_anou/features/dressing/application/add_dressing_modal_service.dart';
+import 'package:repasse_anou/features/dressing/data/dressing_belongs_to_repository.dart';
 import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_category.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
@@ -46,12 +46,15 @@ class DressingModal extends HookConsumerWidget {
         ref.watch(dressingColorsProvider);
     final AsyncValue<List<DressingMaterial>> dressingMaterials =
         ref.watch(dressingMaterialsProvider);
+    final AsyncValue<List<UserDressingBelongsTo>> usersDressingsBelongsTo =
+        ref.watch(usersDressingsBelongsToProvider);
+
     final AsyncValue<UserDressingAndImage?> addDressingState =
         ref.watch(addDressingModalServiceProvider);
 
     final titleController = useTextEditingController(text: userDressing?.title);
-    final belongsToController =
-        useTextEditingController(text: userDressing?.belongsTo.name);
+    final selectedBelongsTo =
+        useState<UserDressingBelongsTo?>(userDressing?.belongsTo);
     final notesController = useTextEditingController(text: userDressing?.notes);
     final selectedCategory =
         useState<DressingCategory?>(userDressing?.dressingCategory);
@@ -60,6 +63,7 @@ class DressingModal extends HookConsumerWidget {
     final selectedColor = useState<DressingColor?>(userDressing?.dressingColor);
     final imageTaken = useState<XFile?>(null);
     final isFavorite = useState<bool>(userDressing?.isFavorite ?? false);
+    final newBelongsToName = useState<String?>(null);
 
     Future<void> saveDressingAndCloseModal() async {
       final success = await ref
@@ -69,7 +73,8 @@ class DressingModal extends HookConsumerWidget {
             selectedCategory.value!,
             selectedMaterials.value,
             selectedColor.value!,
-            belongsToController.text,
+            selectedBelongsTo.value,
+            selectedBelongsTo.value?.name ?? newBelongsToName.value,
             notesController.text,
             File(imageTaken.value!.path),
             isFavorite.value,
@@ -90,7 +95,8 @@ class DressingModal extends HookConsumerWidget {
             selectedCategory.value!,
             selectedMaterials.value,
             selectedColor.value!,
-            belongsToController.text,
+            selectedBelongsTo.value,
+            selectedBelongsTo.value?.name ?? '',
             notesController.text,
             userDressing!,
             imageTaken.value != null ? File(imageTaken.value!.path) : null,
@@ -106,13 +112,15 @@ class DressingModal extends HookConsumerWidget {
     Widget buildContent() {
       if (dressingCategories.isLoading ||
           dressingColors.isLoading ||
-          dressingMaterials.isLoading) {
+          dressingMaterials.isLoading ||
+          usersDressingsBelongsTo.isLoading) {
         return const Center(
           child: CircularProgressIndicator(),
         );
       } else if (dressingCategories.hasError ||
           dressingColors.hasError ||
-          dressingMaterials.hasError) {
+          dressingMaterials.hasError ||
+          usersDressingsBelongsTo.hasError) {
         return Center(
           child: const Text('Une erreur est survenue').bodyMedium,
         );
@@ -233,28 +241,30 @@ class DressingModal extends HookConsumerWidget {
                   inputHint: 'Nom du nouveau membre',
                   inputButtonText: 'Ajouter',
                   onValidInputPressed: (value) {
-                    print('OKAAAAAY $value');
+                    selectedBelongsTo.value = null;
+                    newBelongsToName.value = value;
                   },
                   validator: (value) {
-                    if (value == null) {
+                    if (value == null && newBelongsToName.value == null) {
                       return 'Veuillez sélectionner au moins un élément';
                     }
                     return null;
                   },
-                  onChanged: (value) => print(value),
-                  selectedLabelBuilder: (UserDressingBelongsTo? item) {
-                    return item!.name;
+                  onChanged: (value) {
+                    newBelongsToName.value = null;
+                    selectedBelongsTo.value = value;
                   },
-                  items: const [
-                    AppDropdownMenuItem<UserDressingBelongsTo?>(
-                      value: UserDressingBelongsTo(id: '1', name: 'Item 1'),
-                      label: 'Item 1',
-                    ),
-                    AppDropdownMenuItem<UserDressingBelongsTo?>(
-                      value: UserDressingBelongsTo(id: '1', name: 'Item 2'),
-                      label: 'Item 2',
-                    )
-                  ],
+                  selectedLabelBuilder: (UserDressingBelongsTo? item) =>
+                      item?.name ?? '',
+                  items: usersDressingsBelongsTo.value!
+                      .map(
+                        (belongsTo) =>
+                            AppDropdownMenuItem<UserDressingBelongsTo?>(
+                          value: belongsTo,
+                          label: belongsTo.name,
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
               const SizedBox(

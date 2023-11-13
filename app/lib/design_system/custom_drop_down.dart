@@ -126,6 +126,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
   final TextEditingController _inputController = TextEditingController();
 
   FocusNode inputFocusNode = FocusNode();
+  String? inputValidLabel;
 
   List<T> selectedValues = [];
   T? singleValue;
@@ -174,11 +175,22 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
         }
         widget.onChangedMultiple?.call(selectedValues);
       } else {
+        // make sure to show the selected value in priority over the input value
+        inputValidLabel = null;
+
         singleValue = value;
         _toggleDropdown(); // Fermer le menu si en mode de sélection unique
         widget.onChangedSingle?.call(value);
       }
     });
+  }
+
+  void _inputSelectionValid() {
+    setState(() {
+      inputValidLabel = _inputController.text;
+    });
+    _toggleDropdown();
+    widget.onValidInputPressed?.call(_inputController.text);
   }
 
   void _toggleDropdown() {
@@ -226,8 +238,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
           ),
         ),
         TextButton(
-          onPressed: () =>
-              widget.onValidInputPressed?.call(_inputController.text),
+          onPressed: _inputSelectionValid,
           child: Padding(
             padding: const EdgeInsets.all(4.0),
             child: Text(
@@ -410,10 +421,12 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
                               )
                         : Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 14),
-                            child: singleValue != null
-                                ? Text(widget
-                                    .selectedLabelBuilder(singleValue as T))
-                                : _buildHint(),
+                            child: inputValidLabel != null
+                                ? Text(inputValidLabel!)
+                                : singleValue != null
+                                    ? Text(widget
+                                        .selectedLabelBuilder(singleValue as T))
+                                    : _buildHint(),
                           ),
                   ),
                 ),

@@ -213,24 +213,5 @@ class _UsersDressingsByBelongsToProviderElement
   UserDressingBelongsTo get userDressingBelongsTo =>
       (origin as UsersDressingsByBelongsToProvider).userDressingBelongsTo;
 }
-
-String _$usersDressingsBelongsToHash() =>
-    r'01f586d02d6f950bac833e9838c5fa2f512ecd95';
-
-/// See also [usersDressingsBelongsTo].
-@ProviderFor(usersDressingsBelongsTo)
-final usersDressingsBelongsToProvider =
-    FutureProvider<List<UserDressingBelongsTo>>.internal(
-  usersDressingsBelongsTo,
-  name: r'usersDressingsBelongsToProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$usersDressingsBelongsToHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef UsersDressingsBelongsToRef
-    = FutureProviderRef<List<UserDressingBelongsTo>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter
