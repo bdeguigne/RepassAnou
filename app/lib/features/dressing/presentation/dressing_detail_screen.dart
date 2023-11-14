@@ -39,6 +39,7 @@ class DressingDetailScreen extends HookConsumerWidget {
     final ValueNotifier<UserDressing> userDressingData = useState(userDressing);
     final ValueNotifier<Uint8List> imageData = useState(image);
 
+
     ref.watch(dressingDetailScreenServiceProvider);
     final AsyncValue<UserDressingAndImage?> dressingModalState =
         ref.watch(addDressingModalServiceProvider);

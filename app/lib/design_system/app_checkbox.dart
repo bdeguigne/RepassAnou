@@ -14,7 +14,7 @@ class AppCheckbox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Checkbox(
       fillColor: MaterialStateProperty.all<Color>(
-          value == false ? Colors.white : Colors.black),
+          value == false ? const Color(0xffD9D9D9) : Colors.black),
       checkColor: value == false ? Colors.black : Colors.white,
       side: BorderSide(
         color: value == true ? Colors.black : Colors.white,

@@ -8,8 +8,8 @@ import 'package:repasse_anou/utils/top_level_providers.dart';
 import 'package:repasse_anou/utils/value_objects.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as s;
 
-class AuthService {
-  AuthService(
+class AuthRepository {
+  AuthRepository(
     this.supabase,
     this.logger,
   );
@@ -62,7 +62,7 @@ class AuthService {
     }
   }
 
-  Future<Either<AuthFailure, Unit>> signInWithEmailAndPassword(
+  Future<void> signInWithEmailAndPassword(
       EmailAddress email, Password password) async {
     try {
       final String emailStr = email.getOrCrash();
@@ -72,13 +72,12 @@ class AuthService {
         email: emailStr,
         password: passwordStr,
       );
-      return right(unit);
     } on s.AuthException catch (error) {
       logger.e(error.message);
-      return left(AuthFailure.error(error.message));
+      throw AuthFailure.error(error.message);
     } catch (error) {
       logger.e(error.toString());
-      return left(const AuthFailure.unexpected());
+      throw const AuthFailure.unexpected();
     }
   }
 
@@ -93,8 +92,9 @@ class AuthService {
   }
 }
 
-final Provider<AuthService> authServiceProvider = Provider<AuthService>((ref) {
-  return AuthService(
+final Provider<AuthRepository> authRepositoryProvider =
+    Provider<AuthRepository>((ref) {
+  return AuthRepository(
     ref.read(supabaseClientProvider),
     ref.read(loggerProvider),
   );

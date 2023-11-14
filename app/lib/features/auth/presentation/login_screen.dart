@@ -1,18 +1,21 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/design_system/app_buttons.dart';
 import 'package:repasse_anou/design_system/app_checkbox.dart';
 import 'package:repasse_anou/design_system/app_divider.dart';
 import 'package:repasse_anou/design_system/app_images.dart';
 import 'package:repasse_anou/design_system/app_text_field.dart';
+import 'package:repasse_anou/design_system/ink_well.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/design_system/theme.dart';
-import 'package:repasse_anou/features/auth/presentation/login_screen_view_model.dart';
+import 'package:repasse_anou/features/auth/application/auth_service.dart';
 import 'package:repasse_anou/routing/app_router.dart';
 import 'package:repasse_anou/routing/navigation_controller.dart';
 import 'package:repasse_anou/utils/input_validator.dart';
 import 'package:repasse_anou/utils/spacing_row_column.dart';
+import 'package:repasse_anou/utils/value_objects.dart';
 
 @RoutePage()
 class LoginScreen extends HookConsumerWidget {
@@ -20,16 +23,21 @@ class LoginScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final LoginScreenViewModel model =
-        ref.read(loginScreenViewModelProvider.notifier);
-    final LoginScreenViewModelState modelState =
-        ref.watch(loginScreenViewModelProvider);
+    final emailController = useTextEditingController();
+    final passwordController = useTextEditingController();
+    final rememberMe = useState(false);
+    final showValidationErrors = useState(false);
+    final formKey = GlobalKey<FormState>();
+
+    final authState = ref.watch(authServiceProvider);
 
     return AppLayout(
       child: SingleChildScrollView(
         child: Form(
-          key: model.formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+          key: formKey,
+          autovalidateMode: showValidationErrors.value
+              ? AutovalidateMode.always
+              : AutovalidateMode.disabled,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -61,32 +69,43 @@ class LoginScreen extends HookConsumerWidget {
                       hint: 'E-mail',
                       keyboardType: TextInputType.emailAddress,
                       autocorrect: false,
-                      onChanged: (value) => model.updateEmail(value),
+                      controller: emailController,
                       validator: (value) =>
-                          InputValidator.email(modelState.email),
+                          InputValidator.email(EmailAddress(value ?? '')),
                     ),
                     const SizedBox(height: 10),
                     AppTextField(
                       hint: 'Mot-de-passe',
                       obscureText: true,
+                      controller: passwordController,
                       validator: (value) =>
-                          InputValidator.password(modelState.password),
-                      onChanged: (value) => model.updatePassword(value),
+                          InputValidator.password(Password(value ?? '')),
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                child: Row(
-                  children: [
-                    AppCheckbox(
-                      value: true,
-                      onChanged: (value) {},
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                  child: AppInkWell(
+                    transparent: true,
+                    onTap: () => rememberMe.value = !rememberMe.value,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AppCheckbox(
+                            value: rememberMe.value,
+                            onChanged: (value) =>
+                                rememberMe.value = value ?? false),
+                        const Text('Se souvenir de moi').labelMedium,
+                        const SizedBox(
+                          width: 12,
+                        )
+                      ],
                     ),
-                    const Text('Se souvenir de moi').labelMedium,
-                  ],
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
@@ -95,8 +114,20 @@ class LoginScreen extends HookConsumerWidget {
                 child: SizedBox(
                   width: double.infinity,
                   height: 64,
-                  child:
-                      AppButton.primary(text: 'Se connecter', onPressed: () {}),
+                  child: AppButton.primary(
+                    text: 'Se connecter',
+                    isLoading: authState.isLoading,
+                    onPressed: () {
+                      if (formKey.currentState?.validate() != true) {
+                        showValidationErrors.value = true;
+                        return;
+                      }
+                      ref
+                          .read(authServiceProvider.notifier)
+                          .signInWithEmailAndPassword(
+                              emailController.text, passwordController.text);
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 24),

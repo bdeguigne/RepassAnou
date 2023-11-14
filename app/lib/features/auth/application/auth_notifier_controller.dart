@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/utils/messenger_controller.dart';
 import 'package:repasse_anou/routing/navigation_controller.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
-import 'package:repasse_anou/features/auth/data/auth_service.dart';
+import 'package:repasse_anou/features/auth/data/auth_repository.dart';
 import 'package:repasse_anou/features/auth/models/user.dart';
 import 'package:repasse_anou/failures/auth_failure.dart';
 import 'package:repasse_anou/features/auth/models/auth.dart';
@@ -18,13 +18,13 @@ class AuthNotifierController extends StateNotifier<Auth> {
     this.navigationController,
     this.supabase,
     this.logger,
-    this.authService,
+    this.authRepository,
   ) : super(const Auth.unauthenticated());
 
   final NavigationController navigationController;
   final Logger logger;
   final s.SupabaseClient supabase;
-  final AuthService authService;
+  final AuthRepository authRepository;
 
   StreamSubscription<s.AuthState>? _authStateChanges;
 
@@ -51,7 +51,7 @@ class AuthNotifierController extends StateNotifier<Auth> {
       case 'authenticated':
         logger.i("L'utilisateur est connecté");
         final Either<AuthFailure, User> userRequest =
-            await authService.getAppUser();
+            await authRepository.getAppUser();
         final MessengerController messengerController =
             ref.read(messengerControllerProvider);
         final UserController userController =
@@ -92,6 +92,6 @@ final StateNotifierProvider<AuthNotifierController, Auth>
     ref.read(navigationControllerProvider),
     ref.read(supabaseClientProvider),
     ref.read(loggerProvider),
-    ref.read(authServiceProvider),
+    ref.read(authRepositoryProvider),
   );
 });

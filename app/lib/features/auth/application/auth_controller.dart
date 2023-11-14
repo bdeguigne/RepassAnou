@@ -3,9 +3,8 @@ import 'package:logger/logger.dart';
 import 'package:repasse_anou/utils/messenger_controller.dart';
 import 'package:repasse_anou/features/auth/models/user.dart';
 import 'package:repasse_anou/routing/navigation_controller.dart';
-import 'package:repasse_anou/features/auth/data/auth_service.dart';
+import 'package:repasse_anou/features/auth/data/auth_repository.dart';
 import 'package:repasse_anou/features/auth/data/user_service.dart';
-import 'package:repasse_anou/failures/auth_failure.dart';
 import 'package:repasse_anou/utils/top_level_providers.dart';
 import 'package:repasse_anou/utils/value_objects.dart';
 
@@ -18,7 +17,7 @@ class AuthController {
     this._navigationController,
   );
 
-  final AuthService _authService;
+  final AuthRepository _authService;
   final MessengerController _messengerController;
   final Logger _logger;
   final UserService _userService;
@@ -30,7 +29,7 @@ class AuthController {
         email, password, firstName, lastName);
 
     signUpRequest.fold((failure) {
-      _logger.e(failure.message);
+      // _logger.e(failure.message);
       _messengerController.showErrorSnackbar(
           'Une erreur est survenue lors de la création de votre compte');
       _navigationController.goToLandingPage();
@@ -71,7 +70,7 @@ class AuthController {
 
 final authControllerProvider = Provider<AuthController>(
   (ref) => AuthController(
-    ref.read(authServiceProvider),
+    ref.read(authRepositoryProvider),
     ref.read(messengerControllerProvider),
     ref.read(loggerProvider),
     ref.read(userServiceProvider),
