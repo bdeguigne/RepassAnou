@@ -38,11 +38,8 @@ class AuthRepository {
     }
   }
 
-  Future<Either<AuthFailure, String?>> signUpWithEmailAndPassword(
-      EmailAddress email,
-      Password password,
-      String firstName,
-      String lastName) async {
+  Future<String?> signUpWithEmailAndPassword(EmailAddress email,
+      Password password, String firstName, String lastName) async {
     try {
       final String emailStr = email.getOrCrash();
       final String passwordStr = password.getOrCrash();
@@ -52,13 +49,13 @@ class AuthRepository {
         password: passwordStr,
       );
 
-      return right(authResponse.user?.id);
+      return authResponse.user?.id;
     } on s.AuthException catch (error) {
       logger.e(error.message);
-      return left(AuthFailure.error(error.message));
+      throw AuthFailure.error(error.message);
     } catch (error) {
       logger.e(error.toString());
-      return left(const AuthFailure.unexpected());
+      throw const AuthFailure.unexpected();
     }
   }
 

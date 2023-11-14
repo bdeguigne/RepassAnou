@@ -304,15 +304,8 @@ class AppCenteredLayout extends StatelessWidget {
                 minHeight: constraints.maxHeight,
               ),
               child: SafeArea(
-                child: IntrinsicHeight(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      const Spacer(),
-                      child,
-                      const Spacer(),
-                    ],
-                  ),
+                child: Center(
+                  child: child,
                 ),
               ),
             ),

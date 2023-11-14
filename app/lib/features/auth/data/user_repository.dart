@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logger/logger.dart';
+import 'package:repasse_anou/exception/exception_message.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
 import 'package:repasse_anou/features/auth/models/user.dart';
 import 'package:repasse_anou/failures/failure.dart';
@@ -8,8 +9,8 @@ import 'package:repasse_anou/utils/supabase_extension.dart';
 import 'package:repasse_anou/utils/top_level_providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as s;
 
-class UserService {
-  UserService(
+class UserRepository {
+  UserRepository(
     this.supabase,
     this.logger,
     this.userController,
@@ -44,13 +45,11 @@ class UserService {
     }
   }
 
-  Future<Either<Failure, Unit>> addUser(User user) async {
+  Future<void> addUser(User user) async {
     try {
       await supabase.usersTable.insert(user.toJson());
-      return right(unit);
     } catch (e) {
-      logger.e(e.toString());
-      return left(const Failure('Impossible de créer l\'utilisateur'));
+      throw const ExceptionMessage('Impossible de créer l\'utilisateur');
     }
   }
 
@@ -79,8 +78,9 @@ class UserService {
   }
 }
 
-final Provider<UserService> userServiceProvider = Provider<UserService>((ref) {
-  return UserService(
+final Provider<UserRepository> userRepositoryProvider =
+    Provider<UserRepository>((ref) {
+  return UserRepository(
     ref.read(supabaseClientProvider),
     ref.read(loggerProvider),
     ref.read(userControllerProvider.notifier),

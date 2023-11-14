@@ -21,7 +21,7 @@ class UserController extends StateNotifier<User?> {
 
     signOutRequest.fold(
       (l) => _messengerController.showErrorSnackbar(l.message),
-      (r) => _messengerController.showSuccesssSnackbar('Déconnecté'),
+      (r) {},
     );
   }
 }

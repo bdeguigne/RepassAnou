@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:repasse_anou/features/auth/data/user_service.dart';
+import 'package:repasse_anou/features/auth/data/user_repository.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
 
 class DressingScreenState {
@@ -30,10 +30,10 @@ class DressingScreenState {
 
 class DressingScreenViewModel extends StateNotifier<DressingScreenState> {
   DressingScreenViewModel(
-    this._userService,
+    this._userRepository,
   ) : super(DressingScreenState());
 
-  final UserService _userService;
+  final UserRepository _userRepository;
 
   void updateNotShowMessage(bool notShowMessage) {
     state = state.copyWith(notShowMessage: notShowMessage);
@@ -49,7 +49,7 @@ class DressingScreenViewModel extends StateNotifier<DressingScreenState> {
 
   void hasReadDressingMessage() async {
     if (state.notShowMessage == true) {
-      await _userService.setDressingMessageReadForUser();
+      await _userRepository.setDressingMessageReadForUser();
     }
   }
 
@@ -71,6 +71,6 @@ class DressingScreenViewModel extends StateNotifier<DressingScreenState> {
 final dressingScreenViewModelProvider =
     StateNotifierProvider<DressingScreenViewModel, DressingScreenState>(
   (ref) => DressingScreenViewModel(
-    ref.read(userServiceProvider),
+    ref.read(userRepositoryProvider),
   ),
 );

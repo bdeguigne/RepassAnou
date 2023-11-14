@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:repasse_anou/design_system/app_checkbox.dart';
 import 'package:repasse_anou/design_system/dressing_card.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
@@ -68,15 +69,16 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: const Text(
+                child: Text(
                   'Vous avez la possibilité d’ajoutez vos vêtements dans ce dressing virtuel 👗\n\nEn y ajoutant vos pièces régulièrement, vous vous assurez que chacun de vos vêtements reçoive le traitement qui lui convient le mieux ✨\n\nPour un lavage, séchage et repassage toujours au top ! 👌',
-                ).bodyMedium,
+                  style: bodyMedium.copyWith(overflow: TextOverflow.visible),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Row(
                   children: [
-                    Checkbox(
+                    AppCheckbox(
                       value: notShowMessage,
                       onChanged: (value) {
                         if (value != null) {

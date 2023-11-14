@@ -27,7 +27,7 @@ class ColumnSpacing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final spacedChildren = children
-        .expand((widget) => [widget, SizedBox(width: spacing.toDouble())])
+        .expand((widget) => [widget, SizedBox(height: spacing.toDouble())])
         .toList();
 
     if (spacedChildren.isNotEmpty) {

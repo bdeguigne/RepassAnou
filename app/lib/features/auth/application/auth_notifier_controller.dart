@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:repasse_anou/features/auth/application/auth_service.dart';
 import 'package:repasse_anou/utils/messenger_controller.dart';
 import 'package:repasse_anou/routing/navigation_controller.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
@@ -50,6 +51,7 @@ class AuthNotifierController extends StateNotifier<Auth> {
         orElse: () => 'unauthenticated')) {
       case 'authenticated':
         logger.i("L'utilisateur est connecté");
+        ref.read(authServiceProvider.notifier).setLoading();
         final Either<AuthFailure, User> userRequest =
             await authRepository.getAppUser();
         final MessengerController messengerController =
@@ -60,11 +62,13 @@ class AuthNotifierController extends StateNotifier<Auth> {
           (AuthFailure failure) {
             logger.e(
                 "Impossible de récupérer les infos de l'utilisateur connecté : ${failure.message}");
+            ref.read(authServiceProvider.notifier).setError(failure.message);
             messengerController.showErrorSnackbar(failure.message);
             navigationController.goToLandingPage();
           },
           (User user) async {
             logger.i("Récupération des données de l'utilisateur : $user");
+            ref.read(authServiceProvider.notifier).setSuccess();
             userController.updateUser(user);
             navigationController.goToHomePage();
           },
