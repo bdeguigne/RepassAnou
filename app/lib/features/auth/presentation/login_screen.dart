@@ -15,14 +15,13 @@ import 'package:repasse_anou/utils/input_validator.dart';
 import 'package:repasse_anou/utils/spacing_row_column.dart';
 
 @RoutePage()
-class LoginScreen extends ConsumerWidget {
+class LoginScreen extends HookConsumerWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final LoginScreenViewModel model =
         ref.read(loginScreenViewModelProvider.notifier);
-
     final LoginScreenViewModelState modelState =
         ref.watch(loginScreenViewModelProvider);
 

@@ -35,7 +35,6 @@ class AppTextField extends StatelessWidget {
         textInputAction: textInputAction,
         controller: controller,
         focusNode: focusNode,
-        cursorHeight: 16,
         onChanged: onChanged,
         validator: validator,
         decoration: InputDecoration(

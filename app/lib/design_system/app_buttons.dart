@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:repasse_anou/design_system/app_loading.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 
 enum AppButtonType { elevated, outlined, text }
@@ -10,18 +11,59 @@ class AppButton extends StatelessWidget {
   final TextStyle? textStyle;
   final AppButtonType type;
   final Widget? icon;
+  final bool isLoading;
+
+  Widget _buildContentWithAnimatedLoading(
+      Widget content, bool loading, Color? loadingColor,
+      {bool small = false}) {
+    return AnimatedCrossFade(
+      layoutBuilder: (topChild, topChildKey, bottomChild, bottomChildKey) {
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            Positioned(
+              key: bottomChildKey,
+              child: bottomChild,
+            ),
+            Positioned(
+              key: topChildKey,
+              child: topChild,
+            ),
+          ],
+        );
+      },
+      crossFadeState:
+          loading ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+      duration: const Duration(milliseconds: 300),
+      firstChild: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: SizedBox(
+          width: small ? 16 : 24,
+          height: small ? 16 : 24,
+          child: AppLoading(
+            color: loadingColor,
+          ),
+        ),
+      ),
+      secondChild: content,
+    );
+  }
 
   const AppButton._({
     this.text,
     required this.onPressed,
     required this.buttonStyle,
     required this.textStyle,
+    this.isLoading = false,
     this.type = AppButtonType.elevated,
     this.icon,
   });
 
-  factory AppButton.primary(
-      {required String text, required VoidCallback onPressed}) {
+  factory AppButton.primary({
+    required String text,
+    required VoidCallback onPressed,
+    bool isLoading = false,
+  }) {
     return AppButton._(
       text: text,
       onPressed: onPressed,
@@ -32,11 +74,15 @@ class AppButton extends StatelessWidget {
       textStyle: appTheme.textTheme.headlineLarge?.copyWith(
         color: Colors.white,
       ),
+      isLoading: isLoading,
     );
   }
 
-  factory AppButton.secondary(
-      {required String text, required VoidCallback onPressed}) {
+  factory AppButton.secondary({
+    required String text,
+    required VoidCallback onPressed,
+    bool isLoading = false,
+  }) {
     return AppButton._(
       text: text,
       onPressed: onPressed,
@@ -47,11 +93,15 @@ class AppButton extends StatelessWidget {
       textStyle: appTheme.textTheme.labelLarge?.copyWith(
         color: const Color(0xFF1D272F),
       ),
+      isLoading: isLoading,
     );
   }
 
-  factory AppButton.outlinedIcon(
-      {required Widget icon, required VoidCallback onPressed}) {
+  factory AppButton.outlinedIcon({
+    required Widget icon,
+    required VoidCallback onPressed,
+    bool isLoading = false,
+  }) {
     return AppButton._(
       onPressed: onPressed,
       buttonStyle: ButtonStyle(
@@ -76,11 +126,15 @@ class AppButton extends StatelessWidget {
       ),
       type: AppButtonType.outlined,
       icon: icon,
+      isLoading: isLoading,
     );
   }
 
-  factory AppButton.text(
-      {required String text, required VoidCallback onPressed}) {
+  factory AppButton.text({
+    required String text,
+    required VoidCallback onPressed,
+    bool isLoading = false,
+  }) {
     return AppButton._(
       text: text,
       onPressed: onPressed,
@@ -89,6 +143,7 @@ class AppButton extends StatelessWidget {
         color: const Color(0xFF1D272F),
       ),
       type: AppButtonType.text,
+      isLoading: isLoading,
     );
   }
 
@@ -98,9 +153,13 @@ class AppButton extends StatelessWidget {
       return ElevatedButton(
         style: buttonStyle,
         onPressed: onPressed,
-        child: Text(
-          text!,
-          style: textStyle,
+        child: _buildContentWithAnimatedLoading(
+          Text(
+            text!,
+            style: textStyle,
+          ),
+          isLoading,
+          Colors.white,
         ),
       );
     }
@@ -108,16 +167,25 @@ class AppButton extends StatelessWidget {
       return OutlinedButton(
         style: buttonStyle,
         onPressed: onPressed,
-        child: icon,
+        child: _buildContentWithAnimatedLoading(
+          icon!,
+          isLoading,
+          null,
+        ),
       );
     }
     if (type == AppButtonType.text) {
       return TextButton(
         style: buttonStyle,
         onPressed: onPressed,
-        child: Text(
-          text!,
-          style: textStyle,
+        child: _buildContentWithAnimatedLoading(
+          Text(
+            text!,
+            style: textStyle,
+          ),
+          isLoading,
+          null,
+          small: true,
         ),
       );
     }
