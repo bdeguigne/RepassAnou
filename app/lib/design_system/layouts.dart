@@ -46,79 +46,39 @@ class LoggedAppBar extends StatelessWidget implements PreferredSizeWidget {
   const LoggedAppBar({
     Key? key,
     this.address,
+    required this.child,
+    this.actions,
   }) : super(key: key);
 
   final String? address;
   final double _offset = 12;
+  final Widget child;
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       leading: Padding(
         padding: const EdgeInsets.only(left: 20, top: 20),
-        child: Row(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Votre adresse').bodyMedium,
-                Flexible(
-                  child: Text(address ?? '22 Lot. Citronnelles').bodyLarge,
-                ),
-              ],
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                padding: EdgeInsets.only(bottom: _offset - 3),
-                child: const Icon(
-                  Icons.keyboard_arrow_down_outlined,
-                  color: grey,
-                ),
-              ),
-            ),
-          ],
-        ),
+        child: child,
       ),
       toolbarHeight: AppBar().preferredSize.height + _offset,
       // title: Text(title!.toUpperCase()).headlineLarge,
       leadingWidth: double.infinity,
-      actions: [
-        Padding(
-          padding: EdgeInsets.only(
-            right: 20,
-            top: 20,
-            bottom: _offset,
-          ),
-          child: Container(
-            width: 30,
-            height: 30,
-            decoration: const ShapeDecoration(
-              color: Colors.white,
-              shape: OvalBorder(),
-              shadows: [
-                BoxShadow(
-                  color: Color(0x21000000),
-                  blurRadius: 17,
-                  offset: Offset(0, 3),
-                  spreadRadius: 0,
-                )
-              ],
-            ),
-            child: Center(
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                icon: Image.asset(
-                  'assets/icons/bag.png',
-                  width: 14,
-                  height: 14,
+      actions: actions != null
+          ? [
+              Padding(
+                padding: EdgeInsets.only(
+                  right: 20,
+                  top: 20,
+                  bottom: _offset,
                 ),
-                onPressed: () {},
+                child: Row(
+                  children: actions!,
+                ),
               ),
-            ),
-          ),
-        ),
-      ],
+            ]
+          : null,
     );
   }
 

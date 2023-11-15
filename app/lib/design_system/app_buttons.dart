@@ -12,6 +12,7 @@ class AppButton extends StatelessWidget {
   final AppButtonType type;
   final Widget? icon;
   final bool isLoading;
+  final bool expanded;
 
   Widget _buildContentWithAnimatedLoading(
       Widget content, bool loading, Color? loadingColor,
@@ -57,12 +58,14 @@ class AppButton extends StatelessWidget {
     this.isLoading = false,
     this.type = AppButtonType.elevated,
     this.icon,
+    this.expanded = false,
   });
 
   factory AppButton.primary({
     required String text,
     required VoidCallback onPressed,
     bool isLoading = false,
+    bool expanded = false,
   }) {
     return AppButton._(
       text: text,
@@ -75,6 +78,7 @@ class AppButton extends StatelessWidget {
         color: Colors.white,
       ),
       isLoading: isLoading,
+      expanded: expanded,
     );
   }
 
@@ -92,6 +96,26 @@ class AppButton extends StatelessWidget {
       ),
       textStyle: appTheme.textTheme.labelLarge?.copyWith(
         color: const Color(0xFF1D272F),
+      ),
+      isLoading: isLoading,
+    );
+  }
+
+  factory AppButton.tertiary({
+    required String text,
+    required VoidCallback onPressed,
+    bool isLoading = false,
+  }) {
+    return AppButton._(
+      text: text,
+      onPressed: onPressed,
+      buttonStyle: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xffEEEEEE),
+        elevation: 0,
+      ),
+      textStyle: appTheme.textTheme.bodyMedium?.copyWith(
+        color: const Color(0xFF1D272F),
+        fontWeight: FontWeight.w400,
       ),
       isLoading: isLoading,
     );
@@ -150,16 +174,20 @@ class AppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (type == AppButtonType.elevated) {
-      return ElevatedButton(
-        style: buttonStyle,
-        onPressed: onPressed,
-        child: _buildContentWithAnimatedLoading(
-          Text(
-            text!,
-            style: textStyle,
+      return SizedBox(
+        width: expanded ? double.infinity : null,
+        height: expanded ? 64 : null,
+        child: ElevatedButton(
+          style: buttonStyle,
+          onPressed: onPressed,
+          child: _buildContentWithAnimatedLoading(
+            Text(
+              text!,
+              style: textStyle,
+            ),
+            isLoading,
+            Colors.white,
           ),
-          isLoading,
-          Colors.white,
         ),
       );
     }

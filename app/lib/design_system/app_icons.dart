@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:repasse_anou/design_system/theme.dart';
 
 class AppIcons {
   static Widget heart = SvgPicture.asset('assets/icons/heart.svg');
@@ -16,4 +17,11 @@ class AppIcons {
   );
   static Widget dressingNotSelected =
       Image.asset('assets/icons/dressing-not-selected.png');
+  static Widget circleGrey = const Icon(
+    Icons.circle,
+    color: Color(0xffDADADA),
+  );
+  static Widget circleBlack = const Icon(
+    Icons.circle,
+  );
 }

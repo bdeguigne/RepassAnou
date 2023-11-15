@@ -39,7 +39,6 @@ class DressingDetailScreen extends HookConsumerWidget {
     final ValueNotifier<UserDressing> userDressingData = useState(userDressing);
     final ValueNotifier<Uint8List> imageData = useState(image);
 
-
     ref.watch(dressingDetailScreenServiceProvider);
     final AsyncValue<UserDressingAndImage?> dressingModalState =
         ref.watch(addDressingModalServiceProvider);
@@ -247,23 +246,20 @@ class DressingDetailContent extends StatelessWidget {
           height: 20,
         ),
         const Spacer(),
-        SizedBox(
-          width: double.infinity,
-          height: 56,
-          child: AppButton.primary(
-            text: 'Modifier',
-            onPressed: () {
-              showDialog<void>(
-                context: context,
-                builder: (context) {
-                  return DressingModal(
-                    userDressing: userDressing,
-                    imageData: imageData,
-                  );
-                },
-              );
-            },
-          ),
+        AppButton.primary(
+          expanded: true,
+          text: 'Modifier',
+          onPressed: () {
+            showDialog<void>(
+              context: context,
+              builder: (context) {
+                return DressingModal(
+                  userDressing: userDressing,
+                  imageData: imageData,
+                );
+              },
+            );
+          },
         ),
       ],
     );

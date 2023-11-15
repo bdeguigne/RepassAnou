@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:repasse_anou/design_system/app_buttons.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/design_system/app_text_field.dart';
 import 'package:repasse_anou/design_system/custom_drop_down_form_field.dart';
@@ -285,28 +286,24 @@ class DressingModal extends HookConsumerWidget {
                 const Center(
                   child: CircularProgressIndicator(),
                 ),
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (imageTaken.value == null && imageData == null) {
-                      ref
-                          .read(messengerControllerProvider)
-                          .showErrorSnackbar("L'image est obligatoire");
+              AppButton.primary(
+                expanded: true,
+                onPressed: () {
+                  if (imageTaken.value == null && imageData == null) {
+                    ref
+                        .read(messengerControllerProvider)
+                        .showErrorSnackbar("L'image est obligatoire");
+                  }
+                  if (_formKey.currentState!.validate()) {
+                    if (imageTaken.value != null && isEditing == false) {
+                      saveDressingAndCloseModal();
                     }
-                    if (_formKey.currentState!.validate()) {
-                      if (imageTaken.value != null && isEditing == false) {
-                        saveDressingAndCloseModal();
-                      }
-                      if (isEditing == true) {
-                        editDressingAndCloseModal();
-                      }
+                    if (isEditing == true) {
+                      editDressingAndCloseModal();
                     }
-                  },
-                  child: Text(isEditing ? 'Modifier' : 'Terminer')
-                      .headlineLargeWhite,
-                ),
+                  }
+                },
+                text: isEditing ? 'Modifier' : 'Terminer',
               ),
             ],
           ),
