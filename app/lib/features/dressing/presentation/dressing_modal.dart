@@ -156,7 +156,7 @@ class DressingModal extends HookConsumerWidget {
               ),
               LabelContent(
                 title: 'Intitulé',
-                child: AppTextField(
+                child: AppTextField.outlined(
                   hint: 'C’est quoi son p’tit nom ? (ex. T-shirt noir)',
                   validator: InputValidator.notEmpty,
                   controller: titleController,
@@ -273,7 +273,7 @@ class DressingModal extends HookConsumerWidget {
               ),
               LabelContent(
                 title: 'Notes',
-                child: AppTextField(
+                child: AppTextField.outlined(
                   hint:
                       'Une remarque spécifique à ajouter ? Du style : ⚠️ Déteint un max ! ⚠️',
                   controller: notesController,

@@ -355,7 +355,7 @@ class DropDown<T> extends HookWidget {
                       DropdownMenuItem<T>(
                         value: null,
                         enabled: false,
-                        child: AppTextField(
+                        child: AppTextField.outlined(
                           controller: textEditingController,
                           hint: 'Nom du nouveau membre',
                         ),

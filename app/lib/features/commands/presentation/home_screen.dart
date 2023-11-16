@@ -11,6 +11,8 @@ import 'package:repasse_anou/design_system/article_card.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/features/commands/models/command_item.dart';
 import 'package:repasse_anou/features/commands/presentation/home_screen_view_model.dart';
+import 'package:repasse_anou/routing/app_router.dart';
+import 'package:repasse_anou/routing/navigation_controller.dart';
 import 'package:repasse_anou/utils/spacing_row_column.dart';
 
 @RoutePage()
@@ -94,7 +96,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 topLabel: 'Récupération & livraison',
                 bottomLabel: '22 Lot. Citronnelles',
                 buttonLabel: 'Modifier',
-                onPressed: () {},
+                onPressed: () => ref.read(navigationControllerProvider).push(
+                      const PickupAndDeliveryRoute(),
+                    ),
               ),
               buildCommandDetailSection(
                 topLabel: 'Retrait : Lun. 09/10  14h-16h ',

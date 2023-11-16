@@ -229,7 +229,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
     return Row(
       children: [
         Flexible(
-          child: AppTextField(
+          child: AppTextField.outlined(
             controller: _inputController,
             textInputAction: TextInputAction.done,
             hint: widget.inputHint ?? 'Entrez une valeur...',

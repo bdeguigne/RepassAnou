@@ -64,7 +64,7 @@ class LoginScreen extends HookConsumerWidget {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
-                  AppTextField(
+                  AppTextField.outlined(
                     hint: 'E-mail',
                     keyboardType: TextInputType.emailAddress,
                     autocorrect: false,
@@ -73,7 +73,7 @@ class LoginScreen extends HookConsumerWidget {
                         InputValidator.email(EmailAddress(value ?? '')),
                   ),
                   const SizedBox(height: 10),
-                  AppTextField(
+                  AppTextField.outlined(
                     hint: 'Mot-de-passe',
                     obscureText: true,
                     controller: passwordController,

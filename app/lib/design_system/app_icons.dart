@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:repasse_anou/design_system/theme.dart';
 
 class AppIcons {
   static Widget heart = SvgPicture.asset('assets/icons/heart.svg');

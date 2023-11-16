@@ -21,7 +21,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      centerTitle: true,
+      centerTitle: false,
       // leading: leading ??
       //     IconButton(
       //       icon: const Icon(
@@ -32,7 +32,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       //       onPressed: onNavigateBack ?? () => Navigator.of(context).pop(),
       //     ),
       // leadingWidth: 70,
-      title: Text(title!.toUpperCase()).headlineLarge,
+      title: Text(title!).headlineLarge,
       leadingWidth: leadingWidth,
       actions: actions,
     );

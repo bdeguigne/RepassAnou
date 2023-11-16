@@ -55,21 +55,21 @@ class SignupScreen extends HookConsumerWidget {
               child: ColumnSpacing(
                 spacing: 10,
                 children: [
-                  AppTextField(
+                  AppTextField.outlined(
                     hint: 'Prénom',
                     keyboardType: TextInputType.name,
                     autocorrect: false,
                     controller: firstNameController,
                     validator: (value) => InputValidator.notEmpty(value),
                   ),
-                  AppTextField(
+                  AppTextField.outlined(
                     hint: 'Nom',
                     keyboardType: TextInputType.name,
                     autocorrect: false,
                     controller: nameController,
                     validator: (value) => InputValidator.notEmpty(value),
                   ),
-                  AppTextField(
+                  AppTextField.outlined(
                     hint: 'E-mail',
                     keyboardType: TextInputType.emailAddress,
                     autocorrect: false,
@@ -78,7 +78,7 @@ class SignupScreen extends HookConsumerWidget {
                       EmailAddress(value ?? ''),
                     ),
                   ),
-                  AppTextField(
+                  AppTextField.outlined(
                     hint: 'Mot-de-passe',
                     obscureText: true,
                     controller: passwordController,
