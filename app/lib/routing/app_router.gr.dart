@@ -62,6 +62,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const PickupAndDeliveryScreen(),
       );
     },
+    SearchAddressRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SearchAddressScreen(),
+      );
+    },
     SignupRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -200,6 +206,20 @@ class PickupAndDeliveryRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'PickupAndDeliveryRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [SearchAddressScreen]
+class SearchAddressRoute extends PageRouteInfo<void> {
+  const SearchAddressRoute({List<PageRouteInfo>? children})
+      : super(
+          SearchAddressRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SearchAddressRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

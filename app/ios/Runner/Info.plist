@@ -62,5 +62,7 @@
 		</array>
 		</dict>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>La localisation est requise pour faciliter l'entrée de l'adresse de livraison</string>
 </dict>
 </plist>
