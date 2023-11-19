@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
@@ -28,3 +29,6 @@ final Provider<ImagePicker> imagePickerProvider =
     Provider((ref) => ImagePicker());
 
 final Provider<Uuid> uuidProvider = Provider((ref) => const Uuid());
+
+final Provider<GeolocatorPlatform> geolocatorPlatformProvider =
+    Provider((ref) => GeolocatorPlatform.instance);

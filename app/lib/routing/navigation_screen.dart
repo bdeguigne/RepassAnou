@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/features/commands/presentation/home_screen.dart';
-import 'package:repasse_anou/features/delivery_info/application/geolocation_service.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_screen.dart';
 import 'package:repasse_anou/features/account/presentation/account_screen.dart';
 
@@ -24,15 +23,6 @@ class _NavigationScreenState extends ConsumerState<NavigationScreen> {
     const DressingScreen(),
     const AccountScreen(),
   ];
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(geoLocationServiceProvider.notifier).getCurrentLocation();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

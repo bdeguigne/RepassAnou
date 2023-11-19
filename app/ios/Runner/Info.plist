@@ -64,5 +64,7 @@
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>La localisation est requise pour faciliter l'entrée de l'adresse de livraison</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>a localisation en arrière plan est requise pour faciliter l'entrée de l'adresse de livraison</string>
 </dict>
 </plist>

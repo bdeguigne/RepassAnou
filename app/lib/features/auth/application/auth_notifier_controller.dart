@@ -69,6 +69,7 @@ class AuthNotifierController extends StateNotifier<Auth> {
           (User user) async {
             logger.i("Récupération des données de l'utilisateur : $user");
             ref.read(authServiceProvider.notifier).setSuccess();
+            // ref.read(geoLocationServiceProvider.notifier).getCurrentLocation();
             userController.updateUser(user);
             navigationController.goToHomePage();
           },

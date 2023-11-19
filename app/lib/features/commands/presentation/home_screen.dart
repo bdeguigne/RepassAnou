@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/design_system/app_bottom_sheet.dart';
 import 'package:repasse_anou/design_system/app_buttons.dart';
@@ -11,6 +12,7 @@ import 'package:repasse_anou/design_system/article_card.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/features/commands/models/command_item.dart';
 import 'package:repasse_anou/features/commands/presentation/home_screen_view_model.dart';
+import 'package:repasse_anou/features/delivery_info/data/geolocation_repository.dart';
 import 'package:repasse_anou/routing/app_router.dart';
 import 'package:repasse_anou/routing/navigation_controller.dart';
 import 'package:repasse_anou/utils/spacing_row_column.dart';
@@ -124,6 +126,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ref.watch(homeScreenViewModelProvider);
     final List<CommandItem> commandItems =
         ref.watch(commandItemControllerProvider);
+    final AsyncValue<String?> currentLocation =
+        ref.watch(currentAddressProvider);
 
     return AppLayout(
       customAppBar: LoggedAppBar(
@@ -165,9 +169,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text('Votre adresse').bodyMedium,
-                  Flexible(
-                    child: const Text('22 Lot. Citronnelles').bodyLarge,
-                  ),
+                  currentLocation.when(
+                    data: (position) => Text(
+                      position ?? 'Veuillez renseigner votre adresse',
+                      style: bodyMedium.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    loading: () => Text(
+                      'Chargement...',
+                      style: bodyMedium.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    error: (error, stackTrace) => Text(
+                      'Veuillez renseigner votre adresse',
+                      style: bodyMedium.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

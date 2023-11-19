@@ -1,45 +1,87 @@
+import 'package:geocoding/geocoding.dart';
 import 'package:repasse_anou/exception/exception_message.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:repasse_anou/utils/extensions.dart';
+import 'package:repasse_anou/utils/top_level_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+part 'geolocation_repository.g.dart';
+
 class GeolocationRepository {
-  Future<Position> getCurrentLocation() async {
-    try {
-      bool serviceEnabled;
-      LocationPermission permission;
+  GeolocationRepository(this.geoLocator);
+  final GeolocatorPlatform geoLocator;
 
-      serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        // throw const LocationServiceDisabledException();
-        throw const ExceptionMessage(
-            'Le service de localisation est désactivé');
-      }
+  Future<bool> _handlePermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
-      // Demande de permission
-      permission = await Geolocator.checkPermission();
+    // Test if location services are enabled.
+    serviceEnabled = await geoLocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      throw const ExceptionMessage('Le service de localisation est désactivé');
+    }
+
+    permission = await geoLocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await geoLocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          throw const ExceptionMessage('Permission de localisation refusée');
-        }
-      }
-
-      if (permission == LocationPermission.deniedForever) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
         throw const ExceptionMessage('Permission de localisation refusée');
       }
-
-      final pos = await Geolocator.getCurrentPosition();
-
-      print(pos);
-
-      return pos;
-    } catch (e) {
-      throw const ExceptionMessage(
-          'Une erreur est survenue lors de la récupération de la géolocalisation');
     }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      throw const ExceptionMessage('Permission de localisation refusée');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return true;
+  }
+
+  Future<Placemark> _getPlaceFromCoordinates(
+      double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(latitude, longitude);
+      return placemarks.first;
+    } catch (e) {
+      throw Exception('Failed to get address from coordinates: $e');
+    }
+  }
+
+  Future<String?> getCurrentAddress() async {
+    final hasPermission = await _handlePermission();
+
+    if (!hasPermission) {
+      throw const ExceptionMessage('Permission de localisation refusée');
+    }
+
+    final position = await geoLocator.getCurrentPosition();
+
+    final place =
+        await _getPlaceFromCoordinates(position.latitude, position.longitude);
+
+    return place.name;
   }
 }
 
+@riverpod
+Future<String?> currentAddress(CurrentAddressRef ref) async {
+  final geoLocalationRepository = ref.read(geoLocationRepositoryProvider);
+  return ref.notifyOnError(geoLocalationRepository.getCurrentAddress);
+}
+
 final geoLocationRepositoryProvider = Provider<GeolocationRepository>(
-  (ref) => GeolocationRepository(),
+  (ref) => GeolocationRepository(
+    ref.read(geolocatorPlatformProvider),
+  ),
 );
