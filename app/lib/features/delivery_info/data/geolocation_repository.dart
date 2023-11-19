@@ -1,4 +1,5 @@
 import 'package:geocoding/geocoding.dart';
+import 'package:logger/logger.dart';
 import 'package:repasse_anou/exception/exception_message.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:repasse_anou/utils/extensions.dart';
@@ -8,8 +9,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'geolocation_repository.g.dart';
 
 class GeolocationRepository {
-  GeolocationRepository(this.geoLocator);
+  GeolocationRepository(
+    this.geoLocator,
+    this.logger,
+  );
   final GeolocatorPlatform geoLocator;
+  final Logger logger;
 
   Future<bool> _handlePermission() async {
     bool serviceEnabled;
@@ -21,6 +26,7 @@ class GeolocationRepository {
       // Location services are not enabled don't continue
       // accessing the position and request users of the
       // App to enable the location services.
+      logger.e('Location services are disabled.');
       throw const ExceptionMessage('Le service de localisation est désactivé');
     }
 
@@ -33,12 +39,15 @@ class GeolocationRepository {
         // Android's shouldShowRequestPermissionRationale
         // returned true. According to Android guidelines
         // your App should show an explanatory UI now.
+        logger.e('Location permissions are denied');
         throw const ExceptionMessage('Permission de localisation refusée');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
+      logger.e(
+          'Location permissions are permanently denied, we cannot request permissions.');
       throw const ExceptionMessage('Permission de localisation refusée');
     }
 
@@ -54,6 +63,7 @@ class GeolocationRepository {
           await placemarkFromCoordinates(latitude, longitude);
       return placemarks.first;
     } catch (e) {
+      logger.e('Failed to get address from coordinates: $e');
       throw Exception('Failed to get address from coordinates: $e');
     }
   }
@@ -70,11 +80,11 @@ class GeolocationRepository {
     final place =
         await _getPlaceFromCoordinates(position.latitude, position.longitude);
 
-    return place.name;
+    return place.street;
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<String?> currentAddress(CurrentAddressRef ref) async {
   final geoLocalationRepository = ref.read(geoLocationRepositoryProvider);
   return ref.notifyOnError(geoLocalationRepository.getCurrentAddress);
@@ -83,5 +93,6 @@ Future<String?> currentAddress(CurrentAddressRef ref) async {
 final geoLocationRepositoryProvider = Provider<GeolocationRepository>(
   (ref) => GeolocationRepository(
     ref.read(geolocatorPlatformProvider),
+    ref.read(loggerProvider),
   ),
 );

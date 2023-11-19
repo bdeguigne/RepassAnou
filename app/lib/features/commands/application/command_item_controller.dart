@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/utils/messenger_controller.dart';
-import 'package:repasse_anou/features/commands/data/command_item_service.dart';
+import 'package:repasse_anou/features/commands/data/command_item_repository.dart';
 import 'package:repasse_anou/features/commands/models/command_item.dart';
 
 class CommandItemController extends StateNotifier<List<CommandItem>> {
@@ -10,7 +10,7 @@ class CommandItemController extends StateNotifier<List<CommandItem>> {
   ) : super([]);
 
   final MessengerController _messengerController;
-  final CommandItemService _commandItemService;
+  final CommandItemRepository _commandItemService;
 
   void updateCommandItems(List<CommandItem> commandItems) {
     state = commandItems;
@@ -32,6 +32,6 @@ final commandItemControllerProvider =
     StateNotifierProvider<CommandItemController, List<CommandItem>>(
   (ref) => CommandItemController(
     ref.read(messengerControllerProvider),
-    ref.read(commandItemServiceProvider),
+    ref.read(commandItemRepositoryProvider),
   ),
 );

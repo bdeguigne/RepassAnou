@@ -12,6 +12,7 @@ extension SupabaseExtensions<T> on s.SupabaseClient {
       from('users_dressings_materials');
   s.SupabaseQueryBuilder get usersDressingsBelongsToTable =>
       from('users_dressings_belongs_to');
+  s.SupabaseQueryBuilder get usersAddressesTable => from('users_addresses');
 }
 
 extension SupabaseStorageExtensions<T> on s.SupabaseStorageClient {

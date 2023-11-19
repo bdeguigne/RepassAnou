@@ -155,6 +155,31 @@ final ThemeData appTheme = ThemeData(
       color: navBarUnselectedItemColor,
     ),
   ),
+  inputDecorationTheme: const InputDecorationTheme(
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(20),
+      ),
+      borderSide: BorderSide(
+        color: error,
+        width: 1,
+      ),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(20),
+      ),
+      borderSide: BorderSide(
+        color: error,
+        width: 1,
+      ),
+    ),
+    errorStyle: TextStyle(
+      color: error,
+      fontSize: 10,
+      fontWeight: FontWeight.w500,
+    ),
+  ),
   dropdownMenuTheme: const DropdownMenuThemeData(
     textStyle: bodyMedium,
     inputDecorationTheme: InputDecorationTheme(

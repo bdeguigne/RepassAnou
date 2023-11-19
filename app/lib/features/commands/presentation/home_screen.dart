@@ -1,21 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:repasse_anou/design_system/app_bottom_sheet.dart';
-import 'package:repasse_anou/design_system/app_buttons.dart';
-import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/design_system/ink_well.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 import 'package:repasse_anou/features/commands/application/command_item_controller.dart';
 import 'package:repasse_anou/design_system/article_card.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/features/commands/models/command_item.dart';
+import 'package:repasse_anou/features/delivery_info/presentation/command_detail_bottom_sheet.dart';
 import 'package:repasse_anou/features/commands/presentation/home_screen_view_model.dart';
 import 'package:repasse_anou/features/delivery_info/data/geolocation_repository.dart';
-import 'package:repasse_anou/routing/app_router.dart';
-import 'package:repasse_anou/routing/navigation_controller.dart';
-import 'package:repasse_anou/utils/spacing_row_column.dart';
 
 @RoutePage()
 class HomeScreen extends ConsumerStatefulWidget {
@@ -44,79 +38,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
-  Widget buildCommandDetailSection({
-    required String topLabel,
-    required String bottomLabel,
-    required String buttonLabel,
-    required VoidCallback onPressed,
-  }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 27),
-                child: AppIcons.circleGrey,
-              ),
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(topLabel).bodyMedium,
-                    Text(bottomLabel,
-                        style:
-                            bodyMedium.copyWith(fontWeight: FontWeight.w600)),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 35,
-          child: AppButton.tertiary(text: buttonLabel, onPressed: onPressed),
-        ),
-      ],
-    );
-  }
-
   void showCommandDetailBottomSheet() {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => AppBottomSheet(
-        title: 'Détail de la commande',
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          child: ColumnSpacing(
-            spacing: 20,
-            children: [
-              buildCommandDetailSection(
-                topLabel: 'Récupération & livraison',
-                bottomLabel: '22 Lot. Citronnelles',
-                buttonLabel: 'Modifier',
-                onPressed: () => ref.read(navigationControllerProvider).push(
-                      const PickupAndDeliveryRoute(),
-                    ),
-              ),
-              buildCommandDetailSection(
-                topLabel: 'Retrait : Lun. 09/10  14h-16h ',
-                bottomLabel: 'Livraison : Mer. 11/10  14h-16h',
-                buttonLabel: 'Planifier',
-                onPressed: () {},
-              ),
-              AppButton.primary(
-                expanded: true,
-                text: 'Terminer',
-                onPressed: () {},
-              )
-            ],
-          ),
-        ),
-      ),
+      backgroundColor: Colors.white,
+      builder: (context) => const CommandDetailBottomSheet(),
     );
   }
 

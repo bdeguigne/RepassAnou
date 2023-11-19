@@ -20,6 +20,7 @@ class AppTextField extends StatelessWidget {
   final AppTextFieldType type;
   final VoidCallback? onTap;
   final String? value;
+  final String? errorMessage;
 
   const AppTextField._({
     required this.type,
@@ -35,6 +36,7 @@ class AppTextField extends StatelessWidget {
     this.obscureText = false,
     this.onTap,
     this.value,
+    this.errorMessage,
   });
 
   factory AppTextField.outlined({
@@ -94,6 +96,7 @@ class AppTextField extends StatelessWidget {
     String? hint,
     String? value,
     VoidCallback? onTap,
+    String? errorMessage,
   }) {
     return AppTextField._(
       hint: hint,
@@ -101,6 +104,7 @@ class AppTextField extends StatelessWidget {
       onTap: onTap,
       value: value,
       type: AppTextFieldType.button,
+      errorMessage: errorMessage,
     );
   }
 
@@ -117,35 +121,58 @@ class AppTextField extends StatelessWidget {
     );
 
     return type == AppTextFieldType.button
-        ? AppInkWell(
-            onTap: () {},
-            child: Container(
-              // height: 40,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-              decoration: ShapeDecoration(
-                color: const Color(0xffECF1F6),
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(width: 1, color: Color(0xFFECF1F6)),
-                  borderRadius: BorderRadius.circular(32),
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppInkWell(
+                onTap: () {},
+                child: Container(
+                  // height: 40,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                  decoration: ShapeDecoration(
+                    color: const Color(0xffECF1F6),
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        width: 1,
+                        color: (type == AppTextFieldType.button &&
+                                errorMessage != null)
+                            ? error
+                            : const Color(0xFFECF1F6),
+                      ),
+                      borderRadius: BorderRadius.circular(32),
+                    ),
+                  ),
+                  width: const SizedBox.expand().width,
+                  child: RowSpacing(
+                    spacing: 10,
+                    children: [
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: AppIcons.circleGrey,
+                      ),
+                      value != null
+                          ? Text(value!).bodyMedium
+                          : Text(
+                              hint ?? '',
+                              style: hintStyle,
+                            ),
+                    ],
+                  ),
                 ),
               ),
-              width: const SizedBox.expand().width,
-              child: RowSpacing(
-                spacing: 10,
-                children: [
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: AppIcons.circleGrey,
+              if (errorMessage != null)
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Text(
+                    errorMessage ?? '',
+                    style: const TextStyle(
+                        color: error,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500),
                   ),
-                  value != null
-                      ? Text(value!).bodyMedium
-                      : Text(
-                          hint ?? '',
-                          style: hintStyle,
-                        ),
-                ],
-              ),
-            ),
+                )
+            ],
           )
         : TextFormField(
             textInputAction: textInputAction,

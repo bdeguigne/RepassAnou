@@ -6,8 +6,8 @@ import 'package:repasse_anou/failures/failure.dart';
 import 'package:repasse_anou/utils/top_level_providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as s;
 
-class CommandItemService {
-  CommandItemService(this.supabase, this.logger);
+class CommandItemRepository {
+  CommandItemRepository(this.supabase, this.logger);
 
   final s.SupabaseClient supabase;
   final Logger logger;
@@ -28,9 +28,9 @@ class CommandItemService {
   }
 }
 
-final Provider<CommandItemService> commandItemServiceProvider =
-    Provider<CommandItemService>((ref) {
-  return CommandItemService(
+final Provider<CommandItemRepository> commandItemRepositoryProvider =
+    Provider<CommandItemRepository>((ref) {
+  return CommandItemRepository(
     ref.read(supabaseClientProvider),
     ref.read(loggerProvider),
   );
