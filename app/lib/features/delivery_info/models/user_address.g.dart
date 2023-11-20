@@ -14,6 +14,7 @@ _$UserAddressImpl _$$UserAddressImplFromJson(Map<String, dynamic> json) =>
       deliveryInstructions: json['delivery_instructions'] as String?,
       companyName: json['company_name'] as String?,
       entitled: json['entitled'] as String,
+      selected: json['selected'] as bool,
     );
 
 Map<String, dynamic> _$$UserAddressImplToJson(_$UserAddressImpl instance) =>
@@ -23,4 +24,5 @@ Map<String, dynamic> _$$UserAddressImplToJson(_$UserAddressImpl instance) =>
       'delivery_instructions': instance.deliveryInstructions,
       'company_name': instance.companyName,
       'entitled': instance.entitled,
+      'selected': instance.selected,
     };

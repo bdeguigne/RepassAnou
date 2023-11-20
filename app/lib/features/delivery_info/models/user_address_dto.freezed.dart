@@ -32,6 +32,7 @@ mixin _$UserAddressDto {
   @JsonKey(name: 'company_name')
   String? get companyName => throw _privateConstructorUsedError;
   String get entitled => throw _privateConstructorUsedError;
+  bool get selected => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -52,7 +53,8 @@ abstract class $UserAddressDtoCopyWith<$Res> {
       @JsonKey(name: 'address_info') String? addressInfo,
       @JsonKey(name: 'delivery_instructions') String? deliveryInstructions,
       @JsonKey(name: 'company_name') String? companyName,
-      String entitled});
+      String entitled,
+      bool selected});
 }
 
 /// @nodoc
@@ -75,6 +77,7 @@ class _$UserAddressDtoCopyWithImpl<$Res, $Val extends UserAddressDto>
     Object? deliveryInstructions = freezed,
     Object? companyName = freezed,
     Object? entitled = null,
+    Object? selected = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -105,6 +108,10 @@ class _$UserAddressDtoCopyWithImpl<$Res, $Val extends UserAddressDto>
           ? _value.entitled
           : entitled // ignore: cast_nullable_to_non_nullable
               as String,
+      selected: null == selected
+          ? _value.selected
+          : selected // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -124,7 +131,8 @@ abstract class _$$UserAddressDtoImplCopyWith<$Res>
       @JsonKey(name: 'address_info') String? addressInfo,
       @JsonKey(name: 'delivery_instructions') String? deliveryInstructions,
       @JsonKey(name: 'company_name') String? companyName,
-      String entitled});
+      String entitled,
+      bool selected});
 }
 
 /// @nodoc
@@ -145,6 +153,7 @@ class __$$UserAddressDtoImplCopyWithImpl<$Res>
     Object? deliveryInstructions = freezed,
     Object? companyName = freezed,
     Object? entitled = null,
+    Object? selected = null,
   }) {
     return _then(_$UserAddressDtoImpl(
       id: freezed == id
@@ -175,6 +184,10 @@ class __$$UserAddressDtoImplCopyWithImpl<$Res>
           ? _value.entitled
           : entitled // ignore: cast_nullable_to_non_nullable
               as String,
+      selected: null == selected
+          ? _value.selected
+          : selected // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -191,7 +204,8 @@ class _$UserAddressDtoImpl
       @JsonKey(name: 'address_info') this.addressInfo,
       @JsonKey(name: 'delivery_instructions') this.deliveryInstructions,
       @JsonKey(name: 'company_name') this.companyName,
-      required this.entitled});
+      required this.entitled,
+      required this.selected});
 
   factory _$UserAddressDtoImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserAddressDtoImplFromJson(json);
@@ -215,10 +229,12 @@ class _$UserAddressDtoImpl
   final String? companyName;
   @override
   final String entitled;
+  @override
+  final bool selected;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserAddressDto(id: $id, userId: $userId, address: $address, addressInfo: $addressInfo, deliveryInstructions: $deliveryInstructions, companyName: $companyName, entitled: $entitled)';
+    return 'UserAddressDto(id: $id, userId: $userId, address: $address, addressInfo: $addressInfo, deliveryInstructions: $deliveryInstructions, companyName: $companyName, entitled: $entitled, selected: $selected)';
   }
 
   @override
@@ -232,7 +248,8 @@ class _$UserAddressDtoImpl
       ..add(DiagnosticsProperty('addressInfo', addressInfo))
       ..add(DiagnosticsProperty('deliveryInstructions', deliveryInstructions))
       ..add(DiagnosticsProperty('companyName', companyName))
-      ..add(DiagnosticsProperty('entitled', entitled));
+      ..add(DiagnosticsProperty('entitled', entitled))
+      ..add(DiagnosticsProperty('selected', selected));
   }
 
   @override
@@ -250,13 +267,15 @@ class _$UserAddressDtoImpl
             (identical(other.companyName, companyName) ||
                 other.companyName == companyName) &&
             (identical(other.entitled, entitled) ||
-                other.entitled == entitled));
+                other.entitled == entitled) &&
+            (identical(other.selected, selected) ||
+                other.selected == selected));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, userId, address, addressInfo,
-      deliveryInstructions, companyName, entitled);
+      deliveryInstructions, companyName, entitled, selected);
 
   @JsonKey(ignore: true)
   @override
@@ -282,7 +301,8 @@ abstract class _UserAddressDto implements UserAddressDto {
       @JsonKey(name: 'delivery_instructions')
       final String? deliveryInstructions,
       @JsonKey(name: 'company_name') final String? companyName,
-      required final String entitled}) = _$UserAddressDtoImpl;
+      required final String entitled,
+      required final bool selected}) = _$UserAddressDtoImpl;
 
   factory _UserAddressDto.fromJson(Map<String, dynamic> json) =
       _$UserAddressDtoImpl.fromJson;
@@ -306,6 +326,8 @@ abstract class _UserAddressDto implements UserAddressDto {
   String? get companyName;
   @override
   String get entitled;
+  @override
+  bool get selected;
   @override
   @JsonKey(ignore: true)
   _$$UserAddressDtoImplCopyWith<_$UserAddressDtoImpl> get copyWith =>

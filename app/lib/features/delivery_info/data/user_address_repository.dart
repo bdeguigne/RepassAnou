@@ -1,13 +1,16 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:repasse_anou/exception/exception_message.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
+import 'package:repasse_anou/features/delivery_info/data/geolocation_repository.dart';
+import 'package:repasse_anou/features/delivery_info/models/user_address.dart';
 import 'package:repasse_anou/features/delivery_info/models/user_address_dto.dart';
+import 'package:repasse_anou/utils/extensions.dart';
 import 'package:repasse_anou/utils/supabase_extension.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as s;
-
 import 'package:repasse_anou/utils/top_level_providers.dart';
+
+part 'user_address_repository.g.dart';
 
 class UserAddressRepository {
   UserAddressRepository({
@@ -20,7 +23,48 @@ class UserAddressRepository {
   final s.SupabaseClient supabase;
   final UserController userController;
 
+  Future<List<UserAddress>> getUserAddresses() async {
+    try {
+      if (userController.loggedUser == null) {
+        throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
+      }
+
+      final response = await supabase.usersAddressesTable
+          .select<s.PostgrestList>(
+              'id, address, address_info, delivery_instructions, company_name, entitled, selected')
+          .eq('user_id', userController.loggedUser!.id);
+
+      return response.map((data) => UserAddress.fromJson(data)).toList();
+    } catch (e) {
+      logger.e(e.toString());
+      throw const ExceptionMessage(
+          'Une erreur est survenue lors de la récupération de vos adresses');
+    }
+  }
+
+  Future<UserAddress?> getSelectedAddress() async {
+    try {
+      if (userController.loggedUser == null) {
+        throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
+      }
+
+      final response = await supabase.usersAddressesTable
+          .select<s.PostgrestMap?>(
+              'id, address, address_info, delivery_instructions, company_name, entitled, selected')
+          .eq('user_id', userController.loggedUser!.id)
+          .eq('selected', true)
+          .maybeSingle();
+
+      return response != null ? UserAddress.fromJson(response) : null;
+    } catch (e) {
+      logger.e(e.toString());
+      throw const ExceptionMessage(
+          'Une erreur est survenue lors de la récupération de votre adresse');
+    }
+  }
+
   Future<void> saveUserAddress({
+    UserAddress? selectedUserAddress,
     required String address,
     String? addressInfo,
     String? deliveryInstructions,
@@ -32,6 +76,12 @@ class UserAddressRepository {
         throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
       }
 
+      if (selectedUserAddress != null) {
+        await supabase.usersAddressesTable
+            .update(selectedUserAddress.copyWith(selected: false).toJson())
+            .eq('id', selectedUserAddress.id);
+      }
+
       await supabase.usersAddressesTable.insert(
         UserAddressDto(
           userId: userController.loggedUser!.id,
@@ -40,6 +90,7 @@ class UserAddressRepository {
           deliveryInstructions: deliveryInstructions,
           companyName: companyName,
           entitled: entitled,
+          selected: true,
         ).toJson(),
       );
     } catch (e) {
@@ -48,6 +99,43 @@ class UserAddressRepository {
           "Une erreur est survenur lors de l'enregistrement de votre adresse");
     }
   }
+}
+
+@riverpod
+Future<List<UserAddress>> userAddresses(UserAddressesRef ref) async {
+  return ref.notifyOnError(
+    () => ref.read(userAddressRepositoryProvider).getUserAddresses(),
+  );
+}
+
+@riverpod
+Future<UserAddress?> selectedAddress(SelectedAddressRef ref) async {
+  return ref.notifyOnError(
+    () => ref.read(userAddressRepositoryProvider).getSelectedAddress(),
+  );
+}
+
+@riverpod
+Future<UserAddress> selectedAddressOrGeolocation(
+    SelectedAddressOrGeolocationRef ref) async {
+  return ref.notifyOnError(
+    () async {
+      final selectedAddress =
+          await ref.read(userAddressRepositoryProvider).getSelectedAddress();
+      if (selectedAddress != null) {
+        return selectedAddress;
+      }
+
+      final currentAddress =
+          await ref.read(geoLocationRepositoryProvider).getCurrentAddress();
+      if (currentAddress != null) {
+        return UserAddress(
+            address: currentAddress, entitled: '', selected: false);
+      }
+
+      throw const ExceptionMessage('Impossible de récupérer votre adresse');
+    },
+  );
 }
 
 final userAddressRepositoryProvider = Provider(

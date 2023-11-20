@@ -13,6 +13,7 @@ abstract class UserAddress with _$UserAddress {
     @JsonKey(name: 'delivery_instructions') String? deliveryInstructions,
     @JsonKey(name: 'company_name') String? companyName,
     required String entitled,
+    required bool selected,
   }) = _UserAddress;
 
   factory UserAddress.fromJson(Map<String, dynamic> json) =>

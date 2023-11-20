@@ -125,7 +125,7 @@ class AppTextField extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppInkWell(
-                onTap: () {},
+                onTap: onTap,
                 child: Container(
                   // height: 40,
                   padding:

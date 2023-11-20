@@ -14,6 +14,7 @@ abstract class UserAddressDto with _$UserAddressDto {
     @JsonKey(name: 'delivery_instructions') String? deliveryInstructions,
     @JsonKey(name: 'company_name') String? companyName,
     required String entitled,
+    required bool selected,
   }) = _UserAddressDto;
 
   factory UserAddressDto.fromJson(Map<String, dynamic> json) =>
