@@ -31,6 +31,8 @@ mixin _$UserAddress {
   String? get companyName => throw _privateConstructorUsedError;
   String get entitled => throw _privateConstructorUsedError;
   bool get selected => throw _privateConstructorUsedError;
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  AddressSource get source => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -51,7 +53,9 @@ abstract class $UserAddressCopyWith<$Res> {
       @JsonKey(name: 'delivery_instructions') String? deliveryInstructions,
       @JsonKey(name: 'company_name') String? companyName,
       String entitled,
-      bool selected});
+      bool selected,
+      @JsonKey(includeToJson: false, includeFromJson: false)
+      AddressSource source});
 }
 
 /// @nodoc
@@ -74,6 +78,7 @@ class _$UserAddressCopyWithImpl<$Res, $Val extends UserAddress>
     Object? companyName = freezed,
     Object? entitled = null,
     Object? selected = null,
+    Object? source = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -104,6 +109,10 @@ class _$UserAddressCopyWithImpl<$Res, $Val extends UserAddress>
           ? _value.selected
           : selected // ignore: cast_nullable_to_non_nullable
               as bool,
+      source: null == source
+          ? _value.source
+          : source // ignore: cast_nullable_to_non_nullable
+              as AddressSource,
     ) as $Val);
   }
 }
@@ -123,7 +132,9 @@ abstract class _$$UserAddressImplCopyWith<$Res>
       @JsonKey(name: 'delivery_instructions') String? deliveryInstructions,
       @JsonKey(name: 'company_name') String? companyName,
       String entitled,
-      bool selected});
+      bool selected,
+      @JsonKey(includeToJson: false, includeFromJson: false)
+      AddressSource source});
 }
 
 /// @nodoc
@@ -144,6 +155,7 @@ class __$$UserAddressImplCopyWithImpl<$Res>
     Object? companyName = freezed,
     Object? entitled = null,
     Object? selected = null,
+    Object? source = null,
   }) {
     return _then(_$UserAddressImpl(
       id: freezed == id
@@ -174,6 +186,10 @@ class __$$UserAddressImplCopyWithImpl<$Res>
           ? _value.selected
           : selected // ignore: cast_nullable_to_non_nullable
               as bool,
+      source: null == source
+          ? _value.source
+          : source // ignore: cast_nullable_to_non_nullable
+              as AddressSource,
     ));
   }
 }
@@ -188,7 +204,9 @@ class _$UserAddressImpl with DiagnosticableTreeMixin implements _UserAddress {
       @JsonKey(name: 'delivery_instructions') this.deliveryInstructions,
       @JsonKey(name: 'company_name') this.companyName,
       required this.entitled,
-      required this.selected});
+      required this.selected,
+      @JsonKey(includeToJson: false, includeFromJson: false)
+      this.source = AddressSource.database});
 
   factory _$UserAddressImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserAddressImplFromJson(json);
@@ -211,10 +229,13 @@ class _$UserAddressImpl with DiagnosticableTreeMixin implements _UserAddress {
   final String entitled;
   @override
   final bool selected;
+  @override
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  final AddressSource source;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserAddress(id: $id, address: $address, addressInfo: $addressInfo, deliveryInstructions: $deliveryInstructions, companyName: $companyName, entitled: $entitled, selected: $selected)';
+    return 'UserAddress(id: $id, address: $address, addressInfo: $addressInfo, deliveryInstructions: $deliveryInstructions, companyName: $companyName, entitled: $entitled, selected: $selected, source: $source)';
   }
 
   @override
@@ -228,7 +249,8 @@ class _$UserAddressImpl with DiagnosticableTreeMixin implements _UserAddress {
       ..add(DiagnosticsProperty('deliveryInstructions', deliveryInstructions))
       ..add(DiagnosticsProperty('companyName', companyName))
       ..add(DiagnosticsProperty('entitled', entitled))
-      ..add(DiagnosticsProperty('selected', selected));
+      ..add(DiagnosticsProperty('selected', selected))
+      ..add(DiagnosticsProperty('source', source));
   }
 
   @override
@@ -247,13 +269,14 @@ class _$UserAddressImpl with DiagnosticableTreeMixin implements _UserAddress {
             (identical(other.entitled, entitled) ||
                 other.entitled == entitled) &&
             (identical(other.selected, selected) ||
-                other.selected == selected));
+                other.selected == selected) &&
+            (identical(other.source, source) || other.source == source));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, address, addressInfo,
-      deliveryInstructions, companyName, entitled, selected);
+      deliveryInstructions, companyName, entitled, selected, source);
 
   @JsonKey(ignore: true)
   @override
@@ -278,7 +301,9 @@ abstract class _UserAddress implements UserAddress {
       final String? deliveryInstructions,
       @JsonKey(name: 'company_name') final String? companyName,
       required final String entitled,
-      required final bool selected}) = _$UserAddressImpl;
+      required final bool selected,
+      @JsonKey(includeToJson: false, includeFromJson: false)
+      final AddressSource source}) = _$UserAddressImpl;
 
   factory _UserAddress.fromJson(Map<String, dynamic> json) =
       _$UserAddressImpl.fromJson;
@@ -301,6 +326,9 @@ abstract class _UserAddress implements UserAddress {
   String get entitled;
   @override
   bool get selected;
+  @override
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  AddressSource get source;
   @override
   @JsonKey(ignore: true)
   _$$UserAddressImplCopyWith<_$UserAddressImpl> get copyWith =>

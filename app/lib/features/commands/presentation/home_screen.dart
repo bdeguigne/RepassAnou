@@ -7,9 +7,10 @@ import 'package:repasse_anou/features/commands/application/command_item_controll
 import 'package:repasse_anou/design_system/article_card.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/features/commands/models/command_item.dart';
+import 'package:repasse_anou/features/delivery_info/data/user_address_repository.dart';
+import 'package:repasse_anou/features/delivery_info/models/user_address.dart';
 import 'package:repasse_anou/features/delivery_info/presentation/command_detail_bottom_sheet.dart';
 import 'package:repasse_anou/features/commands/presentation/home_screen_view_model.dart';
-import 'package:repasse_anou/features/delivery_info/data/geolocation_repository.dart';
 
 @RoutePage()
 class HomeScreen extends ConsumerStatefulWidget {
@@ -53,10 +54,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ref.watch(homeScreenViewModelProvider);
     final List<CommandItem> commandItems =
         ref.watch(commandItemControllerProvider);
-    final AsyncValue<String?> currentLocation =
-        ref.watch(currentAddressProvider);
+    final AsyncValue<UserAddress> userAddress =
+        ref.watch(selectedAddressOrGeolocationProvider);
 
-    return AppLayout(
+    return AppLayout.standard(
       customAppBar: LoggedAppBar(
         actions: [
           Container(
@@ -96,9 +97,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text('Votre adresse').bodyMedium,
-                  currentLocation.when(
+                  userAddress.when(
                     data: (position) => Text(
-                      position ?? 'Veuillez renseigner votre adresse',
+                      position.address,
                       style: bodyMedium.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -136,33 +137,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ],
         ),
       ),
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-          child: Column(
-              children: modelState.isLoading
-                  ? [
-                      for (int i = 0; i < 3; i++)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: ArticleCard(
-                            isLoading: modelState.isLoading,
-                          ),
-                        ),
-                    ]
-                  : commandItems.map((commandItem) {
-                      return Padding(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+        child: Column(
+            children: modelState.isLoading
+                ? [
+                    for (int i = 0; i < 3; i++)
+                      Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: ArticleCard(
                           isLoading: modelState.isLoading,
-                          title: commandItem.title,
-                          description: commandItem.description,
-                          price: commandItem.price,
-                          imageUrl: commandItem.imageUrl,
                         ),
-                      );
-                    }).toList()),
-        ),
+                      ),
+                  ]
+                : commandItems.map((commandItem) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: ArticleCard(
+                        isLoading: modelState.isLoading,
+                        title: commandItem.title,
+                        description: commandItem.description,
+                        price: commandItem.price,
+                        imageUrl: commandItem.imageUrl,
+                      ),
+                    );
+                  }).toList()),
       ),
     );
   }

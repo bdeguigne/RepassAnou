@@ -82,7 +82,8 @@ class DressingDetailScreen extends HookConsumerWidget {
       }
     }
 
-    return AppLayout(
+    return AppLayout.standard(
+      scrollable: false,
       child: CustomScrollView(
         slivers: [
           SliverPersistentHeader(

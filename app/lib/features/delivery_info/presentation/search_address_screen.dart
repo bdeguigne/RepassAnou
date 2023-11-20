@@ -14,7 +14,7 @@ class SearchAddressScreen extends ConsumerWidget {
     final AsyncValue<List<UserAddress>> userAddresses =
         ref.watch(userAddressesProvider);
 
-    return AppLayout(
+    return AppLayout.standard(
       title: "Recherche d'adresse",
       child: userAddresses.when(
         data: (data) => ListView(

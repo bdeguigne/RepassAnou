@@ -87,8 +87,85 @@ class LoggedAppBar extends StatelessWidget implements PreferredSizeWidget {
       Size.fromHeight(AppBar().preferredSize.height + _offset);
 }
 
+// class AppLayout extends StatelessWidget {
+//   const AppLayout.standard({
+//     required this.child,
+//     super.key,
+//     this.title,
+//     this.onNavigateBack,
+//     this.leading,
+//     this.isLoading = false,
+//     this.customAppBar,
+//     this.fabContent,
+//     this.onFabPressed,
+//   });
+
+// final String? title;
+// final PreferredSizeWidget? customAppBar;
+// final Widget child;
+// final VoidCallback? onNavigateBack;
+// final Widget? leading;
+// final bool isLoading;
+// final Widget? fabContent;
+// final VoidCallback? onFabPressed;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Colors.white,
+//       appBar: customAppBar ??
+//           (title != null
+//               ? AppAppBar(
+//                   leading: leading,
+//                   title: title,
+//                 )
+//               : null),
+//       floatingActionButton: onFabPressed != null && fabContent != null
+//           ? FloatingActionButton(
+//               onPressed: onFabPressed,
+//               child: fabContent,
+//             )
+//           : null,
+//       body: SafeArea(
+//         child: Shimmer(
+//           linearGradient: shimmerGradient,
+//           child: Stack(
+//             children: [
+//               IgnorePointer(
+//                 ignoring: isLoading,
+//                 child: child,
+//               ),
+//               if (isLoading) ...[
+//                 Container(
+//                   color: Colors.black.withOpacity(0.5), // Fond transparent noir
+//                   child: const Center(
+//                     child:
+//                         CircularProgressIndicator(), // Indicateur de progression
+//                   ),
+//                 ),
+//               ],
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
 class AppLayout extends StatelessWidget {
-  const AppLayout({
+  final String? title;
+  final PreferredSizeWidget? customAppBar;
+  final Widget child;
+  final VoidCallback? onNavigateBack;
+  final Widget? leading;
+  final bool isLoading;
+  final Widget? fabContent;
+  final VoidCallback? onFabPressed;
+  final Widget? bottomButton;
+  final EdgeInsetsGeometry? padding;
+  final bool scrollable;
+
+  const AppLayout._({
     required this.child,
     super.key,
     this.title,
@@ -98,16 +175,66 @@ class AppLayout extends StatelessWidget {
     this.customAppBar,
     this.fabContent,
     this.onFabPressed,
+    this.bottomButton,
+    this.padding,
+    this.scrollable = true,
   });
 
-  final String? title;
-  final PreferredSizeWidget? customAppBar;
-  final Widget child;
-  final VoidCallback? onNavigateBack;
-  final Widget? leading;
-  final bool isLoading;
-  final Widget? fabContent;
-  final VoidCallback? onFabPressed;
+  factory AppLayout.standard({
+    required Widget child,
+    Key? key,
+    String? title,
+    VoidCallback? onNavigateBack,
+    Widget? leading,
+    bool isLoading = false,
+    PreferredSizeWidget? customAppBar,
+    Widget? fabContent,
+    VoidCallback? onFabPressed,
+    EdgeInsetsGeometry? padding,
+    bool scrollable = true,
+  }) {
+    return AppLayout._(
+      key: key,
+      title: title,
+      onNavigateBack: onNavigateBack,
+      leading: leading,
+      isLoading: isLoading,
+      customAppBar: customAppBar,
+      fabContent: fabContent,
+      onFabPressed: onFabPressed,
+      padding: padding,
+      scrollable: scrollable,
+      child: child,
+    );
+  }
+
+  factory AppLayout.withBottomButton({
+    required Widget child,
+    required Widget bottomButton,
+    Key? key,
+    String? title,
+    VoidCallback? onNavigateBack,
+    Widget? leading,
+    bool isLoading = false,
+    PreferredSizeWidget? customAppBar,
+    Widget? fabContent,
+    VoidCallback? onFabPressed,
+    EdgeInsetsGeometry? padding,
+  }) {
+    return AppLayout._(
+      bottomButton: bottomButton,
+      key: key,
+      title: title,
+      onNavigateBack: onNavigateBack,
+      leading: leading,
+      isLoading: isLoading,
+      customAppBar: customAppBar,
+      fabContent: fabContent,
+      onFabPressed: onFabPressed,
+      padding: padding,
+      child: child,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,119 +254,72 @@ class AppLayout extends StatelessWidget {
             )
           : null,
       body: SafeArea(
-        child: Shimmer(
-          linearGradient: shimmerGradient,
-          child: Stack(
-            children: [
-              IgnorePointer(
-                ignoring: isLoading,
-                child: child,
-              ),
-              if (isLoading) ...[
-                Container(
-                  color: Colors.black.withOpacity(0.5), // Fond transparent noir
-                  child: const Center(
-                    child:
-                        CircularProgressIndicator(), // Indicateur de progression
-                  ),
+        child: Stack(
+          children: [
+            Shimmer(
+              linearGradient: shimmerGradient,
+              child: LayoutBuilder(builder: (context, constraints) {
+                Widget content = scrollable
+                    ? SingleChildScrollView(
+                        child: _buildScrollableContent(constraints),
+                      )
+                    : _buildNonScrollableContent();
+
+                return content;
+              }),
+            ),
+            if (isLoading) ...[
+              Container(
+                color: Colors.black.withOpacity(0.5),
+                child: const Center(
+                  child: CircularProgressIndicator(),
                 ),
-              ],
+              ),
             ],
-          ),
+          ],
         ),
       ),
     );
   }
+
+  Widget _buildScrollableContent(BoxConstraints constraints) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: constraints.maxHeight),
+      child: IntrinsicHeight(
+        child: _buildContentColumn(),
+      ),
+    );
+  }
+
+  Widget _buildNonScrollableContent() {
+    return _buildContentColumn();
+  }
+
+  Column _buildContentColumn() {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Expanded(
+          child: IgnorePointer(
+            ignoring: isLoading,
+            child: Padding(
+              padding: padding ?? const EdgeInsets.all(0),
+              child: child,
+            ),
+          ),
+        ),
+        if (bottomButton != null)
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: padding ?? const EdgeInsets.all(0),
+              child: bottomButton,
+            ),
+          ),
+      ],
+    );
+  }
 }
-
-// class AppLayoutWithBottomAction extends StatelessWidget {
-//   const AppLayoutWithBottomAction({
-//     super.key,
-//     this.title,
-//     this.actionLabel,
-//     this.onActionPressed,
-//     this.isActionLoading = false,
-//     this.onNavigateBack,
-//     this.leading,
-//     this.crossAxisAlignment = CrossAxisAlignment.center,
-//     this.actionWidth,
-//     this.actionHeight,
-//     this.actionPadding,
-//     this.hideActionTextWhenLoading = false,
-//     this.customAction,
-//     this.onRefresh,
-//     required this.child,
-//   });
-
-//   final String? title;
-//   final Widget child;
-//   final String? actionLabel;
-//   final VoidCallback? onActionPressed;
-//   final bool isActionLoading;
-//   final bool hideActionTextWhenLoading;
-//   final VoidCallback? onNavigateBack;
-//   final Widget? leading;
-//   final CrossAxisAlignment crossAxisAlignment;
-//   final double? actionWidth;
-//   final double? actionHeight;
-//   final EdgeInsetsGeometry? actionPadding;
-//   final Widget? customAction;
-//   final Future<void> Function()? onRefresh;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return AppLayout(
-//       title: title,
-//       onNavigateBack: onNavigateBack,
-//       leading: leading,
-//       child: onRefresh != null
-//           ? RefreshIndicator(
-//               onRefresh: onRefresh!,
-//               child: buildContent(),
-//             )
-//           : buildContent(),
-//     );
-//   }
-
-//   Widget buildContent() {
-//     return CustomScrollView(
-//       physics: const AlwaysScrollableScrollPhysics(),
-//       slivers: [
-//         SliverFillRemaining(
-//           hasScrollBody: false,
-//           child: Column(
-//             crossAxisAlignment: crossAxisAlignment,
-//             mainAxisSize: MainAxisSize.max,
-//             children: <Widget>[
-//               Expanded(
-//                 child: child,
-//               ),
-//               const SizedBox().medium(),
-//               if (actionLabel != null && customAction == null) ...[
-//                 Container(
-//                   width: actionWidth,
-//                   height: actionHeight,
-//                   padding: actionPadding,
-//                   child: AppSecondaryTextButton(
-//                     text: actionLabel!,
-//                     onPressed: onActionPressed,
-//                     isLoading: isActionLoading,
-//                     hideTextWhenLoading: hideActionTextWhenLoading,
-//                     disabled: onActionPressed == null,
-//                   ),
-//                 ),
-//               ],
-//               if (customAction != null) ...[
-//                 customAction!,
-//               ],
-//               const SizedBox().large(),
-//             ],
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
 
 class AppCenteredLayout extends StatelessWidget {
   const AppCenteredLayout({

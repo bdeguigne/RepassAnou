@@ -4,7 +4,8 @@ import 'package:repasse_anou/design_system/app_bottom_sheet.dart';
 import 'package:repasse_anou/design_system/app_buttons.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/design_system/theme.dart';
-import 'package:repasse_anou/features/delivery_info/data/geolocation_repository.dart';
+import 'package:repasse_anou/features/delivery_info/data/user_address_repository.dart';
+import 'package:repasse_anou/features/delivery_info/models/user_address.dart';
 import 'package:repasse_anou/routing/app_router.dart';
 import 'package:repasse_anou/routing/navigation_controller.dart';
 import 'package:repasse_anou/utils/spacing_row_column.dart';
@@ -52,8 +53,8 @@ class CommandDetailBottomSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<String?> currentLocation =
-        ref.watch(currentAddressProvider);
+    final AsyncValue<UserAddress> userAddress =
+        ref.watch(selectedAddressOrGeolocationProvider);
 
     return AppBottomSheet(
       title: 'Détail de la commande',
@@ -64,8 +65,8 @@ class CommandDetailBottomSheet extends ConsumerWidget {
           children: [
             buildCommandDetailSection(
               topLabel: 'Récupération & livraison',
-              bottomLabel: currentLocation.when(
-                data: (data) => data ?? 'Veuillez renseigner votre adresse',
+              bottomLabel: userAddress.when(
+                data: (position) => position.address,
                 error: (error, stackTrace) =>
                     'Veuillez renseigner votre adresse',
                 loading: () => 'Chargement...',

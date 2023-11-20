@@ -22,24 +22,8 @@ final userAddressesProvider =
 );
 
 typedef UserAddressesRef = AutoDisposeFutureProviderRef<List<UserAddress>>;
-String _$selectedAddressHash() => r'86d249eb7551b2baf8df072b2b100ee28ea8877a';
-
-/// See also [selectedAddress].
-@ProviderFor(selectedAddress)
-final selectedAddressProvider =
-    AutoDisposeFutureProvider<UserAddress?>.internal(
-  selectedAddress,
-  name: r'selectedAddressProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$selectedAddressHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef SelectedAddressRef = AutoDisposeFutureProviderRef<UserAddress?>;
 String _$selectedAddressOrGeolocationHash() =>
-    r'0c841c195671aa84b59f8b73d6c1090032984fbc';
+    r'62117a3d46c5a47c28f4af890f4df100b0e7c7f0';
 
 /// See also [selectedAddressOrGeolocation].
 @ProviderFor(selectedAddressOrGeolocation)

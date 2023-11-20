@@ -294,46 +294,48 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
     final AsyncValue<List<UserDressingBelongsTo>> usersDressingBelongsTo =
         ref.watch(usersDressingsBelongsToProvider);
 
-    return AppLayout(
+    return AppLayout.standard(
+        scrollable: false,
         child: Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Mon Dressing').headlineLarge,
-              const Icon(Icons.search),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              buildTopButton('Filtrer', const Icon(Icons.filter), () {}),
-              buildTopButton('Dressing de', const Icon(Icons.settings), () {}),
-              buildTopButton(
-                'Ajouter',
-                const Icon(Icons.add),
-                () {
-                  showDialog<void>(
-                    context: context,
-                    builder: (context) {
-                      return DressingModal();
-                    },
-                  );
-                },
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Mon Dressing').headlineLarge,
+                  const Icon(Icons.search),
+                ],
               ),
-            ],
-          ),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        buildDressingBelongsToItems(usersDressingBelongsTo),
-      ],
-    ));
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  buildTopButton('Filtrer', const Icon(Icons.filter), () {}),
+                  buildTopButton(
+                      'Dressing de', const Icon(Icons.settings), () {}),
+                  buildTopButton(
+                    'Ajouter',
+                    const Icon(Icons.add),
+                    () {
+                      showDialog<void>(
+                        context: context,
+                        builder: (context) {
+                          return DressingModal();
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            buildDressingBelongsToItems(usersDressingBelongsTo),
+          ],
+        ));
   }
 }

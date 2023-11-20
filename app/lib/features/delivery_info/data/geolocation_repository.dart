@@ -2,11 +2,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:logger/logger.dart';
 import 'package:repasse_anou/exception/exception_message.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:repasse_anou/utils/extensions.dart';
 import 'package:repasse_anou/utils/top_level_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'geolocation_repository.g.dart';
 
 class GeolocationRepository {
   GeolocationRepository(
@@ -82,12 +79,6 @@ class GeolocationRepository {
 
     return place.street;
   }
-}
-
-@Riverpod(keepAlive: true)
-Future<String?> currentAddress(CurrentAddressRef ref) async {
-  final geoLocalationRepository = ref.read(geoLocationRepositoryProvider);
-  return ref.notifyOnError(geoLocalationRepository.getCurrentAddress);
 }
 
 final geoLocationRepositoryProvider = Provider<GeolocationRepository>(

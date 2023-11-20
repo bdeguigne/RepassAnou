@@ -55,7 +55,10 @@ class UserAddressRepository {
           .eq('selected', true)
           .maybeSingle();
 
-      return response != null ? UserAddress.fromJson(response) : null;
+      return response != null
+          ? UserAddress.fromJson(response)
+              .copyWith(source: AddressSource.database)
+          : null;
     } catch (e) {
       logger.e(e.toString());
       throw const ExceptionMessage(
@@ -64,7 +67,7 @@ class UserAddressRepository {
   }
 
   Future<void> saveUserAddress({
-    UserAddress? selectedUserAddress,
+    required UserAddress selectedUserAddress,
     required String address,
     String? addressInfo,
     String? deliveryInstructions,
@@ -76,7 +79,8 @@ class UserAddressRepository {
         throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
       }
 
-      if (selectedUserAddress != null) {
+      // if the current address is from the database, we update need to change the selected address to false before inserting the new one
+      if (selectedUserAddress.source == AddressSource.database) {
         await supabase.usersAddressesTable
             .update(selectedUserAddress.copyWith(selected: false).toJson())
             .eq('id', selectedUserAddress.id);
@@ -109,13 +113,6 @@ Future<List<UserAddress>> userAddresses(UserAddressesRef ref) async {
 }
 
 @riverpod
-Future<UserAddress?> selectedAddress(SelectedAddressRef ref) async {
-  return ref.notifyOnError(
-    () => ref.read(userAddressRepositoryProvider).getSelectedAddress(),
-  );
-}
-
-@riverpod
 Future<UserAddress> selectedAddressOrGeolocation(
     SelectedAddressOrGeolocationRef ref) async {
   return ref.notifyOnError(
@@ -123,14 +120,20 @@ Future<UserAddress> selectedAddressOrGeolocation(
       final selectedAddress =
           await ref.read(userAddressRepositoryProvider).getSelectedAddress();
       if (selectedAddress != null) {
+        ref.read(loggerProvider).i('Selected address found : $selectedAddress');
         return selectedAddress;
       }
 
       final currentAddress =
           await ref.read(geoLocationRepositoryProvider).getCurrentAddress();
       if (currentAddress != null) {
-        return UserAddress(
-            address: currentAddress, entitled: '', selected: false);
+        final userAddress = UserAddress.geolocation(currentAddress);
+
+        ref
+            .read(loggerProvider)
+            .i('Address from geolocation found : $userAddress');
+
+        return userAddress;
       }
 
       throw const ExceptionMessage('Impossible de récupérer votre adresse');

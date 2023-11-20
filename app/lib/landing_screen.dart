@@ -20,7 +20,7 @@
 //     final LoginScreenViewModel loginModel =
 //         ref.read(loginScreenViewModelProvider.notifier);
 
-//     return AppLayout(
+//     return AppLayout.standard(
 //       title: 'Welcome to My App 🚀',
 //       child: Padding(
 //         padding: const EdgeInsets.all(16),
