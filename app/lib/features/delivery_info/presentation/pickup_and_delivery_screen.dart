@@ -67,7 +67,7 @@ class PickupAndDeliveryScreen extends HookConsumerWidget {
         entitledController.text = position.entitled;
 
         return AppLayout.withBottomButton(
-          title: 'Récupération & livraison',
+          appBar: AppAppBar.title('Récupération & livraison'),
           padding: const EdgeInsets.all(20),
           bottomButton: AppButton.primary(
             expanded: true,

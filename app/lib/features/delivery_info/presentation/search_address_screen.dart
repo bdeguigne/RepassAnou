@@ -15,7 +15,11 @@ class SearchAddressScreen extends ConsumerWidget {
         ref.watch(userAddressesProvider);
 
     return AppLayout.standard(
-      title: "Recherche d'adresse",
+      appBar: AppAppBar.searchBar(
+        searchHint: 'Saisissez votre adresse',
+        onSearchFieldChanged: (value) => print(value),
+      ),
+      scrollable: false,
       child: userAddresses.when(
         data: (data) => ListView(
           children: data

@@ -23,4 +23,5 @@ class AppIcons {
   static Widget circleBlack = const Icon(
     Icons.circle,
   );
+  static Widget search = SvgPicture.asset('assets/icons/search.svg');
 }

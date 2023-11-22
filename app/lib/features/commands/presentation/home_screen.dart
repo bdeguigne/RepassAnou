@@ -58,7 +58,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ref.watch(selectedAddressOrGeolocationProvider);
 
     return AppLayout.standard(
-      customAppBar: LoggedAppBar(
+      appBar: LoggedAppBar(
         actions: [
           Container(
             width: 30,

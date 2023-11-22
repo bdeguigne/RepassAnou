@@ -21,6 +21,7 @@ class AppTextField extends StatelessWidget {
   final VoidCallback? onTap;
   final String? value;
   final String? errorMessage;
+  final Widget? prefixIcon;
 
   const AppTextField._({
     required this.type,
@@ -37,6 +38,7 @@ class AppTextField extends StatelessWidget {
     this.onTap,
     this.value,
     this.errorMessage,
+    this.prefixIcon,
   });
 
   factory AppTextField.outlined({
@@ -50,6 +52,7 @@ class AppTextField extends StatelessWidget {
     TextInputType? keyboardType,
     bool autocorrect = true,
     bool obscureText = false,
+    Widget? prexifIcon,
   }) {
     return AppTextField._(
       hint: hint,
@@ -63,6 +66,7 @@ class AppTextField extends StatelessWidget {
       autocorrect: autocorrect,
       obscureText: obscureText,
       type: AppTextFieldType.outlined,
+      prefixIcon: prexifIcon,
     );
   }
 
@@ -76,6 +80,8 @@ class AppTextField extends StatelessWidget {
     TextInputType? keyboardType,
     bool autocorrect = true,
     bool obscureText = false,
+    Widget? prefixIcon,
+    void Function(String? value)? onSearchFieldChanged,
   }) {
     return AppTextField._(
       hint: hint,
@@ -89,6 +95,7 @@ class AppTextField extends StatelessWidget {
       autocorrect: autocorrect,
       obscureText: obscureText,
       type: AppTextFieldType.filled,
+      prefixIcon: prefixIcon,
     );
   }
 
@@ -187,6 +194,12 @@ class AppTextField extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               isDense: true,
               hintText: hint ?? '',
+              prefixIcon: prefixIcon != null
+                  ? Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: prefixIcon,
+                    )
+                  : null,
               hintStyle: hintStyle,
               enabledBorder: border
                   ? appOutlineInputBorder

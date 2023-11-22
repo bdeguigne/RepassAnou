@@ -1,40 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:repasse_anou/design_system/app_icons.dart';
+import 'package:repasse_anou/design_system/app_text_field.dart';
 import 'package:repasse_anou/design_system/shimmer.dart';
 import 'package:repasse_anou/design_system/shimmer_loading.dart';
 
 import 'package:repasse_anou/design_system/theme.dart';
 
+enum AppLayoutType {
+  title,
+  searchBar,
+}
+
 class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const AppAppBar({
+  const AppAppBar._({
     Key? key,
     this.title,
-    this.leading,
-    this.leadingWidth = 56.0,
-    this.actions,
+    this.leadingWidth = 54.0,
+    required this.type,
+    this.searchHint,
+    this.onSearchFieldChanged,
   }) : super(key: key);
 
   final String? title;
-  final Widget? leading;
   final double? leadingWidth;
-  final List<Widget>? actions;
+  final AppLayoutType type;
+  final String? searchHint;
+  final void Function(String? value)? onSearchFieldChanged;
+
+  factory AppAppBar.title(
+    String title,
+  ) {
+    return AppAppBar._(
+      title: title,
+      leadingWidth: 54,
+      type: AppLayoutType.title,
+    );
+  }
+
+  factory AppAppBar.searchBar({
+    required String searchHint,
+    void Function(String? value)? onSearchFieldChanged,
+  }) {
+    return AppAppBar._(
+      searchHint: searchHint,
+      leadingWidth: 54,
+      type: AppLayoutType.searchBar,
+      onSearchFieldChanged: onSearchFieldChanged,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       centerTitle: false,
-      // leading: leading ??
-      //     IconButton(
-      //       icon: const Icon(
-      //         Icons.arrow_back_ios_new,
-      //         weight: 50,
-      //         size: 30,
-      //       ),
-      //       onPressed: onNavigateBack ?? () => Navigator.of(context).pop(),
-      //     ),
-      // leadingWidth: 70,
-      title: Text(title!).headlineLarge,
+      title: type == AppLayoutType.title
+          ? Text(title!).headlineLarge
+          : Padding(
+              padding: const EdgeInsets.only(right: 24),
+              child: AppTextField.filled(
+                hint: searchHint!,
+                prefixIcon: AppIcons.search,
+                onChanged: onSearchFieldChanged,
+              ),
+            ),
       leadingWidth: leadingWidth,
-      actions: actions,
+      titleSpacing: 0,
+      leading: GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: AppIcons.arrowBack,
+        ),
+      ),
     );
   }
 
@@ -87,77 +124,10 @@ class LoggedAppBar extends StatelessWidget implements PreferredSizeWidget {
       Size.fromHeight(AppBar().preferredSize.height + _offset);
 }
 
-// class AppLayout extends StatelessWidget {
-//   const AppLayout.standard({
-//     required this.child,
-//     super.key,
-//     this.title,
-//     this.onNavigateBack,
-//     this.leading,
-//     this.isLoading = false,
-//     this.customAppBar,
-//     this.fabContent,
-//     this.onFabPressed,
-//   });
-
-// final String? title;
-// final PreferredSizeWidget? customAppBar;
-// final Widget child;
-// final VoidCallback? onNavigateBack;
-// final Widget? leading;
-// final bool isLoading;
-// final Widget? fabContent;
-// final VoidCallback? onFabPressed;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white,
-//       appBar: customAppBar ??
-//           (title != null
-//               ? AppAppBar(
-//                   leading: leading,
-//                   title: title,
-//                 )
-//               : null),
-//       floatingActionButton: onFabPressed != null && fabContent != null
-//           ? FloatingActionButton(
-//               onPressed: onFabPressed,
-//               child: fabContent,
-//             )
-//           : null,
-//       body: SafeArea(
-//         child: Shimmer(
-//           linearGradient: shimmerGradient,
-//           child: Stack(
-//             children: [
-//               IgnorePointer(
-//                 ignoring: isLoading,
-//                 child: child,
-//               ),
-//               if (isLoading) ...[
-//                 Container(
-//                   color: Colors.black.withOpacity(0.5), // Fond transparent noir
-//                   child: const Center(
-//                     child:
-//                         CircularProgressIndicator(), // Indicateur de progression
-//                   ),
-//                 ),
-//               ],
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class AppLayout extends StatelessWidget {
-  final String? title;
-  final PreferredSizeWidget? customAppBar;
+  final PreferredSizeWidget? appBar;
   final Widget child;
   final VoidCallback? onNavigateBack;
-  final Widget? leading;
   final bool isLoading;
   final Widget? fabContent;
   final VoidCallback? onFabPressed;
@@ -168,11 +138,9 @@ class AppLayout extends StatelessWidget {
   const AppLayout._({
     required this.child,
     super.key,
-    this.title,
+    this.appBar,
     this.onNavigateBack,
-    this.leading,
     this.isLoading = false,
-    this.customAppBar,
     this.fabContent,
     this.onFabPressed,
     this.bottomButton,
@@ -183,9 +151,8 @@ class AppLayout extends StatelessWidget {
   factory AppLayout.standard({
     required Widget child,
     Key? key,
-    String? title,
+    PreferredSizeWidget? appBar,
     VoidCallback? onNavigateBack,
-    Widget? leading,
     bool isLoading = false,
     PreferredSizeWidget? customAppBar,
     Widget? fabContent,
@@ -195,11 +162,9 @@ class AppLayout extends StatelessWidget {
   }) {
     return AppLayout._(
       key: key,
-      title: title,
+      appBar: appBar,
       onNavigateBack: onNavigateBack,
-      leading: leading,
       isLoading: isLoading,
-      customAppBar: customAppBar,
       fabContent: fabContent,
       onFabPressed: onFabPressed,
       padding: padding,
@@ -212,9 +177,8 @@ class AppLayout extends StatelessWidget {
     required Widget child,
     required Widget bottomButton,
     Key? key,
-    String? title,
+    PreferredSizeWidget? appBar,
     VoidCallback? onNavigateBack,
-    Widget? leading,
     bool isLoading = false,
     PreferredSizeWidget? customAppBar,
     Widget? fabContent,
@@ -224,11 +188,9 @@ class AppLayout extends StatelessWidget {
     return AppLayout._(
       bottomButton: bottomButton,
       key: key,
-      title: title,
+      appBar: appBar,
       onNavigateBack: onNavigateBack,
-      leading: leading,
       isLoading: isLoading,
-      customAppBar: customAppBar,
       fabContent: fabContent,
       onFabPressed: onFabPressed,
       padding: padding,
@@ -240,13 +202,7 @@ class AppLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: customAppBar ??
-          (title != null
-              ? AppAppBar(
-                  leading: leading,
-                  title: title,
-                )
-              : null),
+      appBar: appBar,
       floatingActionButton: onFabPressed != null && fabContent != null
           ? FloatingActionButton(
               onPressed: onFabPressed,
