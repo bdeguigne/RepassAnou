@@ -19,6 +19,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.type,
     this.searchHint,
     this.onSearchFieldChanged,
+    this.isLoading = false,
   }) : super(key: key);
 
   final String? title;
@@ -26,6 +27,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final AppLayoutType type;
   final String? searchHint;
   final void Function(String? value)? onSearchFieldChanged;
+  final bool isLoading;
 
   factory AppAppBar.title(
     String title,
@@ -34,18 +36,21 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: title,
       leadingWidth: 54,
       type: AppLayoutType.title,
+      isLoading: false,
     );
   }
 
   factory AppAppBar.searchBar({
     required String searchHint,
     void Function(String? value)? onSearchFieldChanged,
+    bool isLoading = false,
   }) {
     return AppAppBar._(
       searchHint: searchHint,
       leadingWidth: 54,
       type: AppLayoutType.searchBar,
       onSearchFieldChanged: onSearchFieldChanged,
+      isLoading: isLoading,
     );
   }
 
@@ -61,6 +66,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
                 hint: searchHint!,
                 prefixIcon: AppIcons.search,
                 onChanged: onSearchFieldChanged,
+                isSearchLoading: isLoading,
               ),
             ),
       leadingWidth: leadingWidth,

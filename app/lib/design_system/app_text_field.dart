@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
+import 'package:repasse_anou/design_system/app_loading.dart';
 import 'package:repasse_anou/design_system/ink_well.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 import 'package:repasse_anou/utils/spacing_row_column.dart';
@@ -22,6 +23,7 @@ class AppTextField extends StatelessWidget {
   final String? value;
   final String? errorMessage;
   final Widget? prefixIcon;
+  final bool isSearchLoading;
 
   const AppTextField._({
     required this.type,
@@ -39,6 +41,7 @@ class AppTextField extends StatelessWidget {
     this.value,
     this.errorMessage,
     this.prefixIcon,
+    this.isSearchLoading = false,
   });
 
   factory AppTextField.outlined({
@@ -53,6 +56,7 @@ class AppTextField extends StatelessWidget {
     bool autocorrect = true,
     bool obscureText = false,
     Widget? prexifIcon,
+    bool isSearchLoading = false,
   }) {
     return AppTextField._(
       hint: hint,
@@ -67,6 +71,7 @@ class AppTextField extends StatelessWidget {
       obscureText: obscureText,
       type: AppTextFieldType.outlined,
       prefixIcon: prexifIcon,
+      isSearchLoading: isSearchLoading,
     );
   }
 
@@ -82,6 +87,7 @@ class AppTextField extends StatelessWidget {
     bool obscureText = false,
     Widget? prefixIcon,
     void Function(String? value)? onSearchFieldChanged,
+    bool isSearchLoading = false,
   }) {
     return AppTextField._(
       hint: hint,
@@ -96,6 +102,7 @@ class AppTextField extends StatelessWidget {
       obscureText: obscureText,
       type: AppTextFieldType.filled,
       prefixIcon: prefixIcon,
+      isSearchLoading: isSearchLoading,
     );
   }
 
@@ -198,6 +205,19 @@ class AppTextField extends StatelessWidget {
                   ? Padding(
                       padding: const EdgeInsets.all(12),
                       child: prefixIcon,
+                    )
+                  : null,
+              suffixIconConstraints: isSearchLoading
+                  ? const BoxConstraints(minWidth: 12, minHeight: 12)
+                  : null,
+              suffixIcon: isSearchLoading
+                  ? const SizedBox(
+                      width: 26,
+                      height: 18,
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 8.0),
+                        child: AppLoading(),
+                      ),
                     )
                   : null,
               hintStyle: hintStyle,
