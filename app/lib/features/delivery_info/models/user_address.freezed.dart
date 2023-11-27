@@ -22,7 +22,12 @@ UserAddress _$UserAddressFromJson(Map<String, dynamic> json) {
 mixin _$UserAddress {
   @JsonKey(includeToJson: false)
   String? get id => throw _privateConstructorUsedError;
-  String get address => throw _privateConstructorUsedError;
+  String get street => throw _privateConstructorUsedError;
+  @JsonKey(name: 'postal_code')
+  String get postalCode => throw _privateConstructorUsedError;
+  String get city => throw _privateConstructorUsedError;
+  double get latitude => throw _privateConstructorUsedError;
+  double get longitude => throw _privateConstructorUsedError;
   @JsonKey(name: 'address_info')
   String? get addressInfo => throw _privateConstructorUsedError;
   @JsonKey(name: 'delivery_instructions')
@@ -48,7 +53,11 @@ abstract class $UserAddressCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(includeToJson: false) String? id,
-      String address,
+      String street,
+      @JsonKey(name: 'postal_code') String postalCode,
+      String city,
+      double latitude,
+      double longitude,
       @JsonKey(name: 'address_info') String? addressInfo,
       @JsonKey(name: 'delivery_instructions') String? deliveryInstructions,
       @JsonKey(name: 'company_name') String? companyName,
@@ -72,7 +81,11 @@ class _$UserAddressCopyWithImpl<$Res, $Val extends UserAddress>
   @override
   $Res call({
     Object? id = freezed,
-    Object? address = null,
+    Object? street = null,
+    Object? postalCode = null,
+    Object? city = null,
+    Object? latitude = null,
+    Object? longitude = null,
     Object? addressInfo = freezed,
     Object? deliveryInstructions = freezed,
     Object? companyName = freezed,
@@ -85,10 +98,26 @@ class _$UserAddressCopyWithImpl<$Res, $Val extends UserAddress>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      address: null == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
+      street: null == street
+          ? _value.street
+          : street // ignore: cast_nullable_to_non_nullable
               as String,
+      postalCode: null == postalCode
+          ? _value.postalCode
+          : postalCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      city: null == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String,
+      latitude: null == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      longitude: null == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
       addressInfo: freezed == addressInfo
           ? _value.addressInfo
           : addressInfo // ignore: cast_nullable_to_non_nullable
@@ -127,7 +156,11 @@ abstract class _$$UserAddressImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(includeToJson: false) String? id,
-      String address,
+      String street,
+      @JsonKey(name: 'postal_code') String postalCode,
+      String city,
+      double latitude,
+      double longitude,
       @JsonKey(name: 'address_info') String? addressInfo,
       @JsonKey(name: 'delivery_instructions') String? deliveryInstructions,
       @JsonKey(name: 'company_name') String? companyName,
@@ -149,7 +182,11 @@ class __$$UserAddressImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? address = null,
+    Object? street = null,
+    Object? postalCode = null,
+    Object? city = null,
+    Object? latitude = null,
+    Object? longitude = null,
     Object? addressInfo = freezed,
     Object? deliveryInstructions = freezed,
     Object? companyName = freezed,
@@ -162,10 +199,26 @@ class __$$UserAddressImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      address: null == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
+      street: null == street
+          ? _value.street
+          : street // ignore: cast_nullable_to_non_nullable
               as String,
+      postalCode: null == postalCode
+          ? _value.postalCode
+          : postalCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      city: null == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String,
+      latitude: null == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      longitude: null == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
       addressInfo: freezed == addressInfo
           ? _value.addressInfo
           : addressInfo // ignore: cast_nullable_to_non_nullable
@@ -199,7 +252,11 @@ class __$$UserAddressImplCopyWithImpl<$Res>
 class _$UserAddressImpl with DiagnosticableTreeMixin implements _UserAddress {
   const _$UserAddressImpl(
       {@JsonKey(includeToJson: false) this.id,
-      required this.address,
+      required this.street,
+      @JsonKey(name: 'postal_code') required this.postalCode,
+      required this.city,
+      required this.latitude,
+      required this.longitude,
       @JsonKey(name: 'address_info') this.addressInfo,
       @JsonKey(name: 'delivery_instructions') this.deliveryInstructions,
       @JsonKey(name: 'company_name') this.companyName,
@@ -215,7 +272,16 @@ class _$UserAddressImpl with DiagnosticableTreeMixin implements _UserAddress {
   @JsonKey(includeToJson: false)
   final String? id;
   @override
-  final String address;
+  final String street;
+  @override
+  @JsonKey(name: 'postal_code')
+  final String postalCode;
+  @override
+  final String city;
+  @override
+  final double latitude;
+  @override
+  final double longitude;
   @override
   @JsonKey(name: 'address_info')
   final String? addressInfo;
@@ -235,7 +301,7 @@ class _$UserAddressImpl with DiagnosticableTreeMixin implements _UserAddress {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserAddress(id: $id, address: $address, addressInfo: $addressInfo, deliveryInstructions: $deliveryInstructions, companyName: $companyName, entitled: $entitled, selected: $selected, source: $source)';
+    return 'UserAddress(id: $id, street: $street, postalCode: $postalCode, city: $city, latitude: $latitude, longitude: $longitude, addressInfo: $addressInfo, deliveryInstructions: $deliveryInstructions, companyName: $companyName, entitled: $entitled, selected: $selected, source: $source)';
   }
 
   @override
@@ -244,7 +310,11 @@ class _$UserAddressImpl with DiagnosticableTreeMixin implements _UserAddress {
     properties
       ..add(DiagnosticsProperty('type', 'UserAddress'))
       ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('address', address))
+      ..add(DiagnosticsProperty('street', street))
+      ..add(DiagnosticsProperty('postalCode', postalCode))
+      ..add(DiagnosticsProperty('city', city))
+      ..add(DiagnosticsProperty('latitude', latitude))
+      ..add(DiagnosticsProperty('longitude', longitude))
       ..add(DiagnosticsProperty('addressInfo', addressInfo))
       ..add(DiagnosticsProperty('deliveryInstructions', deliveryInstructions))
       ..add(DiagnosticsProperty('companyName', companyName))
@@ -259,7 +329,14 @@ class _$UserAddressImpl with DiagnosticableTreeMixin implements _UserAddress {
         (other.runtimeType == runtimeType &&
             other is _$UserAddressImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.address, address) || other.address == address) &&
+            (identical(other.street, street) || other.street == street) &&
+            (identical(other.postalCode, postalCode) ||
+                other.postalCode == postalCode) &&
+            (identical(other.city, city) || other.city == city) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude) &&
             (identical(other.addressInfo, addressInfo) ||
                 other.addressInfo == addressInfo) &&
             (identical(other.deliveryInstructions, deliveryInstructions) ||
@@ -275,8 +352,20 @@ class _$UserAddressImpl with DiagnosticableTreeMixin implements _UserAddress {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, address, addressInfo,
-      deliveryInstructions, companyName, entitled, selected, source);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      street,
+      postalCode,
+      city,
+      latitude,
+      longitude,
+      addressInfo,
+      deliveryInstructions,
+      companyName,
+      entitled,
+      selected,
+      source);
 
   @JsonKey(ignore: true)
   @override
@@ -295,7 +384,11 @@ class _$UserAddressImpl with DiagnosticableTreeMixin implements _UserAddress {
 abstract class _UserAddress implements UserAddress {
   const factory _UserAddress(
       {@JsonKey(includeToJson: false) final String? id,
-      required final String address,
+      required final String street,
+      @JsonKey(name: 'postal_code') required final String postalCode,
+      required final String city,
+      required final double latitude,
+      required final double longitude,
       @JsonKey(name: 'address_info') final String? addressInfo,
       @JsonKey(name: 'delivery_instructions')
       final String? deliveryInstructions,
@@ -312,7 +405,16 @@ abstract class _UserAddress implements UserAddress {
   @JsonKey(includeToJson: false)
   String? get id;
   @override
-  String get address;
+  String get street;
+  @override
+  @JsonKey(name: 'postal_code')
+  String get postalCode;
+  @override
+  String get city;
+  @override
+  double get latitude;
+  @override
+  double get longitude;
   @override
   @JsonKey(name: 'address_info')
   String? get addressInfo;

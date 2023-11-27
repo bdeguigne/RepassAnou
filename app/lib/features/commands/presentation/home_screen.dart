@@ -7,7 +7,7 @@ import 'package:repasse_anou/features/commands/application/command_item_controll
 import 'package:repasse_anou/design_system/article_card.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/features/commands/models/command_item.dart';
-import 'package:repasse_anou/features/delivery_info/data/user_address_repository.dart';
+import 'package:repasse_anou/features/delivery_info/application/get_user_address_service.dart';
 import 'package:repasse_anou/features/delivery_info/models/user_address.dart';
 import 'package:repasse_anou/features/delivery_info/presentation/command_detail_bottom_sheet.dart';
 import 'package:repasse_anou/features/commands/presentation/home_screen_view_model.dart';
@@ -55,7 +55,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final List<CommandItem> commandItems =
         ref.watch(commandItemControllerProvider);
     final AsyncValue<UserAddress> userAddress =
-        ref.watch(selectedAddressOrGeolocationProvider);
+        ref.watch(getUserAddressServiceProvider);
 
     return AppLayout.standard(
       appBar: LoggedAppBar(
@@ -99,7 +99,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   const Text('Votre adresse').bodyMedium,
                   userAddress.when(
                     data: (position) => Text(
-                      position.address,
+                      position.street,
                       style: bodyMedium.copyWith(
                         fontWeight: FontWeight.w600,
                       ),

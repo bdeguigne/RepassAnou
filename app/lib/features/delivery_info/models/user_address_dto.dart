@@ -9,7 +9,11 @@ abstract class UserAddressDto with _$UserAddressDto {
   const factory UserAddressDto({
     @JsonKey(includeToJson: false) String? id,
     @JsonKey(name: 'user_id') required String userId,
-    required String address,
+    required String street,
+    @JsonKey(name: 'postal_code') required String postalCode,
+    required String city,
+    required double latitude,
+    required double longitude,
     @JsonKey(name: 'address_info') String? addressInfo,
     @JsonKey(name: 'delivery_instructions') String? deliveryInstructions,
     @JsonKey(name: 'company_name') String? companyName,

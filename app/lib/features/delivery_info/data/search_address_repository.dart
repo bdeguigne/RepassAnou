@@ -23,7 +23,7 @@ class SearchAddressRepository {
       );
 
       if (response.statusCode != 200) {
-        throw Exception();
+        throw ExceptionMessage(response.body);
       }
 
       final featureCollection =

@@ -24,7 +24,12 @@ mixin _$UserAddressDto {
   String? get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'user_id')
   String get userId => throw _privateConstructorUsedError;
-  String get address => throw _privateConstructorUsedError;
+  String get street => throw _privateConstructorUsedError;
+  @JsonKey(name: 'postal_code')
+  String get postalCode => throw _privateConstructorUsedError;
+  String get city => throw _privateConstructorUsedError;
+  double get latitude => throw _privateConstructorUsedError;
+  double get longitude => throw _privateConstructorUsedError;
   @JsonKey(name: 'address_info')
   String? get addressInfo => throw _privateConstructorUsedError;
   @JsonKey(name: 'delivery_instructions')
@@ -49,7 +54,11 @@ abstract class $UserAddressDtoCopyWith<$Res> {
   $Res call(
       {@JsonKey(includeToJson: false) String? id,
       @JsonKey(name: 'user_id') String userId,
-      String address,
+      String street,
+      @JsonKey(name: 'postal_code') String postalCode,
+      String city,
+      double latitude,
+      double longitude,
       @JsonKey(name: 'address_info') String? addressInfo,
       @JsonKey(name: 'delivery_instructions') String? deliveryInstructions,
       @JsonKey(name: 'company_name') String? companyName,
@@ -72,7 +81,11 @@ class _$UserAddressDtoCopyWithImpl<$Res, $Val extends UserAddressDto>
   $Res call({
     Object? id = freezed,
     Object? userId = null,
-    Object? address = null,
+    Object? street = null,
+    Object? postalCode = null,
+    Object? city = null,
+    Object? latitude = null,
+    Object? longitude = null,
     Object? addressInfo = freezed,
     Object? deliveryInstructions = freezed,
     Object? companyName = freezed,
@@ -88,10 +101,26 @@ class _$UserAddressDtoCopyWithImpl<$Res, $Val extends UserAddressDto>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      address: null == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
+      street: null == street
+          ? _value.street
+          : street // ignore: cast_nullable_to_non_nullable
               as String,
+      postalCode: null == postalCode
+          ? _value.postalCode
+          : postalCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      city: null == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String,
+      latitude: null == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      longitude: null == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
       addressInfo: freezed == addressInfo
           ? _value.addressInfo
           : addressInfo // ignore: cast_nullable_to_non_nullable
@@ -127,7 +156,11 @@ abstract class _$$UserAddressDtoImplCopyWith<$Res>
   $Res call(
       {@JsonKey(includeToJson: false) String? id,
       @JsonKey(name: 'user_id') String userId,
-      String address,
+      String street,
+      @JsonKey(name: 'postal_code') String postalCode,
+      String city,
+      double latitude,
+      double longitude,
       @JsonKey(name: 'address_info') String? addressInfo,
       @JsonKey(name: 'delivery_instructions') String? deliveryInstructions,
       @JsonKey(name: 'company_name') String? companyName,
@@ -148,7 +181,11 @@ class __$$UserAddressDtoImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? userId = null,
-    Object? address = null,
+    Object? street = null,
+    Object? postalCode = null,
+    Object? city = null,
+    Object? latitude = null,
+    Object? longitude = null,
     Object? addressInfo = freezed,
     Object? deliveryInstructions = freezed,
     Object? companyName = freezed,
@@ -164,10 +201,26 @@ class __$$UserAddressDtoImplCopyWithImpl<$Res>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      address: null == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
+      street: null == street
+          ? _value.street
+          : street // ignore: cast_nullable_to_non_nullable
               as String,
+      postalCode: null == postalCode
+          ? _value.postalCode
+          : postalCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      city: null == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String,
+      latitude: null == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      longitude: null == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
       addressInfo: freezed == addressInfo
           ? _value.addressInfo
           : addressInfo // ignore: cast_nullable_to_non_nullable
@@ -200,7 +253,11 @@ class _$UserAddressDtoImpl
   const _$UserAddressDtoImpl(
       {@JsonKey(includeToJson: false) this.id,
       @JsonKey(name: 'user_id') required this.userId,
-      required this.address,
+      required this.street,
+      @JsonKey(name: 'postal_code') required this.postalCode,
+      required this.city,
+      required this.latitude,
+      required this.longitude,
       @JsonKey(name: 'address_info') this.addressInfo,
       @JsonKey(name: 'delivery_instructions') this.deliveryInstructions,
       @JsonKey(name: 'company_name') this.companyName,
@@ -217,7 +274,16 @@ class _$UserAddressDtoImpl
   @JsonKey(name: 'user_id')
   final String userId;
   @override
-  final String address;
+  final String street;
+  @override
+  @JsonKey(name: 'postal_code')
+  final String postalCode;
+  @override
+  final String city;
+  @override
+  final double latitude;
+  @override
+  final double longitude;
   @override
   @JsonKey(name: 'address_info')
   final String? addressInfo;
@@ -234,7 +300,7 @@ class _$UserAddressDtoImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserAddressDto(id: $id, userId: $userId, address: $address, addressInfo: $addressInfo, deliveryInstructions: $deliveryInstructions, companyName: $companyName, entitled: $entitled, selected: $selected)';
+    return 'UserAddressDto(id: $id, userId: $userId, street: $street, postalCode: $postalCode, city: $city, latitude: $latitude, longitude: $longitude, addressInfo: $addressInfo, deliveryInstructions: $deliveryInstructions, companyName: $companyName, entitled: $entitled, selected: $selected)';
   }
 
   @override
@@ -244,7 +310,11 @@ class _$UserAddressDtoImpl
       ..add(DiagnosticsProperty('type', 'UserAddressDto'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('userId', userId))
-      ..add(DiagnosticsProperty('address', address))
+      ..add(DiagnosticsProperty('street', street))
+      ..add(DiagnosticsProperty('postalCode', postalCode))
+      ..add(DiagnosticsProperty('city', city))
+      ..add(DiagnosticsProperty('latitude', latitude))
+      ..add(DiagnosticsProperty('longitude', longitude))
       ..add(DiagnosticsProperty('addressInfo', addressInfo))
       ..add(DiagnosticsProperty('deliveryInstructions', deliveryInstructions))
       ..add(DiagnosticsProperty('companyName', companyName))
@@ -259,7 +329,14 @@ class _$UserAddressDtoImpl
             other is _$UserAddressDtoImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.address, address) || other.address == address) &&
+            (identical(other.street, street) || other.street == street) &&
+            (identical(other.postalCode, postalCode) ||
+                other.postalCode == postalCode) &&
+            (identical(other.city, city) || other.city == city) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude) &&
             (identical(other.addressInfo, addressInfo) ||
                 other.addressInfo == addressInfo) &&
             (identical(other.deliveryInstructions, deliveryInstructions) ||
@@ -274,8 +351,20 @@ class _$UserAddressDtoImpl
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, userId, address, addressInfo,
-      deliveryInstructions, companyName, entitled, selected);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      userId,
+      street,
+      postalCode,
+      city,
+      latitude,
+      longitude,
+      addressInfo,
+      deliveryInstructions,
+      companyName,
+      entitled,
+      selected);
 
   @JsonKey(ignore: true)
   @override
@@ -296,7 +385,11 @@ abstract class _UserAddressDto implements UserAddressDto {
   const factory _UserAddressDto(
       {@JsonKey(includeToJson: false) final String? id,
       @JsonKey(name: 'user_id') required final String userId,
-      required final String address,
+      required final String street,
+      @JsonKey(name: 'postal_code') required final String postalCode,
+      required final String city,
+      required final double latitude,
+      required final double longitude,
       @JsonKey(name: 'address_info') final String? addressInfo,
       @JsonKey(name: 'delivery_instructions')
       final String? deliveryInstructions,
@@ -314,7 +407,16 @@ abstract class _UserAddressDto implements UserAddressDto {
   @JsonKey(name: 'user_id')
   String get userId;
   @override
-  String get address;
+  String get street;
+  @override
+  @JsonKey(name: 'postal_code')
+  String get postalCode;
+  @override
+  String get city;
+  @override
+  double get latitude;
+  @override
+  double get longitude;
   @override
   @JsonKey(name: 'address_info')
   String? get addressInfo;

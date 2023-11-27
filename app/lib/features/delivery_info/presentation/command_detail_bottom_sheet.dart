@@ -4,7 +4,7 @@ import 'package:repasse_anou/design_system/app_bottom_sheet.dart';
 import 'package:repasse_anou/design_system/app_buttons.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/design_system/theme.dart';
-import 'package:repasse_anou/features/delivery_info/data/user_address_repository.dart';
+import 'package:repasse_anou/features/delivery_info/application/get_user_address_service.dart';
 import 'package:repasse_anou/features/delivery_info/models/user_address.dart';
 import 'package:repasse_anou/routing/app_router.dart';
 import 'package:repasse_anou/routing/navigation_controller.dart';
@@ -54,7 +54,7 @@ class CommandDetailBottomSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<UserAddress> userAddress =
-        ref.watch(selectedAddressOrGeolocationProvider);
+        ref.watch(getUserAddressServiceProvider);
 
     return AppBottomSheet(
       title: 'Détail de la commande',
@@ -66,7 +66,7 @@ class CommandDetailBottomSheet extends ConsumerWidget {
             buildCommandDetailSection(
               topLabel: 'Récupération & livraison',
               bottomLabel: userAddress.when(
-                data: (position) => position.address,
+                data: (position) => position.street,
                 error: (error, stackTrace) =>
                     'Veuillez renseigner votre adresse',
                 loading: () => 'Chargement...',

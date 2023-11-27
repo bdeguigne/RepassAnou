@@ -1,7 +1,6 @@
 import 'package:logger/logger.dart';
 import 'package:repasse_anou/exception/exception_message.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
-import 'package:repasse_anou/features/delivery_info/data/geolocation_repository.dart';
 import 'package:repasse_anou/features/delivery_info/models/user_address.dart';
 import 'package:repasse_anou/features/delivery_info/models/user_address_dto.dart';
 import 'package:repasse_anou/utils/extensions.dart';
@@ -31,7 +30,7 @@ class UserAddressRepository {
 
       final response = await supabase.usersAddressesTable
           .select<s.PostgrestList>(
-              'id, address, address_info, delivery_instructions, company_name, entitled, selected')
+              'id, street, postal_code, city, address_info, delivery_instructions, company_name, entitled, selected, latitude, longitude')
           .eq('user_id', userController.loggedUser!.id);
 
       return response.map((data) => UserAddress.fromJson(data)).toList();
@@ -50,9 +49,10 @@ class UserAddressRepository {
 
       final response = await supabase.usersAddressesTable
           .select<s.PostgrestMap?>(
-              'id, address, address_info, delivery_instructions, company_name, entitled, selected')
+              'id, street, postal_code, city, address_info, delivery_instructions, company_name, entitled, selected, latitude, longitude')
           .eq('user_id', userController.loggedUser!.id)
           .eq('selected', true)
+          .limit(1)
           .maybeSingle();
 
       return response != null
@@ -68,7 +68,6 @@ class UserAddressRepository {
 
   Future<void> saveUserAddress({
     required UserAddress selectedUserAddress,
-    required String address,
     String? addressInfo,
     String? deliveryInstructions,
     String? companyName,
@@ -89,7 +88,11 @@ class UserAddressRepository {
       await supabase.usersAddressesTable.insert(
         UserAddressDto(
           userId: userController.loggedUser!.id,
-          address: address,
+          street: selectedUserAddress.street,
+          postalCode: selectedUserAddress.postalCode,
+          city: selectedUserAddress.city,
+          latitude: selectedUserAddress.latitude,
+          longitude: selectedUserAddress.longitude,
           addressInfo: addressInfo,
           deliveryInstructions: deliveryInstructions,
           companyName: companyName,
@@ -109,35 +112,6 @@ class UserAddressRepository {
 Future<List<UserAddress>> userAddresses(UserAddressesRef ref) async {
   return ref.notifyOnError(
     () => ref.read(userAddressRepositoryProvider).getUserAddresses(),
-  );
-}
-
-@riverpod
-Future<UserAddress> selectedAddressOrGeolocation(
-    SelectedAddressOrGeolocationRef ref) async {
-  return ref.notifyOnError(
-    () async {
-      final selectedAddress =
-          await ref.read(userAddressRepositoryProvider).getSelectedAddress();
-      if (selectedAddress != null) {
-        ref.read(loggerProvider).i('Selected address found : $selectedAddress');
-        return selectedAddress;
-      }
-
-      final currentAddress =
-          await ref.read(geoLocationRepositoryProvider).getCurrentAddress();
-      if (currentAddress != null) {
-        final userAddress = UserAddress.geolocation(currentAddress);
-
-        ref
-            .read(loggerProvider)
-            .i('Address from geolocation found : $userAddress');
-
-        return userAddress;
-      }
-
-      throw const ExceptionMessage('Impossible de récupérer votre adresse');
-    },
   );
 }
 

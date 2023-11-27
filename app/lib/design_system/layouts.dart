@@ -20,6 +20,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.searchHint,
     this.onSearchFieldChanged,
     this.isLoading = false,
+    this.controller,
   }) : super(key: key);
 
   final String? title;
@@ -28,6 +29,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? searchHint;
   final void Function(String? value)? onSearchFieldChanged;
   final bool isLoading;
+  final TextEditingController? controller;
 
   factory AppAppBar.title(
     String title,
@@ -44,6 +46,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
     required String searchHint,
     void Function(String? value)? onSearchFieldChanged,
     bool isLoading = false,
+    TextEditingController? controller,
   }) {
     return AppAppBar._(
       searchHint: searchHint,
@@ -51,6 +54,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       type: AppLayoutType.searchBar,
       onSearchFieldChanged: onSearchFieldChanged,
       isLoading: isLoading,
+      controller: controller,
     );
   }
 
@@ -67,6 +71,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
                 prefixIcon: AppIcons.search,
                 onChanged: onSearchFieldChanged,
                 isSearchLoading: isLoading,
+                controller: controller,
               ),
             ),
       leadingWidth: leadingWidth,

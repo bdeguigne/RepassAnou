@@ -6,8 +6,8 @@ import 'package:repasse_anou/design_system/app_buttons.dart';
 import 'package:repasse_anou/design_system/app_text_field.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/design_system/theme.dart';
-import 'package:repasse_anou/features/delivery_info/application/user_address_service.dart';
-import 'package:repasse_anou/features/delivery_info/data/user_address_repository.dart';
+import 'package:repasse_anou/features/delivery_info/application/get_user_address_service.dart';
+import 'package:repasse_anou/features/delivery_info/application/save_user_address_service.dart';
 import 'package:repasse_anou/features/delivery_info/models/user_address.dart';
 import 'package:repasse_anou/routing/app_router.dart';
 import 'package:repasse_anou/routing/navigation_controller.dart';
@@ -20,11 +20,10 @@ class PickupAndDeliveryScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<UserAddress> userAddress =
-        ref.watch(selectedAddressOrGeolocationProvider);
+        ref.watch(getUserAddressServiceProvider);
     final AsyncValue<void> saveUserAddressState =
-        ref.watch(userAddressServiceProvider);
+        ref.watch(saveUserAddressServiceProvider);
 
-    final ValueNotifier<String?> address = useState(null);
     final TextEditingController addressInfoController =
         useTextEditingController();
     final TextEditingController companyNameController =
@@ -37,29 +36,28 @@ class PickupAndDeliveryScreen extends HookConsumerWidget {
     final formKey = GlobalKey<FormState>();
 
     void onSave(UserAddress selectedUserAddress) async {
-      if (!formKey.currentState!.validate() || address.value == null) {
+      if (!formKey.currentState!.validate()) {
         showValidationErrors.value = true;
         return;
       }
 
-      final success =
-          await ref.read(userAddressServiceProvider.notifier).saveUserAddress(
-                selectedUserAddress,
-                address.value!,
-                addressInfoController.text,
-                deliveryInstructionsController.text,
-                companyNameController.text,
-                entitledController.text,
-              );
+      final success = await ref
+          .read(saveUserAddressServiceProvider.notifier)
+          .saveUserAddress(
+            selectedUserAddress: selectedUserAddress,
+            addressInfo: addressInfoController.text,
+            deliveryInstructions: deliveryInstructionsController.text,
+            companyName: companyNameController.text,
+            entitled: entitledController.text,
+          );
 
       if (success == true && context.mounted) {
-        ref.invalidate(selectedAddressOrGeolocationProvider);
+        ref.invalidate(getUserAddressServiceProvider);
       }
     }
 
     return userAddress.when(
       data: (position) {
-        address.value = position.address;
         addressInfoController.text = position.addressInfo ?? '';
         companyNameController.text = position.companyName ?? '';
         deliveryInstructionsController.text =
@@ -84,10 +82,10 @@ class PickupAndDeliveryScreen extends HookConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppTextField.button(
-                  value: position.address,
+                  value:
+                      '${position.street} ${position.postalCode} ${position.city}',
                   hint: 'Veuillez saisir votre adresse',
-                  errorMessage: showValidationErrors.value == true &&
-                          address.value == null
+                  errorMessage: showValidationErrors.value == true
                       ? 'Veuillez renseigner votre adresse'
                       : null,
                   onTap: () => ref.read(navigationControllerProvider).push(

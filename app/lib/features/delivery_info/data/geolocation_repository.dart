@@ -2,6 +2,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:logger/logger.dart';
 import 'package:repasse_anou/exception/exception_message.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:repasse_anou/features/delivery_info/models/placemark_and_position.dart';
 import 'package:repasse_anou/utils/top_level_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -65,7 +66,7 @@ class GeolocationRepository {
     }
   }
 
-  Future<String?> getCurrentAddress() async {
+  Future<PlacemarkAndPosition?> getCurrentAddress() async {
     final hasPermission = await _handlePermission();
 
     if (!hasPermission) {
@@ -77,7 +78,11 @@ class GeolocationRepository {
     final place =
         await _getPlaceFromCoordinates(position.latitude, position.longitude);
 
-    return place.street;
+    return PlacemarkAndPosition(
+      placemark: place,
+      latitude: position.latitude,
+      longitude: position.longitude,
+    );
   }
 }
 

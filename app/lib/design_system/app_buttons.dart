@@ -6,7 +6,7 @@ enum AppButtonType { elevated, outlined, text }
 
 class AppButton extends StatelessWidget {
   final String? text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final ButtonStyle buttonStyle;
   final TextStyle? textStyle;
   final AppButtonType type;
@@ -63,7 +63,7 @@ class AppButton extends StatelessWidget {
 
   factory AppButton.primary({
     required String text,
-    required VoidCallback onPressed,
+    required VoidCallback? onPressed,
     bool isLoading = false,
     bool expanded = false,
   }) {

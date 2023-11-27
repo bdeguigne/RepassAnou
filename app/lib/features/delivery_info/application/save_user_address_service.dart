@@ -3,21 +3,20 @@ import 'package:repasse_anou/features/delivery_info/models/user_address.dart';
 import 'package:repasse_anou/utils/extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'user_address_service.g.dart';
+part 'save_user_address_service.g.dart';
 
 @riverpod
-class UserAddressService extends _$UserAddressService {
+class SaveUserAddressService extends _$SaveUserAddressService {
   @override
   FutureOr<void> build() {}
 
-  Future<bool> saveUserAddress(
-    UserAddress selectedUserAddress,
-    String address,
-    String addressInfo,
-    String deliveryInstructions,
-    String companyName,
-    String entitled,
-  ) async {
+  Future<bool> saveUserAddress({
+    required UserAddress selectedUserAddress,
+    required String addressInfo,
+    required String deliveryInstructions,
+    required String companyName,
+    required String entitled,
+  }) async {
     state = const AsyncLoading();
     final UserAddressRepository userAddressRepository =
         ref.read(userAddressRepositoryProvider);
@@ -25,7 +24,6 @@ class UserAddressService extends _$UserAddressService {
     state = await ref.guardAndNotifyOnError(
       () => userAddressRepository.saveUserAddress(
         selectedUserAddress: selectedUserAddress,
-        address: address,
         addressInfo: addressInfo.isEmpty ? null : addressInfo,
         deliveryInstructions:
             deliveryInstructions.isEmpty ? null : deliveryInstructions,
