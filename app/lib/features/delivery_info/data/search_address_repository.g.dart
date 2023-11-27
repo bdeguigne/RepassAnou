@@ -6,7 +6,7 @@ part of 'search_address_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$searchAddressHash() => r'633e1e77cd875cf5ea7da2549970d3b00182a3bf';
+String _$searchAddressHash() => r'646faecff08519ef8e5218ea18f3212f63105beb';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const searchAddressProvider = SearchAddressFamily();
 
 /// See also [searchAddress].
-class SearchAddressFamily extends Family<AsyncValue<String?>> {
+class SearchAddressFamily extends Family<AsyncValue<List<GeocodeAddress>?>> {
   /// See also [searchAddress].
   const SearchAddressFamily();
 
@@ -73,7 +73,8 @@ class SearchAddressFamily extends Family<AsyncValue<String?>> {
 }
 
 /// See also [searchAddress].
-class SearchAddressProvider extends AutoDisposeFutureProvider<String?> {
+class SearchAddressProvider
+    extends AutoDisposeFutureProvider<List<GeocodeAddress>?> {
   /// See also [searchAddress].
   SearchAddressProvider(
     String address,
@@ -108,7 +109,7 @@ class SearchAddressProvider extends AutoDisposeFutureProvider<String?> {
 
   @override
   Override overrideWith(
-    FutureOr<String?> Function(SearchAddressRef provider) create,
+    FutureOr<List<GeocodeAddress>?> Function(SearchAddressRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -125,7 +126,7 @@ class SearchAddressProvider extends AutoDisposeFutureProvider<String?> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<String?> createElement() {
+  AutoDisposeFutureProviderElement<List<GeocodeAddress>?> createElement() {
     return _SearchAddressProviderElement(this);
   }
 
@@ -143,13 +144,14 @@ class SearchAddressProvider extends AutoDisposeFutureProvider<String?> {
   }
 }
 
-mixin SearchAddressRef on AutoDisposeFutureProviderRef<String?> {
+mixin SearchAddressRef on AutoDisposeFutureProviderRef<List<GeocodeAddress>?> {
   /// The parameter `address` of this provider.
   String get address;
 }
 
 class _SearchAddressProviderElement
-    extends AutoDisposeFutureProviderElement<String?> with SearchAddressRef {
+    extends AutoDisposeFutureProviderElement<List<GeocodeAddress>?>
+    with SearchAddressRef {
   _SearchAddressProviderElement(super.provider);
 
   @override

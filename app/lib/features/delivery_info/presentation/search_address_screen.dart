@@ -40,14 +40,17 @@ class SearchAddressScreen extends HookConsumerWidget {
       ),
       scrollable: false,
       child: (searchAddress.isLoading || debounceLoading.value)
-          ? const CircularProgressIndicator()
+          ? Container()
           : userAddresses.when(
-              data: (data) => ListView(
-                children: data
-                    .map(
-                      (userAddress) => Text(userAddress.address),
-                    )
-                    .toList(),
+              data: (data) => Padding(
+                padding: const EdgeInsets.all(20),
+                child: ListView(
+                  children: data
+                      .map(
+                        (userAddress) => Text(userAddress.address),
+                      )
+                      .toList(),
+                ),
               ),
               error: (error, stackTrace) =>
                   const Text('Une erreur est survenue'),
