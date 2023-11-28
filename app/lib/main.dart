@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:repasse_anou/features/auth/application/auth_notifier_controller.dart';
 import 'package:repasse_anou/routing/app_router.dart';
 import 'package:repasse_anou/utils/top_level_providers.dart';
@@ -18,11 +20,17 @@ void main() async {
   container
       .read<AuthNotifierController>(authNotifierControllerProvider.notifier)
       .listen(container);
-  runApp(
-    UncontrolledProviderScope(
-      container: container,
-      child: const MainApp(),
-    ),
+
+  initializeDateFormatting('fr_FR', null).then(
+    (_) {
+      Intl.defaultLocale = 'fr_FR';
+      runApp(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MainApp(),
+        ),
+      );
+    },
   );
 }
 

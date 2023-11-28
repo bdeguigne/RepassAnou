@@ -23,7 +23,7 @@ class ArticleCard extends StatefulWidget {
   final String imageUrl;
 
   @override
-  _ArticleCardState createState() => _ArticleCardState();
+  State<ArticleCard> createState() => _ArticleCardState();
 }
 
 class _ArticleCardState extends State<ArticleCard>

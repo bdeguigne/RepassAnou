@@ -86,6 +86,11 @@ class DressingDetailScreen extends HookConsumerWidget {
       scrollable: false,
       child: CustomScrollView(
         slivers: [
+          // SliverAppBar(
+          //   collapsedHeight: ,
+          //   expandedHeight: ,
+          //   flexibleSpace: ,
+          // ),
           SliverPersistentHeader(
             pinned: true,
             delegate: DressingPersistentHeader(

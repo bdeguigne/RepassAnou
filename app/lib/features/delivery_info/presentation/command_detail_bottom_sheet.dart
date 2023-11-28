@@ -80,7 +80,9 @@ class CommandDetailBottomSheet extends ConsumerWidget {
               topLabel: 'Retrait : Lun. 09/10  14h-16h ',
               bottomLabel: 'Livraison : Mer. 11/10  14h-16h',
               buttonLabel: 'Planifier',
-              onPressed: () {},
+              onPressed: () => ref.read(navigationControllerProvider).push(
+                    const PlanificationRoute(),
+                  ),
             ),
             AppButton.primary(
               expanded: true,
