@@ -22,7 +22,7 @@ EdgeInsetsGeometry pwh(double height, double width) =>
 double sp(double value) => value.sp;
 
 /// Responsive [radius]
-double r(double value) => value.r;
+BorderRadius br(double value) => BorderRadius.circular(value.r);
 
 /// Responsive [height]
 double formatHeight(double value) => value.h;

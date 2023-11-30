@@ -175,7 +175,7 @@ class SignupScreen extends HookConsumerWidget {
               crossAxisAlignment: WrapCrossAlignment.center,
               spacing: 4,
               children: [
-                const Text(
+                Text(
                   'Vous avez déjà un compte ?',
                   style: labelMedium,
                 ),

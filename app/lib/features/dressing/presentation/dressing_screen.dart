@@ -86,7 +86,7 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
                         }
                       },
                     ),
-                    const Text(
+                    Text(
                       'Ne plus afficher ce message',
                       style: bodyMedium,
                     ),

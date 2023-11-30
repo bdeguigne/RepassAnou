@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:repasse_anou/design_system/responsive_utils.dart';
 
 const Color success = Color(0xFF00C851);
 const Color error = Color(0xFFff4444);
@@ -17,74 +18,74 @@ const Color hintText = Color(0xff6E7591);
 const Color checkBoxBackgroundColor = Color(0xffD9D9D9);
 const Color customBodyColor = Color(0xff0D101C);
 
-const bodyLarge = TextStyle(
-  fontSize: 14,
+TextStyle bodyLarge = TextStyle(
+  fontSize: sp(14),
   fontWeight: FontWeight.w600,
   color: black,
   fontFamily: 'Nunito',
   overflow: TextOverflow.ellipsis,
 );
-const bodyMedium = TextStyle(
-  fontSize: 12,
+TextStyle bodyMedium = TextStyle(
+  fontSize: sp(12),
   fontWeight: FontWeight.w400,
   color: black,
   fontFamily: 'Nunito',
   overflow: TextOverflow.ellipsis,
 );
-const bodySmall = TextStyle(
-  fontSize: 10.0,
+TextStyle bodySmall = TextStyle(
+  fontSize: sp(10.0),
   fontWeight: FontWeight.w500,
   color: black,
   fontFamily: 'Nunito',
 );
-const labelSmall = TextStyle(
-  fontSize: 11.0,
+TextStyle labelSmall = TextStyle(
+  fontSize: sp(11.0),
   fontWeight: FontWeight.w400,
   color: grey,
   fontFamily: 'Nunito',
   overflow: TextOverflow.ellipsis,
 );
-const labelMedium = TextStyle(
-  fontSize: 12.0,
+TextStyle labelMedium = TextStyle(
+  fontSize: sp(12.0),
   fontWeight: FontWeight.w400,
   color: grey,
   fontFamily: 'Nunito',
   overflow: TextOverflow.ellipsis,
 );
-const labelLarge = TextStyle(
-  fontSize: 14.0,
+TextStyle labelLarge = TextStyle(
+  fontSize: sp(14.0),
   fontWeight: FontWeight.w400,
   color: grey,
   fontFamily: 'Nunito',
   overflow: TextOverflow.ellipsis,
 );
-const headlineLarge = TextStyle(
-  fontSize: 16,
+TextStyle headlineLarge = TextStyle(
+  fontSize: sp(16),
   fontWeight: FontWeight.w700,
   overflow: TextOverflow.ellipsis,
 );
-const headlineMedium = TextStyle(
-  fontSize: 14,
+TextStyle headlineMedium = TextStyle(
+  fontSize: sp(14),
   fontWeight: FontWeight.w600,
   overflow: TextOverflow.ellipsis,
 );
-const headlineSmall = TextStyle(
-  fontSize: 14,
+TextStyle headlineSmall = TextStyle(
+  fontSize: sp(14),
   fontWeight: FontWeight.w600,
   overflow: TextOverflow.ellipsis,
 );
-const displaySmall = TextStyle(
-  fontSize: 11,
+TextStyle displaySmall = TextStyle(
+  fontSize: sp(11),
   fontWeight: FontWeight.w300,
   overflow: TextOverflow.ellipsis,
 );
-const displayLarge = TextStyle(
-  fontSize: 14,
+TextStyle displayLarge = TextStyle(
+  fontSize: sp(14),
   fontWeight: FontWeight.w600,
   overflow: TextOverflow.ellipsis,
 );
-const displayMedium = TextStyle(
-  fontSize: 14,
+TextStyle displayMedium = TextStyle(
+  fontSize: sp(14),
   fontWeight: FontWeight.w500,
   overflow: TextOverflow.ellipsis,
 );
@@ -123,7 +124,7 @@ final ThemeData appTheme = ThemeData(
     },
   ),
   splashColor: Colors.white24,
-  textTheme: const TextTheme(
+  textTheme: TextTheme(
     bodyLarge: bodyLarge,
     bodyMedium: bodyMedium,
     bodySmall: bodySmall,
@@ -180,9 +181,9 @@ final ThemeData appTheme = ThemeData(
       fontWeight: FontWeight.w500,
     ),
   ),
-  dropdownMenuTheme: const DropdownMenuThemeData(
+  dropdownMenuTheme: DropdownMenuThemeData(
     textStyle: bodyMedium,
-    inputDecorationTheme: InputDecorationTheme(
+    inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(
         borderSide: BorderSide(
           color: greyInput,

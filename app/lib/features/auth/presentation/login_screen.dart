@@ -191,7 +191,7 @@ class LoginScreen extends HookConsumerWidget {
               crossAxisAlignment: WrapCrossAlignment.center,
               spacing: 4,
               children: [
-                const Text(
+                Text(
                   "Vous n'avez pas de compte ?",
                   style: labelMedium,
                 ),

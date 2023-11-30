@@ -47,7 +47,7 @@ class MainApp extends ConsumerWidget {
     return ScreenUtilInit(
       minTextAdapt: true,
       splitScreenMode: true,
-      child: MaterialApp.router(
+      builder: (context, child) => MaterialApp.router(
         theme: appTheme,
         builder: AppSnackbars.init(),
         scaffoldMessengerKey: scaffoldKey,
