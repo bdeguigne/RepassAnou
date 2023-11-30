@@ -1,11 +1,12 @@
 import 'package:animations/animations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/features/commands/presentation/home_screen.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_screen.dart';
-import 'package:repasse_anou/features/account/presentation/account_screen.dart';
+import 'package:repasse_anou/utils/account/presentation/account_screen.dart';
 
 @RoutePage()
 class NavigationScreen extends ConsumerStatefulWidget {
@@ -55,8 +56,8 @@ class _NavigationScreenState extends ConsumerState<NavigationScreen> {
           ),
           BottomNavigationBarItem(
             icon: SizedBox(
-              width: 24,
-              height: 24,
+              width: 24.w,
+              height: 24.h,
               child: AppIcons.dressingNotSelected,
             ),
             activeIcon: SizedBox(

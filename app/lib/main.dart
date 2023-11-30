@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -43,12 +44,16 @@ class MainApp extends ConsumerWidget {
     final GlobalKey<ScaffoldMessengerState> scaffoldKey =
         ref.watch(scaffoldKeyProvider);
 
-    return MaterialApp.router(
-      theme: appTheme,
-      builder: AppSnackbars.init(),
-      scaffoldMessengerKey: scaffoldKey,
-      routerConfig: appRouter.config(
-        navigatorObservers: () => [AppSnackbars.initObserver()],
+    return ScreenUtilInit(
+      minTextAdapt: true,
+      splitScreenMode: true,
+      child: MaterialApp.router(
+        theme: appTheme,
+        builder: AppSnackbars.init(),
+        scaffoldMessengerKey: scaffoldKey,
+        routerConfig: appRouter.config(
+          navigatorObservers: () => [AppSnackbars.initObserver()],
+        ),
       ),
     );
   }

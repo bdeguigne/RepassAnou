@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/design_system/app_buttons.dart';
 import 'package:repasse_anou/design_system/app_checkbox.dart';
@@ -9,6 +10,7 @@ import 'package:repasse_anou/design_system/app_images.dart';
 import 'package:repasse_anou/design_system/app_text_field.dart';
 import 'package:repasse_anou/design_system/ink_well.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
+import 'package:repasse_anou/design_system/responsive_utils.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 import 'package:repasse_anou/features/auth/application/auth_service.dart';
 import 'package:repasse_anou/routing/app_router.dart';
@@ -40,18 +42,18 @@ class LoginScreen extends HookConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const SizedBox(height: 11),
+            sh(11),
             AppImages.logo,
-            const SizedBox(height: 11),
+            sh(11),
             Text(
               'Bienvenue',
               style: headlineMedium.copyWith(
                 fontSize: 32,
               ),
             ),
-            const SizedBox(height: 4),
+            sh(4),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: pw(20),
               child: Column(
                 children: [
                   Text(
@@ -63,7 +65,7 @@ class LoginScreen extends HookConsumerWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 24),
+                  sh(24),
                   AppTextField.outlined(
                     hint: 'E-mail',
                     keyboardType: TextInputType.emailAddress,
@@ -72,7 +74,7 @@ class LoginScreen extends HookConsumerWidget {
                     validator: (value) =>
                         InputValidator.email(EmailAddress(value ?? '')),
                   ),
-                  const SizedBox(height: 10),
+                  sh(10),
                   AppTextField.outlined(
                     hint: 'Mot-de-passe',
                     obscureText: true,
@@ -83,11 +85,11 @@ class LoginScreen extends HookConsumerWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 10),
+            sh(10),
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                padding: pw(8),
                 child: AppInkWell(
                   transparent: true,
                   onTap: () => rememberMe.value = !rememberMe.value,
@@ -107,9 +109,9 @@ class LoginScreen extends HookConsumerWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            sh(20),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: pw(20),
               child: SizedBox(
                 width: double.infinity,
                 height: 64,
@@ -129,22 +131,22 @@ class LoginScreen extends HookConsumerWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: AppDivider(
+            sh(24),
+            Padding(
+              padding: pw(20),
+              child: const AppDivider(
                 middleText: 'Ou continuer avec',
               ),
             ),
-            const SizedBox(height: 24),
+            sh(24),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: pw(20),
               child: RowSpacing(
                 spacing: 8,
                 children: [
                   Expanded(
                     child: SizedBox(
-                      height: 48,
+                      height: 48.h,
                       child: AppButton.outlinedIcon(
                         icon: SizedBox(
                           width: 24,
@@ -157,11 +159,11 @@ class LoginScreen extends HookConsumerWidget {
                   ),
                   Expanded(
                     child: SizedBox(
-                      height: 48,
+                      height: 48.h,
                       child: AppButton.outlinedIcon(
                         icon: SizedBox(
-                          width: 24,
-                          height: 24,
+                          width: 24.w,
+                          height: 24.h,
                           child: AppImages.facebook,
                         ),
                         onPressed: () {},
@@ -170,11 +172,11 @@ class LoginScreen extends HookConsumerWidget {
                   ),
                   Expanded(
                     child: SizedBox(
-                      height: 48,
+                      height: 48.h,
                       child: AppButton.outlinedIcon(
                         icon: SizedBox(
-                          width: 24,
-                          height: 24,
+                          width: 24.w,
+                          height: 24.h,
                           child: AppImages.apple,
                         ),
                         onPressed: () {},
@@ -184,9 +186,7 @@ class LoginScreen extends HookConsumerWidget {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 6,
-            ),
+            sh(6),
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               spacing: 4,

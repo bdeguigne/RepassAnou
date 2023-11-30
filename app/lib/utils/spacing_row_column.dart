@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:repasse_anou/design_system/responsive_utils.dart';
 
 // add spacing between widgets in a column or row except the last one
 
@@ -26,9 +27,8 @@ class ColumnSpacing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final spacedChildren = children
-        .expand((widget) => [widget, SizedBox(height: spacing.toDouble())])
-        .toList();
+    final spacedChildren =
+        children.expand((widget) => [widget, sh(spacing.toDouble())]).toList();
 
     if (spacedChildren.isNotEmpty) {
       spacedChildren.removeLast();
@@ -70,9 +70,8 @@ class RowSpacing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final spacedChildren = children
-        .expand((widget) => [widget, SizedBox(width: spacing.toDouble())])
-        .toList();
+    final spacedChildren =
+        children.expand((widget) => [widget, sw(spacing.toDouble())]).toList();
 
     if (spacedChildren.isNotEmpty) {
       spacedChildren.removeLast();

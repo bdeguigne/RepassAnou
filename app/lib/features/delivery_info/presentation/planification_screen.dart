@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
+import 'package:repasse_anou/design_system/responsive_utils.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 
 @RoutePage()
@@ -15,16 +16,16 @@ class PlanificationScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 10),
+          sh(10),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: pw(20),
             child: const Text('Récupération de votre linge').headlineMedium,
           ),
-          const SizedBox(height: 15),
+          sh(15),
           SizedBox(
             height: 60,
             child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: pw(20),
               scrollDirection: Axis.horizontal,
               children: [
                 DateSelect(
@@ -66,7 +67,7 @@ class PlanificationScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 15),
+          sh(15),
           Padding(
             padding: const EdgeInsets.all(20),
             child: Container(

@@ -7,6 +7,7 @@ import 'package:repasse_anou/design_system/app_divider.dart';
 import 'package:repasse_anou/design_system/app_images.dart';
 import 'package:repasse_anou/design_system/app_text_field.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
+import 'package:repasse_anou/design_system/responsive_utils.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 import 'package:repasse_anou/features/auth/application/auth_service.dart';
 import 'package:repasse_anou/routing/navigation_controller.dart';
@@ -40,18 +41,18 @@ class SignupScreen extends HookConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const SizedBox(height: 11),
+            sh(11),
             AppImages.logo,
-            const SizedBox(height: 11),
+            sh(11),
             Text(
               'Inscription',
               style: headlineMedium.copyWith(
                 fontSize: 32,
               ),
             ),
-            const SizedBox(height: 24),
+            sh(24),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: pw(20),
               child: ColumnSpacing(
                 spacing: 10,
                 children: [
@@ -88,9 +89,9 @@ class SignupScreen extends HookConsumerWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            sh(24),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: pw(20),
               child: SizedBox(
                 width: double.infinity,
                 height: 64,
@@ -114,16 +115,16 @@ class SignupScreen extends HookConsumerWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: AppDivider(
+            sh(24),
+            Padding(
+              padding: pw(20),
+              child: const AppDivider(
                 middleText: 'Ou continuer avec',
               ),
             ),
-            const SizedBox(height: 24),
+            sh(24),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: pw(20),
               child: RowSpacing(
                 spacing: 8,
                 children: [
@@ -169,9 +170,7 @@ class SignupScreen extends HookConsumerWidget {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 6,
-            ),
+            sh(6),
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               spacing: 4,
