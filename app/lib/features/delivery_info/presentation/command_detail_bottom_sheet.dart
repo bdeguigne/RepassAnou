@@ -5,9 +5,12 @@ import 'package:repasse_anou/design_system/app_buttons.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 import 'package:repasse_anou/features/delivery_info/application/get_user_address_service.dart';
+import 'package:repasse_anou/features/delivery_info/data/users_schedules_repository.dart';
 import 'package:repasse_anou/features/delivery_info/models/user_address.dart';
+import 'package:repasse_anou/features/delivery_info/models/user_schedule.dart';
 import 'package:repasse_anou/routing/app_router.dart';
 import 'package:repasse_anou/routing/navigation_controller.dart';
+import 'package:repasse_anou/utils/date_formatter.dart';
 import 'package:repasse_anou/utils/spacing_row_column.dart';
 
 class CommandDetailBottomSheet extends ConsumerWidget {
@@ -55,6 +58,8 @@ class CommandDetailBottomSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<UserAddress> userAddress =
         ref.watch(getUserAddressServiceProvider);
+    final AsyncValue<UserSchedule?> userSchedule =
+        ref.watch(userScheduleProvider);
 
     return AppBottomSheet(
       title: 'Détail de la commande',
@@ -76,18 +81,47 @@ class CommandDetailBottomSheet extends ConsumerWidget {
                     const PickupAndDeliveryRoute(),
                   ),
             ),
-            buildCommandDetailSection(
-              topLabel: 'Retrait : Lun. 09/10  14h-16h ',
-              bottomLabel: 'Livraison : Mer. 11/10  14h-16h',
-              buttonLabel: 'Planifier',
-              onPressed: () => ref.read(navigationControllerProvider).push(
-                    const PlanificationRoute(),
-                  ),
+            userSchedule.when(
+              data: (schedule) {
+                final topLabel = schedule == null
+                    ? 'Retrait : Aucune date sélectionnée'
+                    : 'Retrait : ${formaterWeekDay(schedule.collectingDate)}. ${schedule.collectingDate.day}/${schedule.collectingDate.month} ${schedule.collectingSchedule.labelShort}';
+
+                final bottomLabel = schedule == null
+                    ? 'Livraison : Aucune date sélectionnée'
+                    : 'Livraison : ${formaterWeekDay(schedule.deliveryDate)}. ${schedule.deliveryDate.day}/${schedule.deliveryDate.month} ${schedule.deliverySchedule.labelShort}';
+
+                return buildCommandDetailSection(
+                  topLabel: topLabel,
+                  bottomLabel: bottomLabel,
+                  buttonLabel: 'Planifier',
+                  onPressed: () => ref.read(navigationControllerProvider).push(
+                        const PlanificationRoute(),
+                      ),
+                );
+              },
+              error: (error, stackTrace) => buildCommandDetailSection(
+                topLabel:
+                    'Une erreur est survenue lors du chargement des données',
+                bottomLabel: '',
+                buttonLabel: 'Planifier',
+                onPressed: () => ref.read(navigationControllerProvider).push(
+                      const PlanificationRoute(),
+                    ),
+              ),
+              loading: () => buildCommandDetailSection(
+                topLabel: 'Chargement...',
+                bottomLabel: '',
+                buttonLabel: 'Modifier',
+                onPressed: () => ref.read(navigationControllerProvider).push(
+                      const PlanificationRoute(),
+                    ),
+              ),
             ),
             AppButton.primary(
               expanded: true,
               text: 'Terminer',
-              onPressed: () {},
+              onPressed: () => Navigator.of(context).pop(),
             )
           ],
         ),

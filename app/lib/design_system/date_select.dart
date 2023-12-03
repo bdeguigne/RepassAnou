@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:repasse_anou/design_system/ink_well.dart';
 import 'package:repasse_anou/design_system/responsive_utils.dart';
 import 'package:repasse_anou/design_system/theme.dart';
+import 'package:repasse_anou/utils/date_formatter.dart';
 
 class DateSelect extends StatelessWidget {
   const DateSelect({
@@ -15,14 +15,6 @@ class DateSelect extends StatelessWidget {
   final DateTime date;
   final bool value;
   final void Function(bool value)? onChanged;
-
-  String formaterWeekDay(DateTime date) {
-    final DateFormat format = DateFormat('EEE', 'fr_FR');
-    String jourAbrege = format.format(date).replaceAll('.', '');
-
-    // Capitaliser la première lettre et ajouter le reste de la chaîne
-    return jourAbrege[0].toUpperCase() + jourAbrege.substring(1);
-  }
 
   @override
   Widget build(BuildContext context) {

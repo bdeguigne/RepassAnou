@@ -10,12 +10,14 @@ class AppRadioListTile<T> extends StatelessWidget {
     required this.onChanged,
     required this.value,
     required this.groupValue,
+    this.showError = false,
   });
 
   final T value;
   final T? groupValue;
   final String title;
   final void Function(T?)? onChanged;
+  final bool showError;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,11 @@ class AppRadioListTile<T> extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: br(15),
         border: Border.all(
-          color: value == groupValue ? Colors.black : navBarUnselectedItemColor,
+          color: showError == true
+              ? error
+              : value == groupValue
+                  ? Colors.black
+                  : navBarUnselectedItemColor,
           width: 1,
         ),
       ),

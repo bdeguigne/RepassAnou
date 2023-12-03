@@ -23,6 +23,8 @@ PlanificationTimeSlot _$PlanificationTimeSlotFromJson(
 mixin _$PlanificationTimeSlot {
   String get value => throw _privateConstructorUsedError;
   String get label => throw _privateConstructorUsedError;
+  @JsonKey(name: 'label_short')
+  String get labelShort => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +38,10 @@ abstract class $PlanificationTimeSlotCopyWith<$Res> {
           $Res Function(PlanificationTimeSlot) then) =
       _$PlanificationTimeSlotCopyWithImpl<$Res, PlanificationTimeSlot>;
   @useResult
-  $Res call({String value, String label});
+  $Res call(
+      {String value,
+      String label,
+      @JsonKey(name: 'label_short') String labelShort});
 }
 
 /// @nodoc
@@ -55,6 +60,7 @@ class _$PlanificationTimeSlotCopyWithImpl<$Res,
   $Res call({
     Object? value = null,
     Object? label = null,
+    Object? labelShort = null,
   }) {
     return _then(_value.copyWith(
       value: null == value
@@ -64,6 +70,10 @@ class _$PlanificationTimeSlotCopyWithImpl<$Res,
       label: null == label
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
+              as String,
+      labelShort: null == labelShort
+          ? _value.labelShort
+          : labelShort // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -78,7 +88,10 @@ abstract class _$$PlanificationTimeSlotImplCopyWith<$Res>
       __$$PlanificationTimeSlotImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String value, String label});
+  $Res call(
+      {String value,
+      String label,
+      @JsonKey(name: 'label_short') String labelShort});
 }
 
 /// @nodoc
@@ -95,6 +108,7 @@ class __$$PlanificationTimeSlotImplCopyWithImpl<$Res>
   $Res call({
     Object? value = null,
     Object? label = null,
+    Object? labelShort = null,
   }) {
     return _then(_$PlanificationTimeSlotImpl(
       value: null == value
@@ -105,6 +119,10 @@ class __$$PlanificationTimeSlotImplCopyWithImpl<$Res>
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
               as String,
+      labelShort: null == labelShort
+          ? _value.labelShort
+          : labelShort // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -114,7 +132,10 @@ class __$$PlanificationTimeSlotImplCopyWithImpl<$Res>
 class _$PlanificationTimeSlotImpl
     with DiagnosticableTreeMixin
     implements _PlanificationTimeSlot {
-  const _$PlanificationTimeSlotImpl({required this.value, required this.label});
+  const _$PlanificationTimeSlotImpl(
+      {required this.value,
+      required this.label,
+      @JsonKey(name: 'label_short') required this.labelShort});
 
   factory _$PlanificationTimeSlotImpl.fromJson(Map<String, dynamic> json) =>
       _$$PlanificationTimeSlotImplFromJson(json);
@@ -123,10 +144,13 @@ class _$PlanificationTimeSlotImpl
   final String value;
   @override
   final String label;
+  @override
+  @JsonKey(name: 'label_short')
+  final String labelShort;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PlanificationTimeSlot(value: $value, label: $label)';
+    return 'PlanificationTimeSlot(value: $value, label: $label, labelShort: $labelShort)';
   }
 
   @override
@@ -135,7 +159,8 @@ class _$PlanificationTimeSlotImpl
     properties
       ..add(DiagnosticsProperty('type', 'PlanificationTimeSlot'))
       ..add(DiagnosticsProperty('value', value))
-      ..add(DiagnosticsProperty('label', label));
+      ..add(DiagnosticsProperty('label', label))
+      ..add(DiagnosticsProperty('labelShort', labelShort));
   }
 
   @override
@@ -144,12 +169,14 @@ class _$PlanificationTimeSlotImpl
         (other.runtimeType == runtimeType &&
             other is _$PlanificationTimeSlotImpl &&
             (identical(other.value, value) || other.value == value) &&
-            (identical(other.label, label) || other.label == label));
+            (identical(other.label, label) || other.label == label) &&
+            (identical(other.labelShort, labelShort) ||
+                other.labelShort == labelShort));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, value, label);
+  int get hashCode => Object.hash(runtimeType, value, label, labelShort);
 
   @JsonKey(ignore: true)
   @override
@@ -168,8 +195,10 @@ class _$PlanificationTimeSlotImpl
 
 abstract class _PlanificationTimeSlot implements PlanificationTimeSlot {
   const factory _PlanificationTimeSlot(
-      {required final String value,
-      required final String label}) = _$PlanificationTimeSlotImpl;
+          {required final String value,
+          required final String label,
+          @JsonKey(name: 'label_short') required final String labelShort}) =
+      _$PlanificationTimeSlotImpl;
 
   factory _PlanificationTimeSlot.fromJson(Map<String, dynamic> json) =
       _$PlanificationTimeSlotImpl.fromJson;
@@ -178,6 +207,9 @@ abstract class _PlanificationTimeSlot implements PlanificationTimeSlot {
   String get value;
   @override
   String get label;
+  @override
+  @JsonKey(name: 'label_short')
+  String get labelShort;
   @override
   @JsonKey(ignore: true)
   _$$PlanificationTimeSlotImplCopyWith<_$PlanificationTimeSlotImpl>

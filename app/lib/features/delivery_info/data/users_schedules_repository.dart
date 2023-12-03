@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:repasse_anou/exception/exception_message.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
 import 'package:repasse_anou/features/delivery_info/models/planification_time_slot.dart';
+import 'package:repasse_anou/features/delivery_info/models/user_schedule.dart';
 import 'package:repasse_anou/features/delivery_info/models/user_schedule_dto.dart';
 import 'package:repasse_anou/utils/extensions.dart';
 import 'package:repasse_anou/utils/supabase_extension.dart';
@@ -26,7 +27,8 @@ class UsersSchedulesRepository {
   Future<List<PlanificationTimeSlot>> getPlanificationTimeSlots() async {
     try {
       final response = await supabase.planificationTimeSlotsTable
-          .select<s.PostgrestList>('value, label');
+          .select<s.PostgrestList>('value, label, label_short')
+          .order('sort', ascending: true);
 
       return response
           .map((data) => PlanificationTimeSlot.fromJson(data))
@@ -35,6 +37,26 @@ class UsersSchedulesRepository {
       logger.e(e.toString());
       throw const ExceptionMessage(
           'Une erreur est survenue lors de la récupération des créneaux de planification');
+    }
+  }
+
+  Future<UserSchedule?> getUserSchedule() async {
+    try {
+      if (userController.loggedUser == null) {
+        throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
+      }
+
+      final response = await supabase.usersSchedulesTable
+          .select<s.PostgrestMap?>(
+              'id, collecting_date, collecting_schedule(*), delivery_date, delivery_schedule(*)')
+          .eq('user_id', userController.loggedUser!.id)
+          .maybeSingle();
+
+      return response != null ? UserSchedule.fromJson(response) : null;
+    } catch (e) {
+      logger.e(e.toString());
+      throw const ExceptionMessage(
+          'Une erreur est survenue lors de la récupération de la planification');
     }
   }
 
@@ -92,6 +114,13 @@ Future<List<PlanificationTimeSlot>> planificationTimeSlots(
   return ref.notifyOnError(
     () =>
         ref.read(usersSchedulesRepositoryProvider).getPlanificationTimeSlots(),
+  );
+}
+
+@Riverpod(keepAlive: true)
+Future<UserSchedule?> userSchedule(UserScheduleRef ref) async {
+  return ref.notifyOnError(
+    () => ref.read(usersSchedulesRepositoryProvider).getUserSchedule(),
   );
 }
 

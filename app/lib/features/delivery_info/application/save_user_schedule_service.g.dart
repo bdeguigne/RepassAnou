@@ -7,7 +7,7 @@ part of 'save_user_schedule_service.dart';
 // **************************************************************************
 
 String _$saveUserScheduleSerivceHash() =>
-    r'6ad6bfc1e674acf445b0ff5818b8acd0f2175fa8';
+    r'6fc7762b700cd55e532f085db0098ef7e744d642';
 
 /// See also [SaveUserScheduleSerivce].
 @ProviderFor(SaveUserScheduleSerivce)

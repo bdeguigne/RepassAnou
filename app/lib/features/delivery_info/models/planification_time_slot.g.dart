@@ -11,6 +11,7 @@ _$PlanificationTimeSlotImpl _$$PlanificationTimeSlotImplFromJson(
     _$PlanificationTimeSlotImpl(
       value: json['value'] as String,
       label: json['label'] as String,
+      labelShort: json['label_short'] as String,
     );
 
 Map<String, dynamic> _$$PlanificationTimeSlotImplToJson(
@@ -18,4 +19,5 @@ Map<String, dynamic> _$$PlanificationTimeSlotImplToJson(
     <String, dynamic>{
       'value': instance.value,
       'label': instance.label,
+      'label_short': instance.labelShort,
     };

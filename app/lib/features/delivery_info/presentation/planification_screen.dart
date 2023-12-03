@@ -9,8 +9,10 @@ import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/design_system/radio_list_tile.dart';
 import 'package:repasse_anou/design_system/responsive_utils.dart';
 import 'package:repasse_anou/design_system/theme.dart';
+import 'package:repasse_anou/features/delivery_info/application/save_user_schedule_service.dart';
 import 'package:repasse_anou/features/delivery_info/data/users_schedules_repository.dart';
 import 'package:repasse_anou/features/delivery_info/models/planification_time_slot.dart';
+import 'package:repasse_anou/features/delivery_info/models/user_schedule.dart';
 import 'package:repasse_anou/utils/spacing_row_column.dart';
 
 @RoutePage()
@@ -37,33 +39,41 @@ class PlanificationScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<List<PlanificationTimeSlot>> planificationTimeSlots =
         ref.watch(planificationTimeSlotsProvider);
-
-    final selectedCollectingTimeSlot = useState<PlanificationTimeSlot?>(null);
-    final selectedDeliveryTimeSlot = useState<PlanificationTimeSlot?>(null);
-
+    final AsyncValue<void> saveUserScheduleState =
+        ref.watch(saveUserScheduleSerivceProvider);
+    final AsyncValue<UserSchedule?> storedUserSchedule =
+        ref.watch(userScheduleProvider);
     final List<DateTime> days = generateWeekDays();
+    final showError = useState<bool>(false);
 
-    final selectedCollectingDay = useState<DateTime?>(null);
-    final selectedDeliveryDay = useState<DateTime?>(null);
-
-    void onSaveSchedule() {
-      if (selectedCollectingDay.value == null ||
-          selectedDeliveryDay.value == null ||
-          selectedCollectingTimeSlot.value == null ||
-          selectedDeliveryTimeSlot.value == null) {
+    void onSaveSchedule({
+      DateTime? selectedCollectingDay,
+      DateTime? selectedDeliveryDay,
+      String? selectedCollectingTimeSlot,
+      String? selectedDeliveryTimeSlot,
+    }) {
+      if (selectedCollectingDay == null ||
+          selectedDeliveryDay == null ||
+          selectedCollectingTimeSlot == null ||
+          selectedDeliveryTimeSlot == null) {
         return;
       }
 
-      ref.read(usersSchedulesRepositoryProvider).saveUserSchedule(
-            selectedRemovalDay: selectedCollectingDay.value!,
-            selectedDeliveryDay: selectedDeliveryDay.value!,
-            collectingTimeSlot: selectedCollectingTimeSlot.value!.value,
-            deliveryTimeSlot: selectedDeliveryTimeSlot.value!.value,
+      ref.read(saveUserScheduleSerivceProvider.notifier).saveUserSchedule(
+            selectedRemovalDay: selectedCollectingDay,
+            selectedDeliveryDay: selectedDeliveryDay,
+            collectingTimeSlot: selectedCollectingTimeSlot,
+            deliveryTimeSlot: selectedDeliveryTimeSlot,
           );
     }
 
     Widget buildPlanificationForm(
-        List<PlanificationTimeSlot> planificationSlots) {
+      List<PlanificationTimeSlot> planificationSlots,
+      ValueNotifier<PlanificationTimeSlot?> selectedCollectingTimeSlot,
+      ValueNotifier<PlanificationTimeSlot?> selectedDeliveryTimeSlot,
+      ValueNotifier<DateTime?> selectedCollectingDay,
+      ValueNotifier<DateTime?> selectedDeliveryDay,
+    ) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -79,22 +89,39 @@ class PlanificationScreen extends HookConsumerWidget {
             onDaySelected: (date) {
               selectedCollectingDay.value = date;
             },
+            showError:
+                showError.value == true && selectedCollectingDay.value == null,
           ),
           Padding(
             padding: pwh(20, 20),
             child: ColumnSpacing(
+              crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 10,
-              children: planificationSlots
-                  .map(
-                    (slot) => AppRadioListTile<PlanificationTimeSlot>(
-                      value: slot,
-                      onChanged: (timeSlot) =>
-                          selectedCollectingTimeSlot.value = timeSlot,
-                      title: slot.label,
-                      groupValue: selectedCollectingTimeSlot.value,
+              children: [
+                ...planificationSlots
+                    .map(
+                      (slot) => AppRadioListTile<PlanificationTimeSlot>(
+                        value: slot,
+                        onChanged: (timeSlot) =>
+                            selectedCollectingTimeSlot.value = timeSlot,
+                        title: slot.label,
+                        groupValue: selectedCollectingTimeSlot.value,
+                        showError: showError.value == true &&
+                            selectedCollectingTimeSlot.value == null,
+                      ),
+                    )
+                    .toList(),
+                if (showError.value == true &&
+                    selectedCollectingTimeSlot.value == null)
+                  Text(
+                    'Veuillez sélectionner un créneau horaire',
+                    style: bodySmall.copyWith(
+                      color: Colors.red,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.bold,
                     ),
-                  )
-                  .toList(),
+                  ),
+              ],
             ),
           ),
           sh(10),
@@ -107,27 +134,65 @@ class PlanificationScreen extends HookConsumerWidget {
             dates: days,
             selectedDay: selectedDeliveryDay.value,
             onDaySelected: (date) => selectedDeliveryDay.value = date,
+            showError:
+                showError.value == true && selectedDeliveryDay.value == null,
           ),
           Padding(
             padding: pwh(20, 20),
             child: ColumnSpacing(
+              crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 10,
-              children: planificationSlots
-                  .map(
-                    (slot) => AppRadioListTile<PlanificationTimeSlot>(
-                      value: slot,
-                      onChanged: (timeSlot) =>
-                          selectedDeliveryTimeSlot.value = timeSlot,
-                      title: slot.label,
-                      groupValue: selectedDeliveryTimeSlot.value,
+              children: [
+                ...planificationSlots
+                    .map(
+                      (slot) => AppRadioListTile<PlanificationTimeSlot>(
+                        value: slot,
+                        onChanged: (timeSlot) =>
+                            selectedDeliveryTimeSlot.value = timeSlot,
+                        title: slot.label,
+                        groupValue: selectedDeliveryTimeSlot.value,
+                        showError: showError.value == true &&
+                            selectedDeliveryTimeSlot.value == null,
+                      ),
+                    )
+                    .toList(),
+                if (showError.value == true &&
+                    selectedDeliveryTimeSlot.value == null)
+                  Text(
+                    'Veuillez sélectionner un créneau horaire',
+                    style: bodySmall.copyWith(
+                      color: Colors.red,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.bold,
                     ),
-                  )
-                  .toList(),
+                  ),
+              ],
             ),
           ),
         ],
       );
     }
+
+    if (planificationTimeSlots.hasError || storedUserSchedule.hasError) {
+      return AppLayout.standard(
+        child: const Center(child: Text('Une erreur est survenue')),
+      );
+    }
+    if (planificationTimeSlots.isLoading || storedUserSchedule.isLoading) {
+      return AppLayout.standard(
+        child: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    final selectedCollectingTimeSlot = useState<PlanificationTimeSlot?>(
+        storedUserSchedule.value?.collectingSchedule);
+    final selectedDeliveryTimeSlot = useState<PlanificationTimeSlot?>(
+        storedUserSchedule.value?.deliverySchedule);
+
+    final selectedCollectingDay =
+        useState<DateTime?>(storedUserSchedule.value?.collectingDate);
+    final selectedDeliveryDay =
+        useState<DateTime?>(storedUserSchedule.value?.deliveryDate);
 
     return AppLayout.withBottomButton(
       bottomButton: Padding(
@@ -138,50 +203,72 @@ class PlanificationScreen extends HookConsumerWidget {
         ),
         child: AppButton.primary(
           expanded: true,
-          onPressed: () => onSaveSchedule(),
+          onPressed: () => onSaveSchedule(
+            selectedCollectingDay: selectedCollectingDay.value,
+            selectedDeliveryDay: selectedDeliveryDay.value,
+            selectedCollectingTimeSlot: selectedCollectingTimeSlot.value?.value,
+            selectedDeliveryTimeSlot: selectedDeliveryTimeSlot.value?.value,
+          ),
           text: 'Terminer',
+          isLoading: saveUserScheduleState.isLoading,
         ),
       ),
       appBar: AppAppBar.title('Planification'),
-      child: planificationTimeSlots.when(
-        data: (planificationTimeSlots) {
-          return buildPlanificationForm(planificationTimeSlots);
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(
-          child: Text(error.toString()),
-        ),
+      child: buildPlanificationForm(
+        planificationTimeSlots.value!,
+        selectedCollectingTimeSlot,
+        selectedDeliveryTimeSlot,
+        selectedCollectingDay,
+        selectedDeliveryDay,
       ),
     );
   }
 
-  SizedBox buildDaySelectList({
+  Widget buildDaySelectList({
     required List<DateTime> dates,
     DateTime? selectedDay,
     required void Function(DateTime date) onDaySelected,
+    required bool showError,
   }) {
-    return SizedBox(
-      height: 50.h,
-      child: ListView(
-        padding: pw(20),
-        scrollDirection: Axis.horizontal,
-        children: dates
-            .map(
-              (date) => Padding(
-                padding: EdgeInsets.only(right: 27.w),
-                child: DateSelect(
-                  date: date,
-                  value: selectedDay != null ? date == selectedDay : false,
-                  onChanged: (value) {
-                    if (value) {
-                      onDaySelected(date);
-                    }
-                  },
-                ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 50.h,
+          child: ListView(
+            padding: pw(20),
+            scrollDirection: Axis.horizontal,
+            children: dates
+                .map(
+                  (date) => Padding(
+                    padding: EdgeInsets.only(right: 27.w),
+                    child: DateSelect(
+                      date: date,
+                      value: selectedDay != null ? date == selectedDay : false,
+                      onChanged: (value) {
+                        if (value) {
+                          onDaySelected(date);
+                        }
+                      },
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+        if (showError)
+          Padding(
+            padding: pw(20),
+            child: Text(
+              'Veuillez sélectionner une date',
+              style: bodySmall.copyWith(
+                color: Colors.red,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold,
               ),
-            )
-            .toList(),
-      ),
+            ),
+          )
+      ],
     );
   }
 }
