@@ -13,6 +13,9 @@ extension SupabaseExtensions<T> on s.SupabaseClient {
   s.SupabaseQueryBuilder get usersDressingsBelongsToTable =>
       from('users_dressings_belongs_to');
   s.SupabaseQueryBuilder get usersAddressesTable => from('users_addresses');
+  s.SupabaseQueryBuilder get usersSchedulesTable => from('users_schedules');
+  s.SupabaseQueryBuilder get planificationTimeSlotsTable =>
+      from('planification_time_slots');
 }
 
 extension SupabaseStorageExtensions<T> on s.SupabaseStorageClient {

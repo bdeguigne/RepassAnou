@@ -48,7 +48,7 @@ class DateSelect extends StatelessWidget {
             // day as letter (ex: M for Monday)
             Text(
               formaterWeekDay(date),
-              style: bodyLarge.copyWith(
+              style: bodyMedium.copyWith(
                 color: value ? Colors.white : Colors.black,
               ),
             ),
