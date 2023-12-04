@@ -24,4 +24,5 @@ class AppIcons {
     Icons.circle,
   );
   static Widget search = SvgPicture.asset('assets/icons/search.svg');
+  static Image bag = Image.asset('assets/icons/bag.png');
 }

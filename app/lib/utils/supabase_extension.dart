@@ -2,6 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' as s;
 
 extension SupabaseExtensions<T> on s.SupabaseClient {
   s.SupabaseQueryBuilder get usersTable => from('users');
+  s.SupabaseQueryBuilder get commandItemsTable => from('command_items');
   s.SupabaseQueryBuilder get dressingCategoriesTable =>
       from('dressing_categories');
   s.SupabaseQueryBuilder get dressingColorsTable => from('dressing_colors');

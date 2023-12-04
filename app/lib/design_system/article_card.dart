@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:repasse_anou/design_system/quantity_button.dart';
 import 'package:repasse_anou/design_system/shimmer_loading.dart';
 import 'package:repasse_anou/design_system/theme.dart';
@@ -84,7 +85,7 @@ class _ArticleCardState extends State<ArticleCard>
       isLoading: true,
       child: Container(
         width: double.infinity,
-        height: 100,
+        height: 90.h,
         decoration: ShapeDecoration(
           color: Colors.black,
           shape: RoundedRectangleBorder(
@@ -98,7 +99,7 @@ class _ArticleCardState extends State<ArticleCard>
   Widget showCard() {
     return Container(
       width: double.infinity,
-      height: 100,
+      height: 90.h,
       decoration: ShapeDecoration(
         color: Colors.white,
         shape: RoundedRectangleBorder(
@@ -114,15 +115,15 @@ class _ArticleCardState extends State<ArticleCard>
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(12),
         child: Stack(
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  width: 80,
-                  height: 80,
+                  width: 80.w,
+                  height: 80.h,
                   decoration: ShapeDecoration(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -139,8 +140,8 @@ class _ArticleCardState extends State<ArticleCard>
                             placeholder: (context, url) => ShimmerLoading(
                               isLoading: true,
                               child: Container(
-                                width: 80,
-                                height: 80,
+                                width: 80.w,
+                                height: 80.h,
                                 color: Colors.black,
                               ),
                             ),
@@ -154,11 +155,19 @@ class _ArticleCardState extends State<ArticleCard>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(widget.title ?? '').headlineSmall,
-                      Text(widget.description ?? '').labelMedium,
+                      Text(widget.description ?? '',
+                          style: labelMedium.copyWith(
+                            overflow: TextOverflow.visible,
+                          )),
                       const Spacer(),
                       if (widget.price != null)
-                        Text('${widget.price?.toStringAsFixed(2)}€')
-                            .headlineMedium,
+                        Text(
+                          '${widget.price?.toStringAsFixed(2)}€',
+                          style: headlineMedium.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontFamily: 'Poppins',
+                          ),
+                        )
                     ],
                   ),
                 ),

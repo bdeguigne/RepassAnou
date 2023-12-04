@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:repasse_anou/design_system/ink_well.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 
@@ -21,8 +22,8 @@ class _QuantityButtonState extends State<QuantityButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 70,
-      height: 30,
+      width: 70.w,
+      height: 30.h,
       decoration: ShapeDecoration(
         color: greyButton,
         shape: RoundedRectangleBorder(
