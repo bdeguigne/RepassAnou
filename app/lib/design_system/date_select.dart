@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:repasse_anou/design_system/ink_well.dart';
 import 'package:repasse_anou/design_system/responsive_utils.dart';
 import 'package:repasse_anou/design_system/theme.dart';
@@ -22,8 +23,8 @@ class DateSelect extends StatelessWidget {
       radius: br(10),
       onTap: () => onChanged?.call(!value),
       child: Container(
-        height: 60,
-        width: 60,
+        height: 50.h,
+        width: 50.h,
         decoration: BoxDecoration(
           color: value ? Colors.black : greyButton,
           borderRadius: br(10),

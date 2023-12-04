@@ -13,6 +13,7 @@ import 'package:repasse_anou/features/delivery_info/application/save_user_schedu
 import 'package:repasse_anou/features/delivery_info/data/users_schedules_repository.dart';
 import 'package:repasse_anou/features/delivery_info/models/planification_time_slot.dart';
 import 'package:repasse_anou/features/delivery_info/models/user_schedule.dart';
+import 'package:repasse_anou/features/delivery_info/presentation/planification_screen_loading.dart';
 import 'package:repasse_anou/utils/spacing_row_column.dart';
 
 @RoutePage()
@@ -179,9 +180,7 @@ class PlanificationScreen extends HookConsumerWidget {
       );
     }
     if (planificationTimeSlots.isLoading || storedUserSchedule.isLoading) {
-      return AppLayout.standard(
-        child: const Center(child: CircularProgressIndicator()),
-      );
+      return const PlanificationScreenLoading();
     }
 
     final selectedCollectingTimeSlot = useState<PlanificationTimeSlot?>(
