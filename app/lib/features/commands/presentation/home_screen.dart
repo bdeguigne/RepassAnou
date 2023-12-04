@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/design_system/ink_well.dart';
+import 'package:repasse_anou/design_system/responsive_utils.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 import 'package:repasse_anou/features/commands/application/command_item_controller.dart';
 import 'package:repasse_anou/design_system/article_card.dart';
@@ -76,14 +78,42 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ],
             ),
             child: Center(
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                icon: Image.asset(
-                  'assets/icons/bag.png',
-                  width: 14,
-                  height: 14,
-                ),
-                onPressed: () {},
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    icon: Image.asset(
+                      'assets/icons/bag.png',
+                      width: 14,
+                      height: 14,
+                    ),
+                    onPressed: () {},
+                  ),
+                  Positioned(
+                    right: -5,
+                    top: -5,
+                    child: ClipOval(
+                      child: Container(
+                        width: 15,
+                        height: 15,
+                        decoration: const BoxDecoration(
+                          color: Colors.black,
+                        ),
+                        child: Center(
+                          child: Text(
+                            '7',
+                            style: headlineLarge.copyWith(
+                              fontFamily: 'Poppins',
+                              color: Colors.white,
+                              fontSize: sp(7),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
           ),
