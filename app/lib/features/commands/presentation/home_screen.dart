@@ -7,11 +7,14 @@ import 'package:repasse_anou/design_system/responsive_utils.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 import 'package:repasse_anou/design_system/article_card.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
+import 'package:repasse_anou/features/cart/application/cart_service.dart';
 import 'package:repasse_anou/features/commands/data/command_item_repository.dart';
 import 'package:repasse_anou/features/commands/models/command_item.dart';
 import 'package:repasse_anou/features/delivery_info/application/get_user_address_service.dart';
 import 'package:repasse_anou/features/delivery_info/models/user_address.dart';
 import 'package:repasse_anou/features/delivery_info/presentation/command_detail_bottom_sheet.dart';
+import 'package:repasse_anou/routing/app_router.dart';
+import 'package:repasse_anou/routing/navigation_controller.dart';
 
 @RoutePage()
 class HomeScreen extends ConsumerWidget {
@@ -33,6 +36,8 @@ class HomeScreen extends ConsumerWidget {
     final AsyncValue<UserAddress> userAddress =
         ref.watch(getUserAddressServiceProvider);
 
+    final List<CommandItem> cartItems = ref.watch(cartServiceProvider);
+
     return AppLayout.standard(
       appBar: LoggedAppBar(
         actions: [
@@ -52,8 +57,10 @@ class HomeScreen extends ConsumerWidget {
               ],
             ),
             child: CartIcon(
-              cartQuentity: 3,
-              onTap: () {},
+              cartQuentity: cartItems.length,
+              onTap: () => ref.read(navigationControllerProvider).push(
+                    const CartRoute(),
+                  ),
             ),
           ),
         ],
@@ -119,6 +126,14 @@ class HomeScreen extends ConsumerWidget {
                   description: commandItem.description,
                   price: commandItem.price,
                   imageUrl: commandItem.imageUrl,
+                  onAddQuentity: () {
+                    ref
+                        .read(cartServiceProvider.notifier)
+                        .addToCart(commandItem);
+                  },
+                  onRemoveQuentity: () => ref
+                      .read(cartServiceProvider.notifier)
+                      .removeFromCart(commandItem),
                 ),
               );
             }).toList(),

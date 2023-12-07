@@ -13,6 +13,7 @@ import 'package:repasse_anou/features/dressing/presentation/dressing_detail_scre
 import 'package:repasse_anou/features/delivery_info/presentation/pickup_and_delivery_screen.dart';
 import 'package:repasse_anou/features/delivery_info/presentation/search_address_screen.dart';
 import 'package:repasse_anou/features/delivery_info/presentation/planification_screen.dart';
+import 'package:repasse_anou/features/cart/presentation/cart_screen.dart';
 
 part 'app_router.gr.dart';
 
@@ -44,5 +45,6 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: PickupAndDeliveryRoute.page),
         AutoRoute(page: SearchAddressRoute.page),
         AutoRoute(page: PlanificationRoute.page),
+        AutoRoute(page: CartRoute.page),
       ];
 }

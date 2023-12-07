@@ -12,16 +12,18 @@ class ArticleCard extends StatefulWidget {
     this.price,
     this.isLoading = true,
     super.key,
-    this.onQuantityChanged,
     this.imageUrl = '',
+    this.onAddQuentity,
+    this.onRemoveQuentity,
   });
 
   final String? title;
   final String? description;
   final double? price;
-  final void Function(int quantity)? onQuantityChanged;
   final bool isLoading;
   final String imageUrl;
+  final VoidCallback? onAddQuentity;
+  final VoidCallback? onRemoveQuentity;
 
   @override
   State<ArticleCard> createState() => _ArticleCardState();
@@ -36,6 +38,7 @@ class _ArticleCardState extends State<ArticleCard>
   @override
   void initState() {
     super.initState();
+
     _showLoading = widget.isLoading;
     _controller = AnimationController(
       vsync: this,
@@ -176,7 +179,9 @@ class _ArticleCardState extends State<ArticleCard>
             Align(
               alignment: Alignment.bottomRight,
               child: QuantityButton(
-                onQuantityChanged: widget.onQuantityChanged,
+                persitenceKey: widget.title ?? '',
+                onAddQuentity: widget.onAddQuentity,
+                onRemoveQuentity: widget.onRemoveQuentity,
               ),
             ),
           ],

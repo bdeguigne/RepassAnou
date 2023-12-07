@@ -25,7 +25,7 @@ class CartIcon extends StatelessWidget {
             height: 14,
             child: AppIcons.bag,
           ),
-          onPressed: () {},
+          onPressed: () => onTap?.call(),
         ),
         if (cartQuentity != null && cartQuentity! > 0)
           Positioned(

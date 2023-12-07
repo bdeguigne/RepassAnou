@@ -1,26 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/design_system/ink_well.dart';
+import 'package:repasse_anou/design_system/quantity_state_controller.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 
-class QuantityButton extends StatefulWidget {
+class QuantityButton extends ConsumerStatefulWidget {
   const QuantityButton({
     super.key,
-    this.onQuantityChanged,
+    required this.persitenceKey,
+    this.onAddQuentity,
+    this.onRemoveQuentity,
   });
 
-  final void Function(int quantity)? onQuantityChanged;
+  final String persitenceKey;
+  final VoidCallback? onAddQuentity;
+  final VoidCallback? onRemoveQuentity;
 
   @override
-  State<QuantityButton> createState() => _QuantityButtonState();
+  ConsumerState<QuantityButton> createState() => _QuantityButtonState();
 }
 
-class _QuantityButtonState extends State<QuantityButton> {
-  int _quantity = 0;
+class _QuantityButtonState extends ConsumerState<QuantityButton> {
+  // late int _quantity;
 
   @override
   Widget build(BuildContext context) {
+    final quantityState =
+        ref.watch(quantityStateControllerProvider(widget.persitenceKey));
+    final quantityStateController = ref
+        .read(quantityStateControllerProvider(widget.persitenceKey).notifier);
+
     return Container(
       width: 70.w,
       height: 30.h,
@@ -35,11 +46,9 @@ class _QuantityButtonState extends State<QuantityButton> {
           Expanded(
             child: AppInkWell(
               onTap: () {
-                if (_quantity > 0) {
-                  setState(() {
-                    _quantity -= 1;
-                  });
-                  widget.onQuantityChanged?.call(_quantity);
+                if (quantityState > 0) {
+                  quantityStateController.decrement();
+                  widget.onRemoveQuentity?.call();
                 }
               },
               radius: const BorderRadius.only(
@@ -54,15 +63,13 @@ class _QuantityButtonState extends State<QuantityButton> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: Text(_quantity.toString()).displayMedium,
+            child: Text(quantityState.toString()).displayMedium,
           ),
           Expanded(
               child: AppInkWell(
             onTap: () {
-              setState(() {
-                _quantity += 1;
-              });
-              widget.onQuantityChanged?.call(_quantity);
+              quantityStateController.increment();
+              widget.onAddQuentity?.call();
             },
             radius: const BorderRadius.only(
               topRight: Radius.circular(30),
