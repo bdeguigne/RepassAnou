@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:repasse_anou/features/delivery_info/models/user_address_dto.dart';
 
 part 'user_address.freezed.dart';
 part 'user_address.g.dart';
@@ -12,6 +13,8 @@ enum AddressSource {
 
 @freezed
 abstract class UserAddress with _$UserAddress {
+  const UserAddress._();
+
   const factory UserAddress({
     @JsonKey(includeToJson: false) String? id,
     required String street,
@@ -69,4 +72,18 @@ abstract class UserAddress with _$UserAddress {
 
   factory UserAddress.fromJson(Map<String, dynamic> json) =>
       _$UserAddressFromJson(json);
+
+  UserAddressDto toDto(String userId) => UserAddressDto(
+        userId: userId,
+        street: street,
+        postalCode: postalCode,
+        city: city,
+        latitude: latitude,
+        longitude: longitude,
+        addressInfo: addressInfo,
+        deliveryInstructions: deliveryInstructions,
+        companyName: companyName,
+        entitled: entitled,
+        selected: false,
+      );
 }

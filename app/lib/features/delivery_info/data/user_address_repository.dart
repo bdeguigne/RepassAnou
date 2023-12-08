@@ -78,6 +78,24 @@ class UserAddressRepository {
         throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
       }
 
+      // TODO Remove select bool and replace by update datetime to know the last selected address
+
+      // update the selected address if the id exists
+      if (selectedUserAddress.id != null) {
+        await supabase.usersAddressesTable
+            .update(selectedUserAddress
+                .copyWith(
+                  addressInfo: addressInfo,
+                  deliveryInstructions: deliveryInstructions,
+                  companyName: companyName,
+                  entitled: entitled,
+                )
+                .toDto(userController.loggedUser!.id)
+                .toJson())
+            .eq('id', selectedUserAddress.id);
+        return;
+      }
+
       // if the current address is from the database, we update need to change the selected address to false before inserting the new one
       if (selectedUserAddress.source == AddressSource.database) {
         await supabase.usersAddressesTable

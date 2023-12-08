@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/design_system/app_text_field.dart';
+import 'package:repasse_anou/design_system/ink_well.dart';
 import 'package:repasse_anou/design_system/shimmer.dart';
 import 'package:repasse_anou/design_system/shimmer_loading.dart';
 
@@ -76,12 +77,10 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
       leadingWidth: leadingWidth,
       titleSpacing: 0,
-      leading: GestureDetector(
+      leading: AppInkWell(
+        transparent: true,
         onTap: () => Navigator.of(context).pop(),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: AppIcons.arrowBack,
-        ),
+        child: Center(child: AppIcons.arrowBack),
       ),
     );
   }

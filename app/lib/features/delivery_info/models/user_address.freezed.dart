@@ -249,7 +249,7 @@ class __$$UserAddressImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$UserAddressImpl with DiagnosticableTreeMixin implements _UserAddress {
+class _$UserAddressImpl extends _UserAddress with DiagnosticableTreeMixin {
   const _$UserAddressImpl(
       {@JsonKey(includeToJson: false) this.id,
       required this.street,
@@ -263,7 +263,8 @@ class _$UserAddressImpl with DiagnosticableTreeMixin implements _UserAddress {
       required this.entitled,
       required this.selected,
       @JsonKey(includeToJson: false, includeFromJson: false)
-      this.source = AddressSource.database});
+      this.source = AddressSource.database})
+      : super._();
 
   factory _$UserAddressImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserAddressImplFromJson(json);
@@ -381,7 +382,7 @@ class _$UserAddressImpl with DiagnosticableTreeMixin implements _UserAddress {
   }
 }
 
-abstract class _UserAddress implements UserAddress {
+abstract class _UserAddress extends UserAddress {
   const factory _UserAddress(
       {@JsonKey(includeToJson: false) final String? id,
       required final String street,
@@ -397,6 +398,7 @@ abstract class _UserAddress implements UserAddress {
       required final bool selected,
       @JsonKey(includeToJson: false, includeFromJson: false)
       final AddressSource source}) = _$UserAddressImpl;
+  const _UserAddress._() : super._();
 
   factory _UserAddress.fromJson(Map<String, dynamic> json) =
       _$UserAddressImpl.fromJson;

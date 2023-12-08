@@ -18,7 +18,7 @@ class GetUserAddressService extends _$GetUserAddressService {
       return selectedAddress;
     }
 
-    // Logique pour utiliser la géolocalisation si aucune adresse n'est sélectionnée
+    //* Logique pour utiliser la géolocalisation si aucune adresse n'est sélectionnée
     final currentPlace =
         await ref.read(geoLocationRepositoryProvider).getCurrentAddress();
     if (currentPlace != null) {
