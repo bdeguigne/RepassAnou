@@ -22,6 +22,7 @@ UserAddress _$UserAddressFromJson(Map<String, dynamic> json) {
 mixin _$UserAddress {
   @JsonKey(includeToJson: false)
   String? get id => throw _privateConstructorUsedError;
+  String get label => throw _privateConstructorUsedError;
   String get street => throw _privateConstructorUsedError;
   @JsonKey(name: 'postal_code')
   String get postalCode => throw _privateConstructorUsedError;
@@ -35,7 +36,6 @@ mixin _$UserAddress {
   @JsonKey(name: 'company_name')
   String? get companyName => throw _privateConstructorUsedError;
   String get entitled => throw _privateConstructorUsedError;
-  bool get selected => throw _privateConstructorUsedError;
   @JsonKey(includeToJson: false, includeFromJson: false)
   AddressSource get source => throw _privateConstructorUsedError;
 
@@ -53,6 +53,7 @@ abstract class $UserAddressCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(includeToJson: false) String? id,
+      String label,
       String street,
       @JsonKey(name: 'postal_code') String postalCode,
       String city,
@@ -62,7 +63,6 @@ abstract class $UserAddressCopyWith<$Res> {
       @JsonKey(name: 'delivery_instructions') String? deliveryInstructions,
       @JsonKey(name: 'company_name') String? companyName,
       String entitled,
-      bool selected,
       @JsonKey(includeToJson: false, includeFromJson: false)
       AddressSource source});
 }
@@ -81,6 +81,7 @@ class _$UserAddressCopyWithImpl<$Res, $Val extends UserAddress>
   @override
   $Res call({
     Object? id = freezed,
+    Object? label = null,
     Object? street = null,
     Object? postalCode = null,
     Object? city = null,
@@ -90,7 +91,6 @@ class _$UserAddressCopyWithImpl<$Res, $Val extends UserAddress>
     Object? deliveryInstructions = freezed,
     Object? companyName = freezed,
     Object? entitled = null,
-    Object? selected = null,
     Object? source = null,
   }) {
     return _then(_value.copyWith(
@@ -98,6 +98,10 @@ class _$UserAddressCopyWithImpl<$Res, $Val extends UserAddress>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      label: null == label
+          ? _value.label
+          : label // ignore: cast_nullable_to_non_nullable
+              as String,
       street: null == street
           ? _value.street
           : street // ignore: cast_nullable_to_non_nullable
@@ -134,10 +138,6 @@ class _$UserAddressCopyWithImpl<$Res, $Val extends UserAddress>
           ? _value.entitled
           : entitled // ignore: cast_nullable_to_non_nullable
               as String,
-      selected: null == selected
-          ? _value.selected
-          : selected // ignore: cast_nullable_to_non_nullable
-              as bool,
       source: null == source
           ? _value.source
           : source // ignore: cast_nullable_to_non_nullable
@@ -156,6 +156,7 @@ abstract class _$$UserAddressImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(includeToJson: false) String? id,
+      String label,
       String street,
       @JsonKey(name: 'postal_code') String postalCode,
       String city,
@@ -165,7 +166,6 @@ abstract class _$$UserAddressImplCopyWith<$Res>
       @JsonKey(name: 'delivery_instructions') String? deliveryInstructions,
       @JsonKey(name: 'company_name') String? companyName,
       String entitled,
-      bool selected,
       @JsonKey(includeToJson: false, includeFromJson: false)
       AddressSource source});
 }
@@ -182,6 +182,7 @@ class __$$UserAddressImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? label = null,
     Object? street = null,
     Object? postalCode = null,
     Object? city = null,
@@ -191,7 +192,6 @@ class __$$UserAddressImplCopyWithImpl<$Res>
     Object? deliveryInstructions = freezed,
     Object? companyName = freezed,
     Object? entitled = null,
-    Object? selected = null,
     Object? source = null,
   }) {
     return _then(_$UserAddressImpl(
@@ -199,6 +199,10 @@ class __$$UserAddressImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      label: null == label
+          ? _value.label
+          : label // ignore: cast_nullable_to_non_nullable
+              as String,
       street: null == street
           ? _value.street
           : street // ignore: cast_nullable_to_non_nullable
@@ -235,10 +239,6 @@ class __$$UserAddressImplCopyWithImpl<$Res>
           ? _value.entitled
           : entitled // ignore: cast_nullable_to_non_nullable
               as String,
-      selected: null == selected
-          ? _value.selected
-          : selected // ignore: cast_nullable_to_non_nullable
-              as bool,
       source: null == source
           ? _value.source
           : source // ignore: cast_nullable_to_non_nullable
@@ -252,6 +252,7 @@ class __$$UserAddressImplCopyWithImpl<$Res>
 class _$UserAddressImpl extends _UserAddress with DiagnosticableTreeMixin {
   const _$UserAddressImpl(
       {@JsonKey(includeToJson: false) this.id,
+      required this.label,
       required this.street,
       @JsonKey(name: 'postal_code') required this.postalCode,
       required this.city,
@@ -261,7 +262,6 @@ class _$UserAddressImpl extends _UserAddress with DiagnosticableTreeMixin {
       @JsonKey(name: 'delivery_instructions') this.deliveryInstructions,
       @JsonKey(name: 'company_name') this.companyName,
       required this.entitled,
-      required this.selected,
       @JsonKey(includeToJson: false, includeFromJson: false)
       this.source = AddressSource.database})
       : super._();
@@ -272,6 +272,8 @@ class _$UserAddressImpl extends _UserAddress with DiagnosticableTreeMixin {
   @override
   @JsonKey(includeToJson: false)
   final String? id;
+  @override
+  final String label;
   @override
   final String street;
   @override
@@ -295,14 +297,12 @@ class _$UserAddressImpl extends _UserAddress with DiagnosticableTreeMixin {
   @override
   final String entitled;
   @override
-  final bool selected;
-  @override
   @JsonKey(includeToJson: false, includeFromJson: false)
   final AddressSource source;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserAddress(id: $id, street: $street, postalCode: $postalCode, city: $city, latitude: $latitude, longitude: $longitude, addressInfo: $addressInfo, deliveryInstructions: $deliveryInstructions, companyName: $companyName, entitled: $entitled, selected: $selected, source: $source)';
+    return 'UserAddress(id: $id, label: $label, street: $street, postalCode: $postalCode, city: $city, latitude: $latitude, longitude: $longitude, addressInfo: $addressInfo, deliveryInstructions: $deliveryInstructions, companyName: $companyName, entitled: $entitled, source: $source)';
   }
 
   @override
@@ -311,6 +311,7 @@ class _$UserAddressImpl extends _UserAddress with DiagnosticableTreeMixin {
     properties
       ..add(DiagnosticsProperty('type', 'UserAddress'))
       ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('label', label))
       ..add(DiagnosticsProperty('street', street))
       ..add(DiagnosticsProperty('postalCode', postalCode))
       ..add(DiagnosticsProperty('city', city))
@@ -320,7 +321,6 @@ class _$UserAddressImpl extends _UserAddress with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('deliveryInstructions', deliveryInstructions))
       ..add(DiagnosticsProperty('companyName', companyName))
       ..add(DiagnosticsProperty('entitled', entitled))
-      ..add(DiagnosticsProperty('selected', selected))
       ..add(DiagnosticsProperty('source', source));
   }
 
@@ -330,6 +330,7 @@ class _$UserAddressImpl extends _UserAddress with DiagnosticableTreeMixin {
         (other.runtimeType == runtimeType &&
             other is _$UserAddressImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.label, label) || other.label == label) &&
             (identical(other.street, street) || other.street == street) &&
             (identical(other.postalCode, postalCode) ||
                 other.postalCode == postalCode) &&
@@ -346,8 +347,6 @@ class _$UserAddressImpl extends _UserAddress with DiagnosticableTreeMixin {
                 other.companyName == companyName) &&
             (identical(other.entitled, entitled) ||
                 other.entitled == entitled) &&
-            (identical(other.selected, selected) ||
-                other.selected == selected) &&
             (identical(other.source, source) || other.source == source));
   }
 
@@ -356,6 +355,7 @@ class _$UserAddressImpl extends _UserAddress with DiagnosticableTreeMixin {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      label,
       street,
       postalCode,
       city,
@@ -365,7 +365,6 @@ class _$UserAddressImpl extends _UserAddress with DiagnosticableTreeMixin {
       deliveryInstructions,
       companyName,
       entitled,
-      selected,
       source);
 
   @JsonKey(ignore: true)
@@ -385,6 +384,7 @@ class _$UserAddressImpl extends _UserAddress with DiagnosticableTreeMixin {
 abstract class _UserAddress extends UserAddress {
   const factory _UserAddress(
       {@JsonKey(includeToJson: false) final String? id,
+      required final String label,
       required final String street,
       @JsonKey(name: 'postal_code') required final String postalCode,
       required final String city,
@@ -395,7 +395,6 @@ abstract class _UserAddress extends UserAddress {
       final String? deliveryInstructions,
       @JsonKey(name: 'company_name') final String? companyName,
       required final String entitled,
-      required final bool selected,
       @JsonKey(includeToJson: false, includeFromJson: false)
       final AddressSource source}) = _$UserAddressImpl;
   const _UserAddress._() : super._();
@@ -406,6 +405,8 @@ abstract class _UserAddress extends UserAddress {
   @override
   @JsonKey(includeToJson: false)
   String? get id;
+  @override
+  String get label;
   @override
   String get street;
   @override
@@ -428,8 +429,6 @@ abstract class _UserAddress extends UserAddress {
   String? get companyName;
   @override
   String get entitled;
-  @override
-  bool get selected;
   @override
   @JsonKey(includeToJson: false, includeFromJson: false)
   AddressSource get source;

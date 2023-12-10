@@ -71,7 +71,9 @@ class CommandDetailBottomSheet extends ConsumerWidget {
             buildCommandDetailSection(
               topLabel: 'Récupération & livraison',
               bottomLabel: userAddress.when(
-                data: (position) => position.street,
+                data: (position) => position.entitled.isNotEmpty
+                    ? position.entitled
+                    : position.label,
                 error: (error, stackTrace) =>
                     'Veuillez renseigner votre adresse',
                 loading: () => 'Chargement...',

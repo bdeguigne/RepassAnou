@@ -75,7 +75,9 @@ class HomeScreen extends ConsumerWidget {
                   const Text('Votre adresse').bodyMedium,
                   userAddress.when(
                     data: (position) => Text(
-                      position.street,
+                      position.entitled.isNotEmpty
+                          ? position.entitled
+                          : position.label,
                       style: bodyMedium.copyWith(
                         fontWeight: FontWeight.w600,
                       ),

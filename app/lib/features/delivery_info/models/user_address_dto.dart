@@ -8,6 +8,7 @@ part 'user_address_dto.g.dart';
 abstract class UserAddressDto with _$UserAddressDto {
   const factory UserAddressDto({
     @JsonKey(includeToJson: false) String? id,
+    required String label,
     @JsonKey(name: 'user_id') required String userId,
     required String street,
     @JsonKey(name: 'postal_code') required String postalCode,
@@ -18,7 +19,7 @@ abstract class UserAddressDto with _$UserAddressDto {
     @JsonKey(name: 'delivery_instructions') String? deliveryInstructions,
     @JsonKey(name: 'company_name') String? companyName,
     required String entitled,
-    required bool selected,
+    @JsonKey(name: 'created_time') DateTime? createdTime,
   }) = _UserAddressDto;
 
   factory UserAddressDto.fromJson(Map<String, dynamic> json) =>

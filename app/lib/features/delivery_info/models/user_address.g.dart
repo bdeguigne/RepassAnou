@@ -9,6 +9,7 @@ part of 'user_address.dart';
 _$UserAddressImpl _$$UserAddressImplFromJson(Map<String, dynamic> json) =>
     _$UserAddressImpl(
       id: json['id'] as String?,
+      label: json['label'] as String,
       street: json['street'] as String,
       postalCode: json['postal_code'] as String,
       city: json['city'] as String,
@@ -18,11 +19,11 @@ _$UserAddressImpl _$$UserAddressImplFromJson(Map<String, dynamic> json) =>
       deliveryInstructions: json['delivery_instructions'] as String?,
       companyName: json['company_name'] as String?,
       entitled: json['entitled'] as String,
-      selected: json['selected'] as bool,
     );
 
 Map<String, dynamic> _$$UserAddressImplToJson(_$UserAddressImpl instance) =>
     <String, dynamic>{
+      'label': instance.label,
       'street': instance.street,
       'postal_code': instance.postalCode,
       'city': instance.city,
@@ -32,5 +33,4 @@ Map<String, dynamic> _$$UserAddressImplToJson(_$UserAddressImpl instance) =>
       'delivery_instructions': instance.deliveryInstructions,
       'company_name': instance.companyName,
       'entitled': instance.entitled,
-      'selected': instance.selected,
     };

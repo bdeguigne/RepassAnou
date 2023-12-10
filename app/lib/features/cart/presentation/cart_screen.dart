@@ -42,10 +42,13 @@ class CartScreen extends ConsumerWidget {
           return RichText(
             text: TextSpan(
               children: [
-                TextSpan(text: 'Addresse : ', style: bodyMedium),
+                TextSpan(text: 'Adresse : ', style: bodyMedium),
                 TextSpan(
-                  text: '${position.street} ${position.postalCode}',
-                  style: bodyMedium.copyWith(fontWeight: FontWeight.w600),
+                  text:
+                      '${position.street} ${position.postalCode} ${position.city}',
+                  style: bodyMedium.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             ),
@@ -145,7 +148,7 @@ class CartScreen extends ConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                buildSchedule(),
+                Flexible(child: buildSchedule()),
                 AppButton.tertiary(
                   text: 'Modifier',
                   onPressed: () => showCommandDetailBottomSheet(context),

@@ -29,8 +29,7 @@ class UserAddressRepository {
       }
 
       final response = await supabase.usersAddressesTable
-          .select<s.PostgrestList>(
-              'id, street, postal_code, city, address_info, delivery_instructions, company_name, entitled, selected, latitude, longitude')
+          .select<s.PostgrestList>(UserAddress.selectQuery)
           .eq('user_id', userController.loggedUser!.id);
 
       return response.map((data) => UserAddress.fromJson(data)).toList();
@@ -48,10 +47,9 @@ class UserAddressRepository {
       }
 
       final response = await supabase.usersAddressesTable
-          .select<s.PostgrestMap?>(
-              'id, street, postal_code, city, address_info, delivery_instructions, company_name, entitled, selected, latitude, longitude')
+          .select<s.PostgrestMap?>(UserAddress.selectQuery)
           .eq('user_id', userController.loggedUser!.id)
-          .eq('selected', true)
+          .order('created_time', ascending: false)
           .limit(1)
           .maybeSingle();
 
@@ -78,8 +76,6 @@ class UserAddressRepository {
         throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
       }
 
-      // TODO Remove select bool and replace by update datetime to know the last selected address
-
       // update the selected address if the id exists
       if (selectedUserAddress.id != null) {
         await supabase.usersAddressesTable
@@ -99,7 +95,7 @@ class UserAddressRepository {
       // if the current address is from the database, we update need to change the selected address to false before inserting the new one
       if (selectedUserAddress.source == AddressSource.database) {
         await supabase.usersAddressesTable
-            .update(selectedUserAddress.copyWith(selected: false).toJson())
+            .update(selectedUserAddress.toJson())
             .eq('id', selectedUserAddress.id);
       }
 
@@ -115,7 +111,8 @@ class UserAddressRepository {
           deliveryInstructions: deliveryInstructions,
           companyName: companyName,
           entitled: entitled,
-          selected: true,
+          label: selectedUserAddress.label,
+          createdTime: DateTime.now(),
         ).toJson(),
       );
     } catch (e) {
@@ -124,12 +121,38 @@ class UserAddressRepository {
           "Une erreur est survenur lors de l'enregistrement de votre adresse");
     }
   }
+
+  Future<void> updateAddressDate(UserAddress selectedUserAddress) async {
+    try {
+      if (userController.loggedUser == null) {
+        throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
+      }
+
+      await supabase.usersAddressesTable.update({
+        'created_time': DateTime.now().toIso8601String(),
+      }).eq('id', selectedUserAddress.id);
+    } catch (e) {
+      logger.e(e.toString());
+      throw const ExceptionMessage(
+          'Une erreur est survenur lors de la mise à jour de votre adresse');
+    }
+  }
 }
 
 @riverpod
 Future<List<UserAddress>> userAddresses(UserAddressesRef ref) async {
   return ref.notifyOnError(
     () => ref.read(userAddressRepositoryProvider).getUserAddresses(),
+  );
+}
+
+@riverpod
+Future<void> updateAddressDate(
+    UpdateAddressDateRef ref, UserAddress selectedUserAddress) async {
+  return ref.notifyOnError(
+    () => ref
+        .read(userAddressRepositoryProvider)
+        .updateAddressDate(selectedUserAddress),
   );
 }
 

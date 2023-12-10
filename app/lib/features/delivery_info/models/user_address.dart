@@ -17,6 +17,7 @@ abstract class UserAddress with _$UserAddress {
 
   const factory UserAddress({
     @JsonKey(includeToJson: false) String? id,
+    required String label,
     required String street,
     @JsonKey(name: 'postal_code') required String postalCode,
     required String city,
@@ -26,11 +27,24 @@ abstract class UserAddress with _$UserAddress {
     @JsonKey(name: 'delivery_instructions') String? deliveryInstructions,
     @JsonKey(name: 'company_name') String? companyName,
     required String entitled,
-    required bool selected,
     @JsonKey(includeToJson: false, includeFromJson: false)
     @Default(AddressSource.database)
     AddressSource source,
   }) = _UserAddress;
+
+  static String selectQuery = '''
+    id,
+    street,
+    label,
+    postal_code,
+    city,
+    latitude,
+    longitude,
+    address_info,
+    delivery_instructions,
+    company_name,
+    entitled
+  ''';
 
   factory UserAddress.geolocation({
     required String street,
@@ -40,18 +54,20 @@ abstract class UserAddress with _$UserAddress {
     required double longitude,
   }) {
     return UserAddress(
+      label: street,
       street: street,
       postalCode: postalCode,
       city: city,
       latitude: latitude,
       longitude: longitude,
       entitled: '',
-      selected: false,
       source: AddressSource.geolocation,
     );
   }
 
   factory UserAddress.api({
+    required String label,
+    required String houseNumber,
     required String street,
     required String postalCode,
     required String city,
@@ -59,13 +75,13 @@ abstract class UserAddress with _$UserAddress {
     required double longitude,
   }) {
     return UserAddress(
-      street: street,
+      label: label,
+      street: '$houseNumber $street',
       postalCode: postalCode,
       city: city,
       latitude: latitude,
       longitude: longitude,
       entitled: '',
-      selected: false,
       source: AddressSource.api,
     );
   }
@@ -84,6 +100,7 @@ abstract class UserAddress with _$UserAddress {
         deliveryInstructions: deliveryInstructions,
         companyName: companyName,
         entitled: entitled,
-        selected: false,
+        label: label,
+        createdTime: DateTime.now(),
       );
 }

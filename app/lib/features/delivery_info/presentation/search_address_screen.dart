@@ -70,6 +70,7 @@ class SearchAddressScreen extends HookConsumerWidget {
                         ref
                             .read(getUserAddressServiceProvider.notifier)
                             .updateAddress(address);
+                        ref.read(updateAddressDateProvider(address));
                         ref
                             .read(messengerControllerProvider)
                             .showSuccesssSnackbar(
@@ -126,6 +127,9 @@ class SearchAddressScreen extends HookConsumerWidget {
                                 searchController.text =
                                     address.properties.label;
                                 selectedAddress.value = UserAddress.api(
+                                  label: address.properties.label,
+                                  houseNumber:
+                                      address.properties.housenumber ?? '',
                                   street: address.properties.street ?? '',
                                   postalCode: address.properties.postcode ?? '',
                                   city: address.properties.city ?? '',
