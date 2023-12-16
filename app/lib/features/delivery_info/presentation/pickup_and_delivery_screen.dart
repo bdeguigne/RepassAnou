@@ -58,6 +58,9 @@ class PickupAndDeliveryScreen extends HookConsumerWidget {
 
     return userAddress.when(
       data: (position) {
+        print('POSITION');
+        print(position);
+
         addressInfoController.text = position.addressInfo ?? '';
         companyNameController.text = position.companyName ?? '';
         deliveryInstructionsController.text =

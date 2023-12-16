@@ -92,13 +92,6 @@ class UserAddressRepository {
         return;
       }
 
-      // if the current address is from the database, we update need to change the selected address to false before inserting the new one
-      if (selectedUserAddress.source == AddressSource.database) {
-        await supabase.usersAddressesTable
-            .update(selectedUserAddress.toJson())
-            .eq('id', selectedUserAddress.id);
-      }
-
       await supabase.usersAddressesTable.insert(
         UserAddressDto(
           userId: userController.loggedUser!.id,

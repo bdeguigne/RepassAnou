@@ -7,7 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'get_user_address_service.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: false)
 class GetUserAddressService extends _$GetUserAddressService {
   @override
   FutureOr<UserAddress> build() async {

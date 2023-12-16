@@ -14,42 +14,6 @@ class AppButton extends StatelessWidget {
   final bool isLoading;
   final bool expanded;
 
-  Widget _buildContentWithAnimatedLoading(
-      Widget content, bool loading, Color? loadingColor,
-      {bool small = false}) {
-    return AnimatedCrossFade(
-      layoutBuilder: (topChild, topChildKey, bottomChild, bottomChildKey) {
-        return Stack(
-          alignment: Alignment.center,
-          children: [
-            Positioned(
-              key: bottomChildKey,
-              child: bottomChild,
-            ),
-            Positioned(
-              key: topChildKey,
-              child: topChild,
-            ),
-          ],
-        );
-      },
-      crossFadeState:
-          loading ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-      duration: const Duration(milliseconds: 300),
-      firstChild: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: SizedBox(
-          width: small ? 16 : 24,
-          height: small ? 16 : 24,
-          child: AppLoading(
-            color: loadingColor,
-          ),
-        ),
-      ),
-      secondChild: content,
-    );
-  }
-
   const AppButton._({
     this.text,
     required this.onPressed,
@@ -168,6 +132,42 @@ class AppButton extends StatelessWidget {
       ),
       type: AppButtonType.text,
       isLoading: isLoading,
+    );
+  }
+
+  Widget _buildContentWithAnimatedLoading(
+      Widget content, bool loading, Color? loadingColor,
+      {bool small = false}) {
+    return AnimatedCrossFade(
+      layoutBuilder: (topChild, topChildKey, bottomChild, bottomChildKey) {
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            Positioned(
+              key: bottomChildKey,
+              child: bottomChild,
+            ),
+            Positioned(
+              key: topChildKey,
+              child: topChild,
+            ),
+          ],
+        );
+      },
+      crossFadeState:
+          loading ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+      duration: const Duration(milliseconds: 300),
+      firstChild: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: SizedBox(
+          width: small ? 16 : 24,
+          height: small ? 16 : 24,
+          child: AppLoading(
+            color: loadingColor,
+          ),
+        ),
+      ),
+      secondChild: content,
     );
   }
 

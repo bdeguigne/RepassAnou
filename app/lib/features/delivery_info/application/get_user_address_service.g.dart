@@ -7,7 +7,7 @@ part of 'get_user_address_service.dart';
 // **************************************************************************
 
 String _$getUserAddressServiceHash() =>
-    r'98a359b7d194fb41fc01cfe3b06fdbaaeff1689d';
+    r'1cd262797e61d2a980ce69299747912f99d3a7ce';
 
 /// See also [GetUserAddressService].
 @ProviderFor(GetUserAddressService)

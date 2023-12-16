@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/features/commands/presentation/home_screen.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_screen.dart';
-import 'package:repasse_anou/utils/account/presentation/account_screen.dart';
+import 'package:repasse_anou/features/account/presentation/account_screen.dart';
 
 @RoutePage()
 class NavigationScreen extends ConsumerStatefulWidget {
