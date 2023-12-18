@@ -1,11 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/design_system/app_buttons.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/design_system/app_images.dart';
-import 'package:repasse_anou/design_system/ink_well.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/design_system/profile_cell.dart';
 import 'package:repasse_anou/design_system/responsive_utils.dart';
@@ -55,7 +53,9 @@ class AccountScreen extends ConsumerWidget {
     }
 
     return AppLayout.withBottomButton(
-      appBar: AppAppBar.title('Mon profil'),
+      appBar: AppAppBar.titleNoArrow(
+        'Mon profil',
+      ),
       bottomButton: Padding(
         padding: ph(20),
         child: AppButton.secondary(

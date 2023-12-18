@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/design_system/app_text_field.dart';
 import 'package:repasse_anou/design_system/ink_well.dart';
@@ -22,6 +23,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onSearchFieldChanged,
     this.isLoading = false,
     this.controller,
+    this.showLeading = true,
   }) : super(key: key);
 
   final String? title;
@@ -31,6 +33,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final void Function(String? value)? onSearchFieldChanged;
   final bool isLoading;
   final TextEditingController? controller;
+  final bool showLeading;
 
   factory AppAppBar.title(
     String title,
@@ -40,6 +43,18 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       leadingWidth: 54,
       type: AppLayoutType.title,
       isLoading: false,
+    );
+  }
+
+  factory AppAppBar.titleNoArrow(
+    String title,
+  ) {
+    return AppAppBar._(
+      title: title,
+      leadingWidth: 54,
+      type: AppLayoutType.title,
+      isLoading: false,
+      showLeading: false,
     );
   }
 
@@ -75,13 +90,15 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
                 controller: controller,
               ),
             ),
-      leadingWidth: leadingWidth,
+      leadingWidth: showLeading ? leadingWidth : 20.w,
       titleSpacing: 0,
-      leading: AppInkWell(
-        transparent: true,
-        onTap: () => Navigator.of(context).pop(),
-        child: Center(child: AppIcons.arrowBack),
-      ),
+      leading: showLeading
+          ? AppInkWell(
+              transparent: true,
+              onTap: () => Navigator.of(context).pop(),
+              child: Center(child: AppIcons.arrowBack),
+            )
+          : Container(),
     );
   }
 
