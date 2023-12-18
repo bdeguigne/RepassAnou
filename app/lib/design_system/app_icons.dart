@@ -25,4 +25,12 @@ class AppIcons {
   );
   static Widget search = SvgPicture.asset('assets/icons/search.svg');
   static Image bag = Image.asset('assets/icons/bag.png');
+  static Image edit = Image.asset('assets/icons/edit.png');
+  static Image lock = Image.asset('assets/icons/lock.png');
+  static Image message = Image.asset('assets/icons/message.png');
+  static Image messageCircle = Image.asset('assets/icons/message-circle.png');
+  static Image messageQuestion =
+      Image.asset('assets/icons/message-question.png');
+  static Image receiptText = Image.asset('assets/icons/receipt-text.png');
+  static Image shieldCross = Image.asset('assets/icons/shield-cross.png');
 }

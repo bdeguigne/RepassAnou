@@ -59,9 +59,8 @@ class AppButton extends StatelessWidget {
         backgroundColor: const Color(0xffFED8CD),
         elevation: 0,
       ),
-      textStyle: appTheme.textTheme.labelLarge?.copyWith(
-        color: const Color(0xFF1D272F),
-      ),
+      textStyle: appTheme.textTheme.labelLarge
+          ?.copyWith(color: const Color(0xFF1D272F), fontSize: sp(12)),
       isLoading: isLoading,
     );
   }

@@ -6,4 +6,5 @@ class AppImages {
   static Image facebook = Image.asset('assets/images/facebook.png');
   static Image google = Image.asset('assets/images/google.png');
   static Image apple = Image.asset('assets/images/apple.png');
+  static Image defaultAvatar = Image.asset('assets/images/default-avatar.png');
 }
