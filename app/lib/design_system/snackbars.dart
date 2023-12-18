@@ -33,7 +33,7 @@ class AppSnackbars {
 
   static SnackBar success(String message) {
     return _customSnackbar(
-      theme.success,
+      theme.AppColors.success,
       const Icon(
         Icons.check,
         color: Colors.white,
@@ -44,7 +44,7 @@ class AppSnackbars {
 
   static SnackBar error(String message) {
     return _customSnackbar(
-      theme.error,
+      theme.AppColors.error,
       const Icon(Icons.close),
       Text(message),
     );

@@ -32,7 +32,7 @@ class AppChip extends StatelessWidget {
           children: [
             const Icon(
               Icons.close,
-              color: grey,
+              color: AppColors.grey,
               size: 14,
             ),
             const SizedBox(

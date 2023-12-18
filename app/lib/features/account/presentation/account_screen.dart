@@ -2,8 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
-import 'package:repasse_anou/features/auth/application/user_controller.dart';
-import 'package:repasse_anou/design_system/theme.dart';
 
 @RoutePage()
 class AccountScreen extends ConsumerWidget {
@@ -11,7 +9,7 @@ class AccountScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    UserController userController = ref.read(userControllerProvider.notifier);
+    // UserController userController = ref.read(userControllerProvider.notifier);
 
     return AppLayout.standard(
       appBar: AppAppBar.title('Mon profil'),

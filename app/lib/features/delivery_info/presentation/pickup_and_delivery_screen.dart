@@ -56,16 +56,19 @@ class PickupAndDeliveryScreen extends HookConsumerWidget {
       }
     }
 
+    void updateTextController(TextEditingController controller, String? value) {
+      if (controller.text.isEmpty) {
+        controller.text = value ?? '';
+      }
+    }
+
     return userAddress.when(
       data: (position) {
-        print('POSITION');
-        print(position);
-
-        addressInfoController.text = position.addressInfo ?? '';
-        companyNameController.text = position.companyName ?? '';
-        deliveryInstructionsController.text =
-            position.deliveryInstructions ?? '';
-        entitledController.text = position.entitled;
+        updateTextController(addressInfoController, position.addressInfo);
+        updateTextController(companyNameController, position.companyName);
+        updateTextController(
+            deliveryInstructionsController, position.deliveryInstructions);
+        updateTextController(entitledController, position.entitled);
 
         return AppLayout.withBottomButton(
           appBar: AppAppBar.title('Récupération & livraison'),

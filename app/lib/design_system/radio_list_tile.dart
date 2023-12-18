@@ -27,17 +27,18 @@ class AppRadioListTile<T> extends StatelessWidget {
         borderRadius: br(15),
         border: Border.all(
           color: showError == true
-              ? error
+              ? AppColors.error
               : value == groupValue
                   ? Colors.black
-                  : navBarUnselectedItemColor,
+                  : AppColors.navBarUnselectedItemColor,
           width: 1,
         ),
       ),
       child: Theme(
         data: appTheme.copyWith(
           radioTheme: RadioThemeData(
-            fillColor: MaterialStateProperty.all(navBarUnselectedItemColor),
+            fillColor:
+                MaterialStateProperty.all(AppColors.navBarUnselectedItemColor),
           ),
         ),
         child: RadioListTile<T>(

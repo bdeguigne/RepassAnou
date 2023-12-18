@@ -233,7 +233,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
             controller: _inputController,
             textInputAction: TextInputAction.done,
             hint: widget.inputHint ?? 'Entrez une valeur...',
-            border: false,
+            border: appOutlineTransparentInputBorder,
             focusNode: inputFocusNode,
           ),
         ),
@@ -259,7 +259,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
       style: const TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w500,
-        color: hintText,
+        color: AppColors.hintText,
         fontFamily: 'Nunito',
       ),
     );

@@ -107,7 +107,7 @@ class HomeScreen extends ConsumerWidget {
                   padding: const EdgeInsets.only(bottom: 9),
                   child: const Icon(
                     Icons.keyboard_arrow_down_outlined,
-                    color: grey,
+                    color: AppColors.grey,
                   ),
                 ),
               ),

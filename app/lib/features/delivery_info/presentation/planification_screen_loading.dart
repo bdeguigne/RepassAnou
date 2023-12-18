@@ -27,7 +27,7 @@ class PlanificationScreenLoading extends StatelessWidget {
                     width: 60.h,
                     decoration: BoxDecoration(
                       borderRadius: br(10),
-                      color: black,
+                      color: AppColors.black,
                     ),
                   ),
                 ),
@@ -48,7 +48,7 @@ class PlanificationScreenLoading extends StatelessWidget {
                   height: 60.h,
                   decoration: BoxDecoration(
                     borderRadius: br(15),
-                    color: black,
+                    color: AppColors.black,
                   ),
                 ),
               ),
@@ -59,7 +59,7 @@ class PlanificationScreenLoading extends StatelessWidget {
                   height: 60.h,
                   decoration: BoxDecoration(
                     borderRadius: br(15),
-                    color: black,
+                    color: AppColors.black,
                   ),
                 ),
               ),
@@ -70,7 +70,7 @@ class PlanificationScreenLoading extends StatelessWidget {
                   height: 60.h,
                   decoration: BoxDecoration(
                     borderRadius: br(15),
-                    color: black,
+                    color: AppColors.black,
                   ),
                 ),
               )

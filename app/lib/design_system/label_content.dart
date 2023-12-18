@@ -24,7 +24,8 @@ class LabelContent extends StatelessWidget {
       children: [
         Text(
           title,
-          style: titleTextStyle ?? bodyMedium.copyWith(color: blackVariant),
+          style: titleTextStyle ??
+              bodyMedium.copyWith(color: AppColors.blackVariant),
         ),
         SizedBox(height: spacing),
         child,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:repasse_anou/design_system/app_buttons.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/design_system/app_loading.dart';
 import 'package:repasse_anou/design_system/ink_well.dart';
@@ -12,7 +13,7 @@ class AppTextField extends StatelessWidget {
   final void Function(String value)? onChanged;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
-  final bool border;
+  final InputBorder? border;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
   final TextInputType? keyboardType;
@@ -24,6 +25,7 @@ class AppTextField extends StatelessWidget {
   final String? errorMessage;
   final Widget? prefixIcon;
   final bool isSearchLoading;
+  final Widget? suffix;
 
   const AppTextField._({
     required this.type,
@@ -31,7 +33,7 @@ class AppTextField extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.controller,
-    this.border = true,
+    this.border,
     this.focusNode,
     this.textInputAction,
     this.keyboardType,
@@ -42,6 +44,7 @@ class AppTextField extends StatelessWidget {
     this.errorMessage,
     this.prefixIcon,
     this.isSearchLoading = false,
+    this.suffix,
   });
 
   factory AppTextField.outlined({
@@ -49,7 +52,7 @@ class AppTextField extends StatelessWidget {
     void Function(String value)? onChanged,
     String? Function(String?)? validator,
     TextEditingController? controller,
-    bool border = true,
+    InputBorder border = appOutlineInputBorder,
     FocusNode? focusNode,
     TextInputAction? textInputAction,
     TextInputType? keyboardType,
@@ -57,6 +60,7 @@ class AppTextField extends StatelessWidget {
     bool obscureText = false,
     Widget? prexifIcon,
     bool isSearchLoading = false,
+    Widget? suffix,
   }) {
     return AppTextField._(
       hint: hint,
@@ -72,6 +76,7 @@ class AppTextField extends StatelessWidget {
       type: AppTextFieldType.outlined,
       prefixIcon: prexifIcon,
       isSearchLoading: isSearchLoading,
+      suffix: suffix,
     );
   }
 
@@ -88,13 +93,15 @@ class AppTextField extends StatelessWidget {
     Widget? prefixIcon,
     void Function(String? value)? onSearchFieldChanged,
     bool isSearchLoading = false,
+    InputBorder? border = appOutlineTransparentInputBorder,
+    Widget? suffix,
   }) {
     return AppTextField._(
       hint: hint,
       onChanged: onChanged,
       validator: validator,
       controller: controller,
-      border: false,
+      border: border,
       focusNode: focusNode,
       textInputAction: textInputAction,
       keyboardType: keyboardType,
@@ -103,6 +110,7 @@ class AppTextField extends StatelessWidget {
       type: AppTextFieldType.filled,
       prefixIcon: prefixIcon,
       isSearchLoading: isSearchLoading,
+      suffix: suffix,
     );
   }
 
@@ -114,7 +122,7 @@ class AppTextField extends StatelessWidget {
   }) {
     return AppTextField._(
       hint: hint,
-      border: false,
+      border: appOutlineTransparentInputBorder,
       onTap: onTap,
       value: value,
       type: AppTextFieldType.button,
@@ -130,7 +138,7 @@ class AppTextField extends StatelessWidget {
       color:
           (type == AppTextFieldType.filled || type == AppTextFieldType.button)
               ? const Color(0xff9CA4AB)
-              : hintText,
+              : AppColors.hintText,
       fontFamily: 'Nunito',
     );
 
@@ -145,14 +153,14 @@ class AppTextField extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
                   decoration: ShapeDecoration(
-                    color: const Color(0xffECF1F6),
+                    color: AppColors.lightGrey,
                     shape: RoundedRectangleBorder(
                       side: BorderSide(
                         width: 1,
                         color: (type == AppTextFieldType.button &&
                                 errorMessage != null)
-                            ? error
-                            : const Color(0xFFECF1F6),
+                            ? AppColors.error
+                            : AppColors.lightGrey,
                       ),
                       borderRadius: BorderRadius.circular(32),
                     ),
@@ -181,7 +189,7 @@ class AppTextField extends StatelessWidget {
                   child: Text(
                     errorMessage ?? '',
                     style: const TextStyle(
-                        color: error,
+                        color: AppColors.error,
                         fontSize: 10,
                         fontWeight: FontWeight.w500),
                   ),
@@ -195,7 +203,7 @@ class AppTextField extends StatelessWidget {
             onChanged: onChanged,
             validator: validator,
             decoration: InputDecoration(
-              fillColor: const Color(0xffECF1F6),
+              fillColor: AppColors.lightGrey,
               filled: type == AppTextFieldType.filled,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -219,17 +227,11 @@ class AppTextField extends StatelessWidget {
                         child: AppLoading(),
                       ),
                     )
-                  : null,
+                  : suffix,
               hintStyle: hintStyle,
-              enabledBorder: border
-                  ? appOutlineInputBorder
-                  : appOutlineTransparentInputBorder,
-              border: border
-                  ? appOutlineInputBorder
-                  : appOutlineTransparentInputBorder,
-              focusedBorder: border
-                  ? appOutlineInputBorder
-                  : appOutlineTransparentInputBorder,
+              enabledBorder: border,
+              border: border,
+              focusedBorder: border,
             ),
             keyboardType: keyboardType,
             autocorrect: autocorrect,

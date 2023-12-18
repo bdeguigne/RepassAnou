@@ -309,7 +309,7 @@ class DropDown<T> extends HookWidget {
             style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w500,
-              color: hintText,
+              color: AppColors.hintText,
               fontFamily: 'Nunito',
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:repasse_anou/design_system/app_loading.dart';
+import 'package:repasse_anou/design_system/responsive_utils.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 
 enum AppButtonType { elevated, outlined, text }
@@ -131,6 +132,27 @@ class AppButton extends StatelessWidget {
         color: const Color(0xFF1D272F),
       ),
       type: AppButtonType.text,
+      isLoading: isLoading,
+    );
+  }
+
+  factory AppButton.promoCode({
+    required String text,
+    required VoidCallback? onPressed,
+    bool isLoading = false,
+  }) {
+    return AppButton._(
+      text: text,
+      onPressed: onPressed,
+      buttonStyle: ElevatedButton.styleFrom(
+        backgroundColor: Colors.black,
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: br(7)),
+      ),
+      textStyle: appTheme.textTheme.headlineLarge?.copyWith(
+        color: Colors.white,
+        fontSize: sp(11),
+      ),
       isLoading: isLoading,
     );
   }

@@ -15,6 +15,7 @@ class ArticleCard extends StatefulWidget {
     this.imageUrl = '',
     this.onAddQuentity,
     this.onRemoveQuentity,
+    this.onDismissed,
   });
 
   final String? title;
@@ -24,6 +25,7 @@ class ArticleCard extends StatefulWidget {
   final String imageUrl;
   final VoidCallback? onAddQuentity;
   final VoidCallback? onRemoveQuentity;
+  final VoidCallback? onDismissed;
 
   @override
   State<ArticleCard> createState() => _ArticleCardState();
@@ -197,7 +199,38 @@ class _ArticleCardState extends State<ArticleCard>
         if (_showLoading) showLoading(),
         FadeTransition(
           opacity: _opacityAnimation,
-          child: showCard(),
+          child: widget.onDismissed != null
+              ? Dismissible(
+                  key: UniqueKey(),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                    width: double.infinity,
+                    height: 90.h,
+                    decoration: ShapeDecoration(
+                      color: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(13),
+                      ),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.only(right: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  onDismissed: (value) {
+                    widget.onDismissed?.call();
+                  },
+                  child: showCard(),
+                )
+              : showCard(),
         ),
       ],
     );

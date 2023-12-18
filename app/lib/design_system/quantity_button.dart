@@ -36,7 +36,7 @@ class _QuantityButtonState extends ConsumerState<QuantityButton> {
       width: 70.w,
       height: 30.h,
       decoration: ShapeDecoration(
-        color: greyButton,
+        color: AppColors.greyButton,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),

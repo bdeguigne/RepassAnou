@@ -152,7 +152,8 @@ class DressingCard extends HookWidget {
                                                 child: Text(
                                                   title!,
                                                   style: bodyMedium.copyWith(
-                                                    color: blackVariant,
+                                                    color:
+                                                        AppColors.blackVariant,
                                                   ),
                                                 ),
                                               ),

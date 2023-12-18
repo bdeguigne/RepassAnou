@@ -1,13 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/design_system/app_buttons.dart';
 import 'package:repasse_anou/design_system/app_divider.dart';
+import 'package:repasse_anou/design_system/app_text_field.dart';
+import 'package:repasse_anou/design_system/article_card.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/design_system/responsive_utils.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
+import 'package:repasse_anou/features/cart/application/cart_service.dart';
+import 'package:repasse_anou/features/commands/models/command_item.dart';
 import 'package:repasse_anou/features/delivery_info/application/get_user_address_service.dart';
 import 'package:repasse_anou/features/delivery_info/data/users_schedules_repository.dart';
 import 'package:repasse_anou/features/delivery_info/models/user_address.dart';
@@ -16,7 +20,7 @@ import 'package:repasse_anou/features/delivery_info/presentation/command_detail_
 import 'package:repasse_anou/utils/date_formatter.dart';
 
 @RoutePage()
-class CartScreen extends ConsumerWidget {
+class CartScreen extends HookConsumerWidget {
   const CartScreen({super.key});
 
   @override
@@ -26,6 +30,10 @@ class CartScreen extends ConsumerWidget {
         ref.watch(userScheduleProvider);
     final AsyncValue<UserAddress> userAddress =
         ref.watch(getUserAddressServiceProvider);
+
+    //to Set to remove duplicate
+    final List<CommandItem> cartData =
+        ref.watch(cartServiceProvider).toSet().toList();
 
     void showCommandDetailBottomSheet(BuildContext context) {
       showModalBottomSheet<void>(
@@ -162,6 +170,52 @@ class CartScreen extends ConsumerWidget {
             child: const AppDivider(),
           ),
           sh(10),
+          Padding(
+            padding: pw(20),
+            child: Column(
+              children: cartData
+                  .map(
+                    (command) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: ArticleCard(
+                        isLoading: false,
+                        description: command.description,
+                        imageUrl: command.imageUrl,
+                        price: command.price,
+                        title: command.title,
+                        onDismissed: () {},
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
+          sh(25),
+          Padding(
+            padding: pw(20),
+            child: SizedBox(
+              height: 50.h,
+              child: AppTextField.filled(
+                hint: 'Code promo',
+                border: appOutlineInputBorder.copyWith(
+                  borderRadius: br(10),
+                  borderSide: BorderSide.none,
+                ),
+                suffix: Padding(
+                  padding: pwh(10, 15),
+                  child: AppButton.promoCode(
+                    text: 'Appliquer',
+                    onPressed: () {},
+                  ),
+                ),
+              ),
+            ),
+          ),
+          sh(30),
+          Padding(
+            padding: pw(20),
+            child: const AppDivider(),
+          ),
         ],
       ),
     );

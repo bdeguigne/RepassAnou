@@ -2,60 +2,83 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:repasse_anou/design_system/responsive_utils.dart';
 
-const Color success = Color(0xFF00C851);
-const Color error = Color(0xFFff4444);
-const Color black = Color(0xFF000000);
-const Color blackVariant = Color(0xFF0D101C);
-const Color lightBlack = Color(0xFF191D31);
-const Color grey = Color(0xFF666666);
-const Color greyInput = Color(0xFF9CA4AB);
-const Color greyButton = Color(0xFFEEEEEE);
-const Color navBarBackroundColor = Color(0xFEF6F6F6);
-const Color navBarSelectedItemColor = Color(0xFE1D232E);
-const Color navBarUnselectedItemColor = Color(0xFEDADADA);
-const Color blue = Color(0x00007fff);
-const Color hintText = Color(0xff6E7591);
-const Color checkBoxBackgroundColor = Color(0xffD9D9D9);
-const Color customBodyColor = Color(0xff0D101C);
+class AppColors {
+  static const Color primary = Color(0xFF000000);
+  static const Color primaryVariant = Color(0xFF0D101C);
+  static const Color secondary = Color(0xFFff4444);
+  static const Color secondaryVariant = Color(0xFFff4444);
+  static const Color success = Color(0xFF00C851);
+  static const Color error = Color(0xFFff4444);
+  static const Color black = Color(0xFF000000);
+  static const Color blackVariant = Color(0xFF0D101C);
+  static const Color lightBlack = Color(0xFF191D31);
+  static const Color grey = Color(0xFF666666);
+  static const Color lightGrey = Color(0xFFECF1F6);
+  static const Color greyInput = Color(0xFF9CA4AB);
+  static const Color greyButton = Color(0xFFEEEEEE);
+  static const Color navBarBackroundColor = Color(0xFEF6F6F6);
+  static const Color navBarSelectedItemColor = Color(0xFE1D232E);
+  static const Color navBarUnselectedItemColor = Color(0xFEDADADA);
+  static const Color blue = Color(0x00007fff);
+  static const Color hintText = Color(0xff6E7591);
+  static const Color checkBoxBackgroundColor = Color(0xffD9D9D9);
+  static const Color customBodyColor = Color(0xff0D101C);
+}
+
+// const Color success = Color(0xFF00C851);
+// const Color error = Color(0xFFff4444);
+// const Color black = Color(0xFF000000);
+// const Color blackVariant = Color(0xFF0D101C);
+// const Color lightBlack = Color(0xFF191D31);
+// const Color grey = Color(0xFF666666);
+// const Color greyInput = Color(0xFF9CA4AB);
+// const Color greyButton = Color(0xFFEEEEEE);
+// const Color navBarBackroundColor = Color(0xFEF6F6F6);
+// const Color navBarSelectedItemColor = Color(0xFE1D232E);
+// const Color navBarUnselectedItemColor = Color(0xFEDADADA);
+// const Color blue = Color(0x00007fff);
+// const Color hintText = Color(0xff6E7591);
+// const Color checkBoxBackgroundColor = Color(0xffD9D9D9);
+// const Color customBodyColor = Color(0xff0D101C);
 
 TextStyle bodyLarge = TextStyle(
   fontSize: sp(14),
   fontWeight: FontWeight.w600,
-  color: black,
+  color: AppColors.black,
   fontFamily: 'Nunito',
   overflow: TextOverflow.ellipsis,
 );
 TextStyle bodyMedium = TextStyle(
   fontSize: sp(12),
   fontWeight: FontWeight.w400,
-  color: black,
+  color: AppColors.black,
   fontFamily: 'Nunito',
   overflow: TextOverflow.ellipsis,
 );
 TextStyle bodySmall = TextStyle(
   fontSize: sp(10.0),
   fontWeight: FontWeight.w500,
-  color: black,
+  color: AppColors.black,
   fontFamily: 'Nunito',
 );
 TextStyle labelSmall = TextStyle(
   fontSize: sp(11.0),
   fontWeight: FontWeight.w400,
-  color: grey,
+  color: AppColors.grey,
   fontFamily: 'Nunito',
   overflow: TextOverflow.ellipsis,
 );
 TextStyle labelMedium = TextStyle(
   fontSize: sp(12.0),
   fontWeight: FontWeight.w400,
-  color: grey,
+  color: AppColors.grey,
   fontFamily: 'Nunito',
   overflow: TextOverflow.ellipsis,
 );
 TextStyle labelLarge = TextStyle(
   fontSize: sp(14.0),
   fontWeight: FontWeight.w400,
-  color: grey,
+  color: AppColors.grey,
   fontFamily: 'Nunito',
   overflow: TextOverflow.ellipsis,
 );
@@ -150,10 +173,10 @@ final ThemeData appTheme = ThemeData(
     ),
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: navBarBackroundColor,
-    selectedItemColor: navBarSelectedItemColor,
+    backgroundColor: AppColors.navBarBackroundColor,
+    selectedItemColor: AppColors.navBarSelectedItemColor,
     unselectedIconTheme: IconThemeData(
-      color: navBarUnselectedItemColor,
+      color: AppColors.navBarUnselectedItemColor,
     ),
   ),
   inputDecorationTheme: const InputDecorationTheme(
@@ -162,7 +185,7 @@ final ThemeData appTheme = ThemeData(
         Radius.circular(20),
       ),
       borderSide: BorderSide(
-        color: error,
+        color: AppColors.error,
         width: 1,
       ),
     ),
@@ -171,12 +194,12 @@ final ThemeData appTheme = ThemeData(
         Radius.circular(20),
       ),
       borderSide: BorderSide(
-        color: error,
+        color: AppColors.error,
         width: 1,
       ),
     ),
     errorStyle: TextStyle(
-      color: error,
+      color: AppColors.error,
       fontSize: 10,
       fontWeight: FontWeight.w500,
     ),
@@ -186,19 +209,19 @@ final ThemeData appTheme = ThemeData(
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(
         borderSide: BorderSide(
-          color: greyInput,
+          color: AppColors.greyInput,
           width: 1,
         ),
       ),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: greyInput,
+          color: AppColors.greyInput,
           width: 1,
         ),
       ),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: greyInput,
+          color: AppColors.greyInput,
           width: 1,
         ),
       ),
@@ -284,7 +307,8 @@ extension FlumiTextExtension on Text {
       data!,
       textScaleFactor: 1,
       textAlign: textAlign,
-      style: appTheme.textTheme.headlineMedium?.copyWith(color: lightBlack),
+      style: appTheme.textTheme.headlineMedium
+          ?.copyWith(color: AppColors.lightBlack),
     );
   }
 
@@ -348,10 +372,10 @@ extension FlumiTextStyleExtension on TextStyle {
   }
 
   TextStyle get greyColor {
-    return copyWith(color: grey);
+    return copyWith(color: AppColors.grey);
   }
 
   TextStyle get greyInputColor {
-    return copyWith(color: greyInput);
+    return copyWith(color: AppColors.greyInput);
   }
 }
