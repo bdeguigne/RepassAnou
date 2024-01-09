@@ -137,7 +137,7 @@ class _$ErrorMessageImpl implements ErrorMessage {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ErrorMessageImpl &&
@@ -270,7 +270,7 @@ class _$CannotCreateUserDataImpl implements CannotCreateUserData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CannotCreateUserDataImpl);
@@ -391,7 +391,7 @@ class _$NotConnectedImpl implements NotConnected {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$NotConnectedImpl);
   }
@@ -511,7 +511,7 @@ class _$NotFoundImpl implements NotFound {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$NotFoundImpl);
   }
@@ -631,7 +631,7 @@ class _$UnexpectedImpl implements Unexpected {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$UnexpectedImpl);
   }

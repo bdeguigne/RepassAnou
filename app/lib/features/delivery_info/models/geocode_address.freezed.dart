@@ -158,7 +158,7 @@ class _$FeatureCollectionImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FeatureCollectionImpl &&
@@ -341,7 +341,7 @@ class _$GeocodeAddressGeometryImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GeocodeAddressGeometryImpl &&
@@ -724,7 +724,7 @@ class _$GeocodeAddressPropertiesImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GeocodeAddressPropertiesImpl &&
@@ -988,7 +988,7 @@ class _$GeocodeAddressImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GeocodeAddressImpl &&

@@ -147,7 +147,7 @@ class _$InvalidEmailImpl<T> implements InvalidEmail<T> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$InvalidEmailImpl<T> &&
@@ -293,7 +293,7 @@ class _$InvalidPasswordImpl<T> implements InvalidPassword<T> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$InvalidPasswordImpl<T> &&
@@ -439,7 +439,7 @@ class _$EmptyImpl<T> implements Empty<T> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$EmptyImpl<T> &&

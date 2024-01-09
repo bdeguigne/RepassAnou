@@ -28,7 +28,7 @@ class DressingBelongsToRepository {
         throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
       }
       final response = await supabase.usersDressingsBelongsToTable
-          .select<s.PostgrestList>()
+          .select()
           .eq('user_id', userController.loggedUser!.id);
 
       final usersDressingsBelongsTo = response.map((data) {
@@ -51,13 +51,15 @@ class DressingBelongsToRepository {
         throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
       }
 
+      s.PostgrestMap;
+
       if (userDressingBelongToId == null) {
         final data = await supabase.usersDressingsBelongsToTable
             .insert(UserDressingBelongsToDto(
               name: name,
               userId: userController.loggedUser!.id,
             ).toJson())
-            .select<s.PostgrestMap>('id, name')
+            .select('id, name')
             .single();
 
         return UserDressingBelongsTo.fromJson(data);

@@ -29,7 +29,7 @@ class UserAddressRepository {
       }
 
       final response = await supabase.usersAddressesTable
-          .select<s.PostgrestList>(UserAddress.selectQuery)
+          .select(UserAddress.selectQuery)
           .eq('user_id', userController.loggedUser!.id);
 
       return response.map((data) => UserAddress.fromJson(data)).toList();
@@ -47,7 +47,7 @@ class UserAddressRepository {
       }
 
       final response = await supabase.usersAddressesTable
-          .select<s.PostgrestMap?>(UserAddress.selectQuery)
+          .select(UserAddress.selectQuery)
           .eq('user_id', userController.loggedUser!.id)
           .order('created_time', ascending: false)
           .limit(1)
@@ -88,7 +88,7 @@ class UserAddressRepository {
                 )
                 .toDto(userController.loggedUser!.id)
                 .toJson())
-            .eq('id', selectedUserAddress.id);
+            .eq('id', selectedUserAddress.id ?? '');
         return;
       }
 
@@ -123,7 +123,7 @@ class UserAddressRepository {
 
       await supabase.usersAddressesTable.update({
         'created_time': DateTime.now().toIso8601String(),
-      }).eq('id', selectedUserAddress.id);
+      }).eq('id', selectedUserAddress.id ?? '');
     } catch (e) {
       logger.e(e.toString());
       throw const ExceptionMessage(

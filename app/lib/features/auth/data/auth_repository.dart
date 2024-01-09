@@ -24,10 +24,8 @@ class AuthRepository {
         return left(const AuthFailure.notConnected());
       }
 
-      final s.PostgrestMap data = await supabase.usersTable
-          .select<s.PostgrestMap>()
-          .eq('id', currentUser.id)
-          .single();
+      final s.PostgrestMap data =
+          await supabase.usersTable.select().eq('id', currentUser.id).single();
 
       final user = User.fromJson(data);
 

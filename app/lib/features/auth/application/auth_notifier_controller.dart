@@ -37,7 +37,7 @@ class AuthNotifierController extends StateNotifier<Auth> {
   }
 
   void handleSession(s.Session? session, ProviderContainer ref) {
-    if (session == null) {
+    if (session == null || session.isExpired == true) {
       state = const Auth.unauthenticated();
     } else {
       state = const Auth.authenticated();

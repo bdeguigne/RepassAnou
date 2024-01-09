@@ -39,7 +39,7 @@ class DressingMaterialsRepository {
     try {
       await supabase.usersDressingsMaterialsTable
           .delete()
-          .eq('user_dressing_id', dressing.id);
+          .eq('user_dressing_id', dressing.id ?? '');
     } catch (e) {
       logger.e(e);
       throw const ExceptionMessage(

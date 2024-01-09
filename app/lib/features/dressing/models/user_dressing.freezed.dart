@@ -353,7 +353,7 @@ class _$UserDressingImpl extends _UserDressing {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserDressingImpl &&

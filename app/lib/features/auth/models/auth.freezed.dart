@@ -100,7 +100,7 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$AuthAuthenticatedImpl);
   }
@@ -202,7 +202,7 @@ class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AuthUnauthenticatedImpl);

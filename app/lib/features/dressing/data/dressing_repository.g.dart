@@ -86,10 +86,23 @@ class _SystemHash {
 const usersDressingsByBelongsToProvider = UsersDressingsByBelongsToFamily();
 
 /// See also [usersDressingsByBelongsTo].
-class UsersDressingsByBelongsToFamily
-    extends Family<AsyncValue<List<UserDressing>>> {
+class UsersDressingsByBelongsToFamily extends Family {
   /// See also [usersDressingsByBelongsTo].
   const UsersDressingsByBelongsToFamily();
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'usersDressingsByBelongsToProvider';
 
   /// See also [usersDressingsByBelongsTo].
   UsersDressingsByBelongsToProvider call(
@@ -110,19 +123,29 @@ class UsersDressingsByBelongsToFamily
     );
   }
 
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
+  /// Enables overriding the behavior of this provider, no matter the parameters.
+  Override overrideWith(
+      FutureOr<List<UserDressing>> Function(UsersDressingsByBelongsToRef ref)
+          create) {
+    return _$UsersDressingsByBelongsToFamilyOverride(this, create);
+  }
+}
+
+class _$UsersDressingsByBelongsToFamilyOverride implements FamilyOverride {
+  _$UsersDressingsByBelongsToFamilyOverride(this.overriddenFamily, this.create);
+
+  final FutureOr<List<UserDressing>> Function(UsersDressingsByBelongsToRef ref)
+      create;
 
   @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+  final UsersDressingsByBelongsToFamily overriddenFamily;
 
   @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'usersDressingsByBelongsToProvider';
+  UsersDressingsByBelongsToProvider getProviderOverride(
+    covariant UsersDressingsByBelongsToProvider provider,
+  ) {
+    return provider._copyWith(create);
+  }
 }
 
 /// See also [usersDressingsByBelongsTo].
@@ -149,7 +172,7 @@ class UsersDressingsByBelongsToProvider
         );
 
   UsersDressingsByBelongsToProvider._internal(
-    super._createNotifier, {
+    super.create, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
@@ -162,7 +185,7 @@ class UsersDressingsByBelongsToProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<UserDressing>> Function(UsersDressingsByBelongsToRef provider)
+    FutureOr<List<UserDressing>> Function(UsersDressingsByBelongsToRef ref)
         create,
   ) {
     return ProviderOverride(
@@ -180,8 +203,28 @@ class UsersDressingsByBelongsToProvider
   }
 
   @override
+  (UserDressingBelongsTo,) get argument {
+    return (userDressingBelongsTo,);
+  }
+
+  @override
   FutureProviderElement<List<UserDressing>> createElement() {
     return _UsersDressingsByBelongsToProviderElement(this);
+  }
+
+  UsersDressingsByBelongsToProvider _copyWith(
+    FutureOr<List<UserDressing>> Function(UsersDressingsByBelongsToRef ref)
+        create,
+  ) {
+    return UsersDressingsByBelongsToProvider._internal(
+      (ref) => create(ref as UsersDressingsByBelongsToRef),
+      name: name,
+      dependencies: dependencies,
+      allTransitiveDependencies: allTransitiveDependencies,
+      debugGetCreateSourceHash: debugGetCreateSourceHash,
+      from: from,
+      userDressingBelongsTo: userDressingBelongsTo,
+    );
   }
 
   @override
@@ -214,4 +257,4 @@ class _UsersDressingsByBelongsToProviderElement
       (origin as UsersDressingsByBelongsToProvider).userDressingBelongsTo;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

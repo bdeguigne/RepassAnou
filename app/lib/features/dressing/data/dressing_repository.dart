@@ -35,8 +35,7 @@ class DressingRepository {
 
   Future<List<DressingCategory>> getDressingCategories() async {
     try {
-      final response =
-          await supabase.dressingCategoriesTable.select<s.PostgrestList>();
+      final response = await supabase.dressingCategoriesTable.select();
       final List<DressingCategory> dressingCategories = response
           .map((Map<String, dynamic> json) => DressingCategory.fromJson(json))
           .toList();
@@ -51,8 +50,7 @@ class DressingRepository {
 
   Future<List<DressingColor>> getDressingColors() async {
     try {
-      final response =
-          await supabase.dressingColorsTable.select<s.PostgrestList>();
+      final response = await supabase.dressingColorsTable.select();
       final List<DressingColor> dressingColors = response
           .map((Map<String, dynamic> json) => DressingColor.fromJson(json))
           .toList();
@@ -67,7 +65,7 @@ class DressingRepository {
   Future<List<DressingMaterial>> getDressingMaterials() async {
     try {
       final response = await supabase.dressingMaterialsTable
-          .select<s.PostgrestList>()
+          .select()
           .order('id', ascending: true);
       final List<DressingMaterial> dressingMaterials = response
           .map((Map<String, dynamic> json) => DressingMaterial.fromJson(json))
@@ -88,7 +86,7 @@ class DressingRepository {
       }
 
       final response = await supabase.usersDressingsTable
-          .select<s.PostgrestList>(
+          .select(
               'id, users(*), title, dressing_categories(*), dressing_materials(*), dressing_colors(*), users_dressings_belongs_to(id, name), notes, image_path, is_favorite, created_at')
           .eq('user_id', userController.loggedUser!.id)
           .eq('user_dressing_belongs_to_id', userDressingBelongsTo.id)
@@ -144,7 +142,7 @@ class DressingRepository {
 
       final data = await supabase.usersDressingsTable
           .insert(updatedUserDressing.toDto().toJson())
-          .select<s.PostgrestMap>('id')
+          .select('id')
           .single();
 
       return UserDressingAndImage(
@@ -211,7 +209,7 @@ class DressingRepository {
 
       await supabase.usersDressingsTable
           .update(updatedUserDressing.toDto().toJson())
-          .eq('id', userDressing.id);
+          .eq('id', userDressing.id ?? '');
 
       // return the data with image to update the UI
       return UserDressingAndImage(
@@ -236,7 +234,7 @@ class DressingRepository {
 
       await supabase.usersDressingsTable
           .update(userDressingDto.toDto().toJson())
-          .eq('id', userDressing.id);
+          .eq('id', userDressing.id ?? '');
     } catch (e) {
       logger.e(e);
       throw const ExceptionMessage(
@@ -250,7 +248,7 @@ class DressingRepository {
         throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
       }
 
-      await supabase.usersDressingsTable.delete().eq('id', dressing.id);
+      await supabase.usersDressingsTable.delete().eq('id', dressing.id ?? '');
     } catch (e) {
       logger.e(e);
       throw const ExceptionMessage(

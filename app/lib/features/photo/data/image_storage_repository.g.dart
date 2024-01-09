@@ -34,9 +34,23 @@ class _SystemHash {
 const readImageProvider = ReadImageFamily();
 
 /// See also [readImage].
-class ReadImageFamily extends Family<AsyncValue<Uint8List>> {
+class ReadImageFamily extends Family {
   /// See also [readImage].
   const ReadImageFamily();
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'readImageProvider';
 
   /// See also [readImage].
   ReadImageProvider call(
@@ -57,19 +71,26 @@ class ReadImageFamily extends Family<AsyncValue<Uint8List>> {
     );
   }
 
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
+  /// Enables overriding the behavior of this provider, no matter the parameters.
+  Override overrideWith(FutureOr<Uint8List> Function(ReadImageRef ref) create) {
+    return _$ReadImageFamilyOverride(this, create);
+  }
+}
+
+class _$ReadImageFamilyOverride implements FamilyOverride {
+  _$ReadImageFamilyOverride(this.overriddenFamily, this.create);
+
+  final FutureOr<Uint8List> Function(ReadImageRef ref) create;
 
   @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+  final ReadImageFamily overriddenFamily;
 
   @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'readImageProvider';
+  ReadImageProvider getProviderOverride(
+    covariant ReadImageProvider provider,
+  ) {
+    return provider._copyWith(create);
+  }
 }
 
 /// See also [readImage].
@@ -94,7 +115,7 @@ class ReadImageProvider extends FutureProvider<Uint8List> {
         );
 
   ReadImageProvider._internal(
-    super._createNotifier, {
+    super.create, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
@@ -107,7 +128,7 @@ class ReadImageProvider extends FutureProvider<Uint8List> {
 
   @override
   Override overrideWith(
-    FutureOr<Uint8List> Function(ReadImageRef provider) create,
+    FutureOr<Uint8List> Function(ReadImageRef ref) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -124,8 +145,27 @@ class ReadImageProvider extends FutureProvider<Uint8List> {
   }
 
   @override
+  (String,) get argument {
+    return (path,);
+  }
+
+  @override
   FutureProviderElement<Uint8List> createElement() {
     return _ReadImageProviderElement(this);
+  }
+
+  ReadImageProvider _copyWith(
+    FutureOr<Uint8List> Function(ReadImageRef ref) create,
+  ) {
+    return ReadImageProvider._internal(
+      (ref) => create(ref as ReadImageRef),
+      name: name,
+      dependencies: dependencies,
+      allTransitiveDependencies: allTransitiveDependencies,
+      debugGetCreateSourceHash: debugGetCreateSourceHash,
+      from: from,
+      path: path,
+    );
   }
 
   @override
@@ -155,4 +195,4 @@ class _ReadImageProviderElement extends FutureProviderElement<Uint8List>
   String get path => (origin as ReadImageProvider).path;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

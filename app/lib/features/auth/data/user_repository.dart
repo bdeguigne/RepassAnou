@@ -22,10 +22,7 @@ class UserRepository {
 
   Future<Either<Failure, User>> getUserById(String id) async {
     try {
-      final data = await supabase.usersTable
-          .select<Map<String, dynamic>>()
-          .eq('id', id)
-          .single();
+      final data = await supabase.usersTable.select().eq('id', id).single();
       return right(User.fromJson(data));
     } catch (e) {
       logger.e(e.toString());
@@ -35,7 +32,7 @@ class UserRepository {
 
   Future<Either<Failure, List<User>>> getUsers() async {
     try {
-      final data = await supabase.usersTable.select<s.PostgrestList>();
+      final data = await supabase.usersTable.select();
       return right(
         data.map((userData) => User.fromJson(userData)).toList(),
       );

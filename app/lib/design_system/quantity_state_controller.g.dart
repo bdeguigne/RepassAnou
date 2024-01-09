@@ -43,9 +43,23 @@ abstract class _$QuantityStateController extends BuildlessNotifier<int> {
 const quantityStateControllerProvider = QuantityStateControllerFamily();
 
 /// See also [QuantityStateController].
-class QuantityStateControllerFamily extends Family<int> {
+class QuantityStateControllerFamily extends Family {
   /// See also [QuantityStateController].
   const QuantityStateControllerFamily();
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'quantityStateControllerProvider';
 
   /// See also [QuantityStateController].
   QuantityStateControllerProvider call(
@@ -66,19 +80,26 @@ class QuantityStateControllerFamily extends Family<int> {
     );
   }
 
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
+  /// Enables overriding the behavior of this provider, no matter the parameters.
+  Override overrideWith(QuantityStateController Function() create) {
+    return _$QuantityStateControllerFamilyOverride(this, create);
+  }
+}
+
+class _$QuantityStateControllerFamilyOverride implements FamilyOverride {
+  _$QuantityStateControllerFamilyOverride(this.overriddenFamily, this.create);
+
+  final QuantityStateController Function() create;
 
   @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+  final QuantityStateControllerFamily overriddenFamily;
 
   @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'quantityStateControllerProvider';
+  QuantityStateControllerProvider getProviderOverride(
+    covariant QuantityStateControllerProvider provider,
+  ) {
+    return provider._copyWith(create);
+  }
 }
 
 /// See also [QuantityStateController].
@@ -102,7 +123,7 @@ class QuantityStateControllerProvider
         );
 
   QuantityStateControllerProvider._internal(
-    super._createNotifier, {
+    super.create, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
@@ -139,8 +160,27 @@ class QuantityStateControllerProvider
   }
 
   @override
+  (String,) get argument {
+    return (id,);
+  }
+
+  @override
   NotifierProviderElement<QuantityStateController, int> createElement() {
     return _QuantityStateControllerProviderElement(this);
+  }
+
+  QuantityStateControllerProvider _copyWith(
+    QuantityStateController Function() create,
+  ) {
+    return QuantityStateControllerProvider._internal(
+      () => create()..id = id,
+      name: name,
+      dependencies: dependencies,
+      allTransitiveDependencies: allTransitiveDependencies,
+      debugGetCreateSourceHash: debugGetCreateSourceHash,
+      from: from,
+      id: id,
+    );
   }
 
   @override
@@ -171,4 +211,4 @@ class _QuantityStateControllerProviderElement
   String get id => (origin as QuantityStateControllerProvider).id;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

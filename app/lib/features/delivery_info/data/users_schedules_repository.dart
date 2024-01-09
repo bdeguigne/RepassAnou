@@ -27,7 +27,7 @@ class UsersSchedulesRepository {
   Future<List<PlanificationTimeSlot>> getPlanificationTimeSlots() async {
     try {
       final response = await supabase.planificationTimeSlotsTable
-          .select<s.PostgrestList>('value, label, label_short')
+          .select('value, label, label_short')
           .order('sort', ascending: true);
 
       return response
@@ -47,7 +47,7 @@ class UsersSchedulesRepository {
       }
 
       final response = await supabase.usersSchedulesTable
-          .select<s.PostgrestMap?>(
+          .select(
               'id, collecting_date, collecting_schedule(*), delivery_date, delivery_schedule(*)')
           .eq('user_id', userController.loggedUser!.id)
           .maybeSingle();
@@ -73,7 +73,7 @@ class UsersSchedulesRepository {
 
       // find by user id if exists update else insert
       final response = await supabase.usersSchedulesTable
-          .select<s.PostgrestList>('id')
+          .select('id')
           .eq('user_id', userController.loggedUser!.id);
 
       if (response.isNotEmpty) {

@@ -18,9 +18,7 @@ class CommandItemRepository {
 
   Future<List<CommandItem>> getCommandItems() async {
     try {
-      final response = await supabase.commandItemsTable
-          .select<s.PostgrestList>()
-          .order('price');
+      final response = await supabase.commandItemsTable.select().order('price');
 
       return response.map((commandItemData) {
         return CommandItem.fromJson(commandItemData);
