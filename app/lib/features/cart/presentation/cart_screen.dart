@@ -145,6 +145,61 @@ class CartScreen extends HookConsumerWidget {
       );
     }
 
+    Widget buildPriceSection() {
+      // iterate over cartData and sum price
+      final price =
+          cartData.map((command) => command.price).reduce((a, b) => a + b);
+      return Row(
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Sous-total',
+                style: bodyMedium.copyWith(fontWeight: FontWeight.w600),
+              ),
+              sh(5),
+              Text(
+                'Frais de service',
+                style: bodyMedium.copyWith(fontWeight: FontWeight.w600),
+              ),
+              sh(5),
+              Text(
+                'Retrait & livraison',
+                style: bodyMedium.copyWith(fontWeight: FontWeight.w600),
+              ),
+              sh(11),
+              const Text('Total').headlineSmall
+            ],
+          ),
+          const Spacer(),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                '${price.toStringAsFixed(2)}€',
+                style: bodyMedium.copyWith(fontWeight: FontWeight.w600),
+              ),
+              sh(5),
+              Text(
+                'Inclus',
+                style: bodyMedium.copyWith(fontWeight: FontWeight.w600),
+              ),
+              sh(5),
+              Text(
+                'Inclus',
+                style: bodyMedium.copyWith(fontWeight: FontWeight.w600),
+              ),
+              sh(11),
+              Text('${price.toStringAsFixed(2)}€').headlineSmall
+            ],
+          ),
+        ],
+      );
+    }
+
     return AppLayout.standard(
       appBar: AppAppBar.title('Panier'),
       child: Column(
@@ -183,7 +238,19 @@ class CartScreen extends HookConsumerWidget {
                         imageUrl: command.imageUrl,
                         price: command.price,
                         title: command.title,
-                        onDismissed: () {},
+                        onDismissed: () {
+                          ref.read(cartServiceProvider.notifier).removeFromCart(
+                                command,
+                              );
+                        },
+                        onAddQuentity: () {
+                          ref.read(cartServiceProvider.notifier).addToCart(
+                                command,
+                              );
+                        },
+                        onRemoveQuentity: () => ref
+                            .read(cartServiceProvider.notifier)
+                            .removeFromCart(command),
                       ),
                     ),
                   )
@@ -211,7 +278,17 @@ class CartScreen extends HookConsumerWidget {
               ),
             ),
           ),
-          sh(30),
+          sh(20),
+          Padding(
+            padding: pw(20),
+            child: const AppDivider(),
+          ),
+          sh(10),
+          Padding(
+            padding: pw(20),
+            child: buildPriceSection(),
+          ),
+          sh(15),
           Padding(
             padding: pw(20),
             child: const AppDivider(),

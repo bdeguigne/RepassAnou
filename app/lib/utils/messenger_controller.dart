@@ -24,6 +24,6 @@ class MessengerController {
 final Provider<MessengerController> messengerControllerProvider =
     Provider<MessengerController>((ProviderRef<MessengerController> ref) {
   return MessengerController(
-    ref.watch(scaffoldKeyProvider).currentState!,
+    ref.watch(scaffoldKeyProvider).currentState,
   );
 });

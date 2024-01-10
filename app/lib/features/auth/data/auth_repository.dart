@@ -19,8 +19,10 @@ class AuthRepository {
 
   Future<Either<AuthFailure, User>> getAppUser() async {
     try {
-      final s.User? currentUser = supabase.auth.currentUser;
+      final s.User? currentUser = supabase.auth.currentSession?.user;
       if (currentUser == null) {
+        logger.e('Aucun utilisateur connecté');
+
         return left(const AuthFailure.notConnected());
       }
 

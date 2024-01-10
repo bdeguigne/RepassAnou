@@ -56,8 +56,7 @@ class AuthNotifierController extends StateNotifier<Auth> {
             await authRepository.getAppUser();
         final MessengerController messengerController =
             ref.read(messengerControllerProvider);
-        final UserController userController =
-            ref.read(userControllerProvider.notifier);
+
         userRequest.fold(
           (AuthFailure failure) {
             logger.e(
@@ -67,6 +66,8 @@ class AuthNotifierController extends StateNotifier<Auth> {
             navigationController.goToLandingPage();
           },
           (User user) async {
+            final UserController userController =
+                ref.read(userControllerProvider.notifier);
             logger.i("Récupération des données de l'utilisateur : $user");
             ref.read(authServiceProvider.notifier).setSuccess();
             // ref.read(geoLocationServiceProvider.notifier).getCurrentLocation();
