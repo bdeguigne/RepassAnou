@@ -32,8 +32,10 @@ class CartScreen extends HookConsumerWidget {
         ref.watch(getUserAddressServiceProvider);
 
     //to Set to remove duplicate
-    final List<CommandItem> cartData =
+    final List<CommandItem> cartDataSingle =
         ref.watch(cartServiceProvider).toSet().toList();
+
+    final List<CommandItem> cartData = ref.watch(cartServiceProvider);
 
     void showCommandDetailBottomSheet(BuildContext context) {
       showModalBottomSheet<void>(
@@ -146,6 +148,10 @@ class CartScreen extends HookConsumerWidget {
     }
 
     Widget buildPriceSection() {
+      if (cartData.isEmpty) {
+        return const SizedBox();
+      }
+
       // iterate over cartData and sum price
       final price =
           cartData.map((command) => command.price).reduce((a, b) => a + b);
@@ -228,18 +234,18 @@ class CartScreen extends HookConsumerWidget {
           Padding(
             padding: pw(20),
             child: Column(
-              children: cartData
+              children: cartDataSingle
                   .map(
                     (command) => Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5),
                       child: ArticleCard(
                         isLoading: false,
-                        description: command.description,
                         imageUrl: command.imageUrl,
-                        price: command.price,
-                        title: command.title,
+                        commandItem: command,
                         onDismissed: () {
-                          ref.read(cartServiceProvider.notifier).removeFromCart(
+                          ref
+                              .read(cartServiceProvider.notifier)
+                              .removeAllSameCommandFromCart(
                                 command,
                               );
                         },

@@ -4,23 +4,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:repasse_anou/design_system/quantity_button.dart';
 import 'package:repasse_anou/design_system/shimmer_loading.dart';
 import 'package:repasse_anou/design_system/theme.dart';
+import 'package:repasse_anou/features/commands/models/command_item.dart';
 
 class ArticleCard extends StatefulWidget {
   const ArticleCard({
-    this.title,
-    this.description,
-    this.price,
+    // this.title,
+    // this.description,
+    // this.price,
     this.isLoading = true,
     super.key,
     this.imageUrl = '',
     this.onAddQuentity,
     this.onRemoveQuentity,
     this.onDismissed,
+    this.commandItem,
   });
 
-  final String? title;
-  final String? description;
-  final double? price;
+  // final String? title;
+  // final String? description;
+  // final double? price;
+
+  final CommandItem? commandItem;
   final bool isLoading;
   final String imageUrl;
   final VoidCallback? onAddQuentity;
@@ -159,15 +163,15 @@ class _ArticleCardState extends State<ArticleCard>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(widget.title ?? '').headlineSmall,
-                      Text(widget.description ?? '',
+                      Text(widget.commandItem?.title ?? '').headlineSmall,
+                      Text(widget.commandItem?.description ?? '',
                           style: labelMedium.copyWith(
                             overflow: TextOverflow.visible,
                           )),
                       const Spacer(),
-                      if (widget.price != null)
+                      if (widget.commandItem?.price != null)
                         Text(
-                          '${widget.price?.toStringAsFixed(2)}€',
+                          '${widget.commandItem?.price.toStringAsFixed(2)}€',
                           style: headlineMedium.copyWith(
                             fontWeight: FontWeight.w700,
                             fontFamily: 'Poppins',
@@ -181,7 +185,7 @@ class _ArticleCardState extends State<ArticleCard>
             Align(
               alignment: Alignment.bottomRight,
               child: QuantityButton(
-                persitenceKey: widget.title ?? '',
+                commandItem: widget.commandItem,
                 onAddQuentity: widget.onAddQuentity,
                 onRemoveQuentity: widget.onRemoveQuentity,
               ),

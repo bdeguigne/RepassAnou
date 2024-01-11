@@ -124,9 +124,7 @@ class HomeScreen extends ConsumerWidget {
                 padding: ph(5),
                 child: ArticleCard(
                   isLoading: false,
-                  title: commandItem.title,
-                  description: commandItem.description,
-                  price: commandItem.price,
+                  commandItem: commandItem,
                   imageUrl: commandItem.imageUrl,
                   onAddQuentity: () {
                     ref

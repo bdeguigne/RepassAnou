@@ -17,4 +17,10 @@ class CartService extends _$CartService {
   void removeFromCart(CommandItem item) {
     state = List.from(state..remove(item));
   }
+
+  void removeAllSameCommandFromCart(CommandItem item) {
+    state = List.from(
+      state..removeWhere((element) => element.id == item.id),
+    );
+  }
 }
