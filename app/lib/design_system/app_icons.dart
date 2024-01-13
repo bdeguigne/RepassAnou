@@ -23,7 +23,13 @@ class AppIcons {
   static Widget circleBlack = const Icon(
     Icons.circle,
   );
-  static Widget search = SvgPicture.asset('assets/icons/search.svg');
+  static Widget search({Color? color}) => SvgPicture.asset(
+        'assets/icons/search.svg',
+        colorFilter: ColorFilter.mode(
+          color ?? const Color(0xff9CA4AB),
+          BlendMode.srcIn,
+        ),
+      );
   static Image bag = Image.asset('assets/icons/bag.png');
   static Image edit = Image.asset('assets/icons/edit.png');
   static Image lock = Image.asset('assets/icons/lock.png');
@@ -33,4 +39,11 @@ class AppIcons {
       Image.asset('assets/icons/message-question.png');
   static Image receiptText = Image.asset('assets/icons/receipt-text.png');
   static Image shieldCross = Image.asset('assets/icons/shield-cross.png');
+  static Widget filter = SvgPicture.asset(
+    'assets/icons/filter.svg',
+  );
+
+  static Widget settings = SvgPicture.asset(
+    'assets/icons/settings.svg',
+  );
 }

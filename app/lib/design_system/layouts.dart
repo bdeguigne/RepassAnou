@@ -15,7 +15,7 @@ enum AppLayoutType {
 
 class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   const AppAppBar._({
-    Key? key,
+    super.key,
     this.title,
     this.leadingWidth = 54.0,
     required this.type,
@@ -24,7 +24,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.isLoading = false,
     this.controller,
     this.showLeading = true,
-  }) : super(key: key);
+  });
 
   final String? title;
   final double? leadingWidth;
@@ -84,7 +84,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
               padding: const EdgeInsets.only(right: 24),
               child: AppTextField.filled(
                 hint: searchHint!,
-                prefixIcon: AppIcons.search,
+                prefixIcon: AppIcons.search(),
                 onChanged: onSearchFieldChanged,
                 isSearchLoading: isLoading,
                 controller: controller,
@@ -108,11 +108,11 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 class LoggedAppBar extends StatelessWidget implements PreferredSizeWidget {
   const LoggedAppBar({
-    Key? key,
+    super.key,
     this.address,
     required this.child,
     this.actions,
-  }) : super(key: key);
+  });
 
   final String? address;
   final double _offset = 12;

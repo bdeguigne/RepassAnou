@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/design_system/app_checkbox.dart';
+import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/design_system/dressing_card.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
@@ -304,7 +305,7 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('Mon Dressing').headlineLarge,
-                  const Icon(Icons.search),
+                  AppIcons.search(color: Colors.black),
                 ],
               ),
             ),
@@ -313,9 +314,8 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  buildTopButton('Filtrer', const Icon(Icons.filter), () {}),
-                  buildTopButton(
-                      'Dressing de', const Icon(Icons.settings), () {}),
+                  buildTopButton('Filtrer', AppIcons.filter, () {}),
+                  buildTopButton('Dressing de', AppIcons.settings, () {}),
                   buildTopButton(
                     'Ajouter',
                     const Icon(Icons.add),
