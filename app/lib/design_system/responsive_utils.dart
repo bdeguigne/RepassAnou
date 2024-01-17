@@ -29,3 +29,6 @@ double formatHeight(double value) => value.h;
 
 /// Responsive [width]
 double formatWidth(double value) => value.w;
+
+double screenWidthPercent(BuildContext context, double value) =>
+    MediaQuery.of(context).size.width * value / 100;

@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:logger/logger.dart';
 import 'package:repasse_anou/exception/exception_message.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
+import 'package:repasse_anou/features/dressing/application/dressing_filter_controller.dart';
 import 'package:repasse_anou/features/dressing/data/dressing_materials_repository.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_category.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_color.dart';
+import 'package:repasse_anou/features/dressing/models/dressing_filter.dart';
 import 'package:repasse_anou/features/dressing/models/dressing_material.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing_and_image.dart';
@@ -16,6 +18,7 @@ import 'package:repasse_anou/utils/supabase_extension.dart';
 import 'package:repasse_anou/utils/top_level_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as s;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'dressing_repository.g.dart';
 
@@ -79,19 +82,52 @@ class DressingRepository {
   }
 
   Future<List<UserDressing>> getUsersDressingsByBelongsTo(
-      UserDressingBelongsTo userDressingBelongsTo) async {
+    UserDressingBelongsTo userDressingBelongsTo,
+    DressingFilter filter,
+  ) async {
     try {
       if (userController.loggedUser == null) {
         throw const ExceptionMessage('Impossible de récupérer l\'utilisateur');
       }
 
-      final response = await supabase.usersDressingsTable
+      List<String> filteredDressingIds = [];
+      if (filter.material != null) {
+        final materialFilterResponse = await supabase.usersDressingsTable
+            .select('id, dressing_materials!inner(id)')
+            .eq('user_id', userController.loggedUser!.id)
+            .eq('user_dressing_belongs_to_id', userDressingBelongsTo.id)
+            .inFilter('dressing_materials.id',
+                filter.material!.map((e) => e.id).toList());
+
+        filteredDressingIds =
+            materialFilterResponse.map((e) => e['id'] as String).toList();
+      }
+
+      PostgrestFilterBuilder<PostgrestList> query = supabase.usersDressingsTable
           .select(
               'id, users(*), title, dressing_categories(*), dressing_materials(*), dressing_colors(*), users_dressings_belongs_to(id, name), notes, image_path, is_favorite, created_at')
           .eq('user_id', userController.loggedUser!.id)
-          .eq('user_dressing_belongs_to_id', userDressingBelongsTo.id)
-          .order('created_at')
-          .limit(5);
+          .eq('user_dressing_belongs_to_id', userDressingBelongsTo.id);
+
+      if (filter.category != null) {
+        query = query.eq('dressing_category_id', filter.category!.id);
+      }
+
+      // if (filter.material != null) {
+      //   logger.e(filter.material);
+      //   query = query.inFilter('dressing_materials.id',
+      //       filter.material!.map((e) => e.id).toList());
+
+      // }
+      if (filteredDressingIds.isNotEmpty) {
+        query = query.inFilter('id', filteredDressingIds);
+      }
+
+      if (filter.color != null) {
+        query = query.eq('dressing_color_id', filter.color!.id);
+      }
+
+      final response = await query.order('created_at').limit(5);
 
       final userDressings = response.map((data) {
         return UserDressing.fromJson(data);
@@ -103,6 +139,8 @@ class DressingRepository {
                   ? -1
                   : 1,
         );
+
+      logger.d(userDressings);
       return userDressings;
     } catch (e) {
       logger.e(e);
@@ -277,14 +315,15 @@ Future<List<DressingMaterial>> dressingMaterials(
   return ref.notifyOnError(dressingRepository.getDressingMaterials);
 }
 
-@Riverpod(keepAlive: true)
+@Riverpod(keepAlive: false)
 Future<List<UserDressing>> usersDressingsByBelongsTo(
     UsersDressingsByBelongsToRef ref,
     UserDressingBelongsTo userDressingBelongsTo) async {
   final dressingRepository = ref.watch(dressingRepositoryProvider);
+  final filter = ref.watch(dressingFilterControllerProvider);
   return ref.notifyOnError(
-    () =>
-        dressingRepository.getUsersDressingsByBelongsTo(userDressingBelongsTo),
+    () => dressingRepository.getUsersDressingsByBelongsTo(
+        userDressingBelongsTo, filter),
   );
 }
 

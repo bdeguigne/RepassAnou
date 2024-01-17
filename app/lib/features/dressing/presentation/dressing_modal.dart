@@ -11,6 +11,7 @@ import 'package:repasse_anou/design_system/app_text_field.dart';
 import 'package:repasse_anou/design_system/custom_drop_down_form_field.dart';
 import 'package:repasse_anou/design_system/drop_down.dart';
 import 'package:repasse_anou/design_system/label_content.dart';
+import 'package:repasse_anou/design_system/responsive_utils.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 import 'package:repasse_anou/features/dressing/application/add_dressing_modal_service.dart';
 import 'package:repasse_anou/features/dressing/data/dressing_belongs_to_repository.dart';
@@ -162,9 +163,7 @@ class DressingModal extends HookConsumerWidget {
                   controller: titleController,
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              sh(10),
               LabelContent(
                 title: 'Catégorie',
                 child: DropDown<DressingCategory?>.simple(

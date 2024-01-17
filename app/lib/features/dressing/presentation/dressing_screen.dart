@@ -2,17 +2,20 @@ import 'dart:typed_data';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/design_system/app_checkbox.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
 import 'package:repasse_anou/design_system/dressing_card.dart';
 import 'package:repasse_anou/design_system/layouts.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
+import 'package:repasse_anou/features/dressing/application/dressing_filter_controller.dart';
 import 'package:repasse_anou/features/dressing/data/dressing_belongs_to_repository.dart';
 import 'package:repasse_anou/features/dressing/data/dressing_repository.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing.dart';
 import 'package:repasse_anou/features/dressing/models/user_dressing_belong_to.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_detail_screen.dart';
+import 'package:repasse_anou/features/dressing/presentation/dressing_filter_drawer.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_modal.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_screen_view_model.dart';
 import 'package:repasse_anou/design_system/app_bottom_sheet.dart';
@@ -20,20 +23,24 @@ import 'package:repasse_anou/design_system/ink_well.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 import 'package:repasse_anou/features/photo/data/image_storage_repository.dart';
 import 'package:repasse_anou/routing/navigation_controller.dart';
+import 'package:repasse_anou/utils/drawer_controller.dart';
 
 @RoutePage()
-class DressingScreen extends ConsumerStatefulWidget {
+class DressingScreen extends StatefulHookConsumerWidget {
   const DressingScreen({super.key});
 
   @override
-  ConsumerState<DressingScreen> createState() => _DressingScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _DressingScreenState();
 }
 
-class _DressingScreenState extends ConsumerState<DressingScreen> {
+class _DressingScreenState extends ConsumerState<ConsumerStatefulWidget> {
   late DressingScreenViewModel model =
       ref.read(dressingScreenViewModelProvider.notifier);
   late NavigationController navigationController =
       ref.read(navigationControllerProvider);
+  late final filters = ref.watch(dressingFilterControllerProvider);
+  late DressingFilterController dressingFilterController =
+      ref.read(dressingFilterControllerProvider.notifier);
 
   final List<UserDressing> selectedDressing = [];
   List<String> ignoredBelongsTo = [];
@@ -41,10 +48,6 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
   @override
   void initState() {
     super.initState();
-
-    setState(() {
-      ignoredBelongsTo = [];
-    });
 
     final hasReadDressingMessage =
         ref.read(userControllerProvider)?.hasReadDressingMessage;
@@ -252,7 +255,6 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
       data: (data) {
         return Expanded(
           child: ListView(
-              // padding: const EdgeInsets.symmetric(horizontal: 20),
               children: data.map((belongsTo) {
             return !ignoredBelongsTo.contains(belongsTo.id)
                 ? Column(
@@ -295,47 +297,61 @@ class _DressingScreenState extends ConsumerState<DressingScreen> {
     final AsyncValue<List<UserDressingBelongsTo>> usersDressingBelongsTo =
         ref.watch(usersDressingsBelongsToProvider);
 
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          ignoredBelongsTo = [];
+        });
+      });
+      return null;
+    }, [usersDressingBelongsTo]);
+
     return AppLayout.standard(
-        scrollable: false,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Mon Dressing').headlineLarge,
-                  AppIcons.search(color: Colors.black),
-                ],
-              ),
+      scrollable: false,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Mon Dressing').headlineLarge,
+                AppIcons.search(color: Colors.black),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  buildTopButton('Filtrer', AppIcons.filter, () {}),
-                  buildTopButton('Dressing de', AppIcons.settings, () {}),
-                  buildTopButton(
-                    'Ajouter',
-                    const Icon(Icons.add),
-                    () {
-                      showDialog<void>(
-                        context: context,
-                        builder: (context) {
-                          return DressingModal();
-                        },
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                buildTopButton('Filtrer', AppIcons.filter, () {
+                  ref.read(drawerControllerProvider.notifier).showEndDrawer(
+                        builder: () => const DressingFilterDrawer(),
                       );
-                    },
-                  ),
-                ],
-              ),
+                }),
+                buildTopButton('Dressing de', AppIcons.settings, () {}),
+                buildTopButton(
+                  'Ajouter',
+                  const Icon(Icons.add),
+                  () {
+                    showDialog<void>(
+                      context: context,
+                      builder: (context) {
+                        return DressingModal();
+                      },
+                    );
+                  },
+                ),
+              ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            buildDressingBelongsToItems(usersDressingBelongsTo),
-          ],
-        ));
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          buildDressingBelongsToItems(usersDressingBelongsTo),
+        ],
+      ),
+    );
   }
 }

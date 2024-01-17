@@ -161,9 +161,13 @@ class AppLayout extends StatelessWidget {
   final Widget? bottomButton;
   final EdgeInsetsGeometry? padding;
   final bool scrollable;
+  final Widget? drawer;
+  final Widget? endDrawer;
+  final GlobalKey<ScaffoldState>? drawerKey;
 
   const AppLayout._({
     required this.child,
+    this.drawerKey,
     super.key,
     this.appBar,
     this.onNavigateBack,
@@ -173,6 +177,8 @@ class AppLayout extends StatelessWidget {
     this.bottomButton,
     this.padding,
     this.scrollable = true,
+    this.drawer,
+    this.endDrawer,
   });
 
   factory AppLayout.standard({
@@ -186,6 +192,9 @@ class AppLayout extends StatelessWidget {
     VoidCallback? onFabPressed,
     EdgeInsetsGeometry? padding,
     bool scrollable = true,
+    Widget? drawer,
+    Widget? endDrawer,
+    GlobalKey<ScaffoldState>? drawerKey,
   }) {
     return AppLayout._(
       key: key,
@@ -196,6 +205,9 @@ class AppLayout extends StatelessWidget {
       onFabPressed: onFabPressed,
       padding: padding,
       scrollable: scrollable,
+      drawer: drawer,
+      endDrawer: endDrawer,
+      drawerKey: drawerKey,
       child: child,
     );
   }
@@ -228,8 +240,11 @@ class AppLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: drawerKey,
       backgroundColor: Colors.white,
       appBar: appBar,
+      drawer: drawer,
+      endDrawer: endDrawer,
       floatingActionButton: onFabPressed != null && fabContent != null
           ? FloatingActionButton(
               onPressed: onFabPressed,

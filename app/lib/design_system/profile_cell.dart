@@ -1,10 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/design_system/ink_well.dart';
 import 'package:repasse_anou/design_system/responsive_utils.dart';
 import 'package:repasse_anou/design_system/theme.dart';
+import 'package:repasse_anou/routing/navigation_controller.dart';
 
-class ProfileCell extends StatelessWidget {
+class ProfileCell extends ConsumerWidget {
   const ProfileCell({
     super.key,
     required this.label,
@@ -13,12 +16,16 @@ class ProfileCell extends StatelessWidget {
   });
   final String label;
   final Widget icon;
-  final String route;
+  final PageRouteInfo? route;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return AppInkWell(
-      onTap: () {},
+      onTap: () {
+        if (route != null) {
+          ref.read(navigationControllerProvider).push(route!);
+        }
+      },
       radius: BorderRadius.zero,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 20.w),

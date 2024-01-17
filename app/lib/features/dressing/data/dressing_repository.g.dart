@@ -58,7 +58,7 @@ final dressingMaterialsProvider =
 typedef DressingMaterialsRef
     = AutoDisposeFutureProviderRef<List<DressingMaterial>>;
 String _$usersDressingsByBelongsToHash() =>
-    r'237dd7c971e5ce4c2f09d8fbb6bea9f92d78c42b';
+    r'abcdd1b9092e33df8ddbc682b9bfecc8a5dffe07';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -150,7 +150,7 @@ class _$UsersDressingsByBelongsToFamilyOverride implements FamilyOverride {
 
 /// See also [usersDressingsByBelongsTo].
 class UsersDressingsByBelongsToProvider
-    extends FutureProvider<List<UserDressing>> {
+    extends AutoDisposeFutureProvider<List<UserDressing>> {
   /// See also [usersDressingsByBelongsTo].
   UsersDressingsByBelongsToProvider(
     UserDressingBelongsTo userDressingBelongsTo,
@@ -208,7 +208,7 @@ class UsersDressingsByBelongsToProvider
   }
 
   @override
-  FutureProviderElement<List<UserDressing>> createElement() {
+  AutoDisposeFutureProviderElement<List<UserDressing>> createElement() {
     return _UsersDressingsByBelongsToProviderElement(this);
   }
 
@@ -242,13 +242,14 @@ class UsersDressingsByBelongsToProvider
   }
 }
 
-mixin UsersDressingsByBelongsToRef on FutureProviderRef<List<UserDressing>> {
+mixin UsersDressingsByBelongsToRef
+    on AutoDisposeFutureProviderRef<List<UserDressing>> {
   /// The parameter `userDressingBelongsTo` of this provider.
   UserDressingBelongsTo get userDressingBelongsTo;
 }
 
 class _UsersDressingsByBelongsToProviderElement
-    extends FutureProviderElement<List<UserDressing>>
+    extends AutoDisposeFutureProviderElement<List<UserDressing>>
     with UsersDressingsByBelongsToRef {
   _UsersDressingsByBelongsToProviderElement(super.provider);
 

@@ -30,7 +30,20 @@ enum DropDownType {
   input,
 }
 
+class DropDownController<T> {
+  VoidCallback? _resetCallback;
+
+  void setResetCallback(VoidCallback resetCallback) {
+    _resetCallback = resetCallback;
+  }
+
+  void reset() {
+    _resetCallback?.call();
+  }
+}
+
 class DropDown<T> extends HookWidget {
+  final DropDownController<T>? controller;
   final void Function(T?)? onChanged;
   final void Function(List<T?>)? onChangedMultiple;
   final List<AppDropdownMenuItem<T>>? items;
@@ -41,6 +54,7 @@ class DropDown<T> extends HookWidget {
   final List<String> initialValues;
 
   const DropDown._({
+    this.controller,
     this.onChanged,
     this.onChangedMultiple,
     required this.items,
@@ -53,6 +67,7 @@ class DropDown<T> extends HookWidget {
   });
 
   factory DropDown.simple({
+    DropDownController<T>? controller,
     void Function(T?)? onChanged,
     List<AppDropdownMenuItem<T>>? items,
     String? hint,
@@ -60,6 +75,7 @@ class DropDown<T> extends HookWidget {
     String? Function(T?)? validator,
   }) {
     return DropDown<T>._(
+      controller: controller,
       onChanged: onChanged,
       items: items,
       value: value,
@@ -69,6 +85,7 @@ class DropDown<T> extends HookWidget {
   }
 
   factory DropDown.multiple({
+    DropDownController<T>? controller,
     void Function(List<T?>)? onChanged,
     List<AppDropdownMenuItem<T>>? items,
     String? hint,
@@ -76,6 +93,7 @@ class DropDown<T> extends HookWidget {
     String? Function(T?)? validator,
   }) {
     return DropDown<T>._(
+      controller: controller,
       onChangedMultiple: onChanged,
       items: items,
       value: null,
@@ -87,12 +105,14 @@ class DropDown<T> extends HookWidget {
   }
 
   factory DropDown.input({
+    DropDownController<T>? controller,
     void Function(List<T?>)? onChanged,
     List<AppDropdownMenuItem<T>>? items,
     String? hint,
     String? Function(T?)? validator,
   }) {
     return DropDown<T>._(
+      controller: controller,
       onChangedMultiple: onChanged,
       items: items,
       value: null,
@@ -107,11 +127,23 @@ class DropDown<T> extends HookWidget {
     final selectedValue = useState<T?>(value);
     final selectedMultipleValue =
         useState<List<T?>>(value != null ? [value] : []);
+
     final selectedMultipleLabels = useState<List<String?>>([]);
     final isMenuOpen = useState<bool>(false);
     final menuItems = useState<List<AppDropdownMenuItem<T>>>([]);
     final showInput = useState<bool>(false);
     final textEditingController = useTextEditingController();
+
+    useEffect(() {
+      if (controller != null) {
+        controller?.setResetCallback(() {
+          selectedValue.value = null;
+          selectedMultipleValue.value = [];
+          selectedMultipleLabels.value = [];
+        });
+      }
+      return null;
+    }, [controller]);
 
     void handleInitialDataForMultipleSelect() {
       final labels =

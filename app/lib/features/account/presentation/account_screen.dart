@@ -9,6 +9,7 @@ import 'package:repasse_anou/design_system/profile_cell.dart';
 import 'package:repasse_anou/design_system/responsive_utils.dart';
 import 'package:repasse_anou/design_system/theme.dart';
 import 'package:repasse_anou/features/auth/application/user_controller.dart';
+import 'package:repasse_anou/routing/app_router.dart';
 
 @RoutePage()
 class AccountScreen extends ConsumerWidget {
@@ -70,34 +71,34 @@ class AccountScreen extends ConsumerWidget {
           sh(15),
           ProfileCell(
             label: 'Mes commandes',
-            route: '',
+            route: null,
             icon: AppIcons.receiptText,
           ),
           ProfileCell(
             label: 'Messages',
-            route: '',
+            route: const ChatRoute(),
             icon: AppIcons.messageCircle,
           ),
           ProfileCell(
             label: 'FAQ',
-            route: '',
+            route: null,
             icon: AppIcons.messageQuestion,
           ),
           // Condition general d'utilisation
           ProfileCell(
             label: "Condition Générales d'Utilisation",
-            route: '',
+            route: null,
             icon: AppIcons.shieldCross,
           ),
           // Nous contacter
           ProfileCell(
             label: 'Nous contacter',
-            route: '',
+            route: null,
             icon: AppIcons.message,
           ),
           ProfileCell(
             label: 'Changer de mot de passe',
-            route: '',
+            route: null,
             icon: AppIcons.lock,
           ),
         ],

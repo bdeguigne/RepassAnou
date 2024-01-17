@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repasse_anou/design_system/app_icons.dart';
+import 'package:repasse_anou/design_system/responsive_utils.dart';
 import 'package:repasse_anou/features/commands/presentation/home_screen.dart';
 import 'package:repasse_anou/features/dressing/presentation/dressing_screen.dart';
 import 'package:repasse_anou/features/account/presentation/account_screen.dart';
+import 'package:repasse_anou/utils/drawer_controller.dart';
 
 @RoutePage()
 class NavigationScreen extends ConsumerStatefulWidget {
@@ -25,9 +27,30 @@ class _NavigationScreenState extends ConsumerState<NavigationScreen> {
     const AccountScreen(),
   ];
 
+  final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+
+  @override
+  void initState() {
+    ref.read(drawerControllerProvider.notifier).setKey(_drawerKey);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final drawerContent = ref.watch(drawerControllerProvider);
+
     return Scaffold(
+      key: _drawerKey,
+      endDrawer: Drawer(
+        width: screenWidthPercent(context, 75),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            bottomLeft: Radius.circular(30),
+          ),
+        ),
+        child: SafeArea(child: drawerContent),
+      ),
       body: PageTransitionSwitcher(
         transitionBuilder: (
           Widget child,
